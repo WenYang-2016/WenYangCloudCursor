@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Analysis Report on Wacker Neuson Gear Pump — TSQR-0586</title>
+<style>
+  @page {
+    size: A4;
+    margin: 14mm 14mm 12mm 14mm;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    font-family: "DejaVu Sans", "Liberation Sans", Arial, sans-serif;
+    font-size: 10.5pt;
+    color: #111;
+    line-height: 1.38;
+  }
+  .page {
+    page-break-after: always;
+    position: relative;
+  }
+  .page:last-child { page-break-after: auto; }
+  h1.title {
+    text-align: center;
+    font-size: 16pt;
+    font-weight: 700;
+    margin: 0 0 10pt 0;
+    letter-spacing: 0.2px;
+  }
+  .meta {
+    float: right;
+    text-align: left;
+    font-size: 10pt;
+    line-height: 1.45;
+    margin: 0 0 6pt 16pt;
+  }
+  .meta .seal-inline {
+    display: inline-block;
+    vertical-align: middle;
+    height: 48px;
+    margin-left: 6px;
+  }
+  .clear { clear: both; }
+  .to {
+    font-size: 12pt;
+    font-weight: 700;
+    margin: 4pt 0 6pt 0;
+  }
+  .failure-mode {
+    margin: 0 0 6pt 0;
+  }
+  .failure-mode u {
+    text-underline-offset: 2px;
+  }
+  .photos-row {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    margin: 4pt 0 8pt 0;
+    border: 1.5px solid #222;
+    padding: 3px;
+  }
+  .photos-row img {
+    width: 48%;
+    max-height: 118px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+  h2 {
+    font-size: 11pt;
+    font-weight: 700;
+    margin: 8pt 0 4pt 0;
+  }
+  p { margin: 0 0 6pt 0; text-align: justify; }
+  ol.process {
+    margin: 0 0 6pt 0;
+    padding-left: 20px;
+  }
+  ol.process li { margin-bottom: 4pt; }
+  u.emph { text-underline-offset: 2px; }
+
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+    font-size: 9.5pt;
+    margin: 6pt 0;
+  }
+  table.data th, table.data td {
+    border: 1px solid #222;
+    padding: 5px 4px;
+    vertical-align: middle;
+    text-align: center;
+  }
+  table.data th {
+    background: #efefef;
+    font-weight: 700;
+  }
+  table.data td.left { text-align: left; }
+
+  .field-status {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin: 4pt 0 6pt 0;
+  }
+  .field-status .text { flex: 1; font-size: 10pt; }
+  .field-status .gauges {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .field-status .gauges img {
+    width: 100%;
+    max-height: 95px;
+    object-fit: contain;
+    border: 1px solid #333;
+  }
+
+  table.disassy {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 9.5pt;
+    margin: 4pt 0 6pt 0;
+  }
+  table.disassy th, table.disassy td {
+    border: 1px solid #222;
+    padding: 4px;
+    vertical-align: middle;
+  }
+  table.disassy th {
+    background: #efefef;
+    text-align: center;
+    font-weight: 700;
+  }
+  table.disassy td.num { width: 8%; text-align: center; font-weight: 700; }
+  table.disassy td.photo { width: 36%; text-align: center; }
+  table.disassy td.photo img {
+    max-width: 100%;
+    max-height: 78px;
+    object-fit: contain;
+  }
+  table.disassy td.desc { width: 56%; text-align: left; }
+
+  .closing {
+    margin-top: 22pt;
+    text-align: right;
+  }
+  .closing .wish {
+    margin-bottom: 14pt;
+    text-align: right;
+  }
+  .sign-block {
+    display: inline-block;
+    text-align: center;
+    position: relative;
+    min-width: 220px;
+    padding-top: 8px;
+  }
+  .sign-block .company { font-weight: 700; font-size: 11pt; }
+  .sign-block .dept { margin-top: 4pt; }
+  .sign-block .seal {
+    position: absolute;
+    left: 50%;
+    top: -8px;
+    transform: translateX(-50%);
+    width: 120px;
+    opacity: 0.9;
+    pointer-events: none;
+  }
+  .above { margin-top: 12pt; }
+</style>
+</head>
+<body>
+
+<!-- ===================== PAGE 1 ===================== -->
+<section class="page">
+  <h1 class="title">Analysis Report on Wacker Neuson Gear Pump</h1>
+
+  <div class="meta">
+    TSQR-0586<br/>
+    2026-6-29<br/>
+    Prepared by: Wang Kuan<br/>
+    Approved by: <img class="seal-inline" src="images/p1_seal.png" alt="Approval seal" />
+  </div>
+  <div class="clear"></div>
+
+  <div class="to">Wacker Neuson Company:</div>
+
+  <div class="failure-mode">
+    Customer feedback failure mode: <u>Gear pump oil leakage</u>
+  </div>
+
+  <div class="photos-row">
+    <img src="images/p1_left.png" alt="Returned gear pump — shaft end" />
+    <img src="images/p1_right.png" alt="Suspected leak location" />
+  </div>
+
+  <h2>I. Background Overview</h2>
+  <p>
+    Our company received your feedback that this gear pump had an oil leakage failure.
+    To determine the root cause, we conducted systematic inspection and analysis of the
+    returned unit immediately upon receipt. After preliminary visual inspection and
+    various performance retests, we found that the test results differ significantly from
+    the failure symptoms reported by the customer. Details are as follows.
+  </p>
+
+  <h2>II. Inspection Methods and Process</h2>
+  <ol class="process">
+    <li>
+      <strong>Preliminary visual inspection:</strong>
+      Inspection of the pump body surface found no obvious impact damage, sand holes,
+      or scratches on sealing / mating faces.
+      <u class="emph">Abnormal eccentric wear marks were found on the mounting register (pilot).</u>
+    </li>
+    <li>
+      <strong>Airtightness test (core reproduction item):</strong>
+      Performed according to the standard work instruction. Observation: no abnormal condition.
+    </li>
+    <li>
+      <strong>Performance retest:</strong>
+      Retested at rated pressure to measure the output flow of this gear pump.
+    </li>
+  </ol>
+
+  <h2>III. Test Results and Data Analysis</h2>
+  <table class="data">
+    <thead>
+      <tr>
+        <th style="width:22%">Test Item</th>
+        <th style="width:24%">Standard / Requirement</th>
+        <th style="width:30%">Actual Retest Result</th>
+        <th style="width:24%">Conclusion</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Airtightness<br/>(leakage reproduction)</td>
+        <td>Extend pressure hold 3&nbsp;min;<br/>no leakage</td>
+        <td>No leak point found<br/>(hold pressure stable; no drop)</td>
+        <td>Inconsistent with customer feedback of “oil leakage”</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ===================== PAGE 2 ===================== -->
+<section class="page">
+  <table class="data">
+    <thead>
+      <tr>
+        <th style="width:22%">Test Item</th>
+        <th style="width:24%">Standard / Requirement</th>
+        <th style="width:30%">Actual Retest Result</th>
+        <th style="width:24%">Conclusion</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Flow confirmation</td>
+        <td>19.2–21.4 L/min</td>
+        <td>Essentially no flow</td>
+        <td>Fail</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2 style="margin-top:10pt;">On-site Test Status:</h2>
+  <div class="field-status">
+    <div class="text">
+      <strong>Test bench flow confirmation:</strong><br/><br/>
+      This gear pump cannot meet the test condition: <strong>17.2&nbsp;MPa</strong><br/>
+      → The factory test bench can no longer build up pressure.
+    </div>
+    <div class="gauges">
+      <img src="images/p2_gauge1.png" alt="Pressure gauge reading" />
+      <img src="images/p2_gauge2.png" alt="Flow meter reading" />
+    </div>
+  </div>
+
+  <h2>Key Contradiction Analysis:</h2>
+  <p><u class="emph">Retest results show that the flow rate is significantly lower than the rated value.</u></p>
+
+  <h2>IV. Disassembly Analysis</h2>
+  <table class="disassy">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Returned Unit Condition</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="num">1</td>
+        <td class="photo"><img src="images/p2_nameplate.png" alt="Nameplate" /></td>
+        <td class="desc">
+          <strong>Nameplate information:</strong><br/>
+          Model: SGP1-R9647D (15CC)<br/>
+          Production date: October 2025<br/>
+          Product No.: 04801
+        </td>
+      </tr>
+      <tr>
+        <td class="num">2</td>
+        <td class="photo"><img src="images/p2_flange.png" alt="Mounting register wear" /></td>
+        <td class="desc">Eccentric wear marks on the mounting register (pilot)</td>
+      </tr>
+      <tr>
+        <td class="num">3</td>
+        <td class="photo"><img src="images/p2_bore.png" alt="Internal bore scoring" /></td>
+        <td class="desc">
+          Gear pump disassembly: secondary scoring / “bore sweeping” of the intermediate body → internal leakage
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    This indicates severe internal leakage (internal leak) wear inside the pump.
+    However, the airtightness test did not find any external leakage (external leak).
+  </p>
+</section>
+
+<!-- ===================== PAGE 3 ===================== -->
+<section class="page">
+  <h2>IV. Analysis of Discrepancy Between Reported Failure and Test Results</h2>
+  <p>
+    Based on the contradictory phenomenon of “low flow but no external leakage” described above,
+    our analysis is as follows:
+  </p>
+  <ol class="process">
+    <li>
+      There is a difference between the fault operating condition and the static test → no oil leakage phenomenon.
+    </li>
+    <li>
+      <strong>Root cause inference (key point):</strong>
+      Severely low flow with no external leakage is typical of internal pump wear.
+      Eccentric wear marks appear on the mounting register; it is inferred that this gear pump was subjected to radial force,
+      causing secondary internal bore sweeping, which resulted in “no flow” during the return-to-factory test.
+    </li>
+    <li>
+      The “oil leakage” reported by your company may involve a “misjudgment,” or there may be other “causes.”
+    </li>
+  </ol>
+
+  <h2>V. Conclusion</h2>
+  <ol class="process">
+    <li>
+      <strong>Current product status:</strong>
+      After retesting by our company, the pump currently passes airtightness (no external leakage),
+      but fails performance (flow).
+    </li>
+    <li>
+      <strong>Cross-check against customer feedback:</strong>
+      The current product status (low flow) is completely inconsistent with your earlier feedback that
+      “no abnormal operating condition was found.”
+      The customer’s statement of “oil leakage despite no abnormal operating condition” is logically
+      contradictory to our measured “severe internal leakage (insufficient performance).”
+    </li>
+    <li>
+      <strong>Recommended determination:</strong>
+      The possibility of on-site misjudgment or inaccurate description of operating conditions cannot be ruled out.
+      The root failure mode of this pump is internal wear, rather than simple external seal failure.
+    </li>
+  </ol>
+
+  <p class="above">The above.</p>
+
+  <div class="closing">
+    <div class="wish">Best regards,</div>
+    <div class="sign-block">
+      <img class="seal" src="images/p3_seal.png" alt="Company seal" />
+      <div class="company">Tianjin Shimadzu Hydraulic Co., Ltd.</div>
+      <div class="dept">Quality Assurance Department</div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>
