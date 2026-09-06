@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="欧盟一吨轮式装载机 CE 认证与公共道路准入合规路径技术分析（机械法规 2023/1230、协调标准、德法意上路要求）。">
+  <title>欧盟轮式装载机 CE 认证与公共道路准入合规路径分析</title>
+  <style>
+    :root {
+      --ink: #1a2332;
+      --muted: #4a5568;
+      --line: #d8deea;
+      --paper: #f7f5f0;
+      --card: #ffffff;
+      --accent: #1f4e79;
+      --accent-soft: #e8eef6;
+      --warn: #8a4b12;
+      --warn-bg: #f8efe4;
+      --ok: #1b5e3b;
+      --ok-bg: #e8f4ec;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Source Han Serif SC", "Noto Serif SC", "Songti SC", "SimSun", "Georgia", serif;
+      font-size: 16.5px;
+      line-height: 1.75;
+    }
+    .wrap { max-width: 980px; margin: 0 auto; padding: 32px 22px 80px; }
+    header.hero {
+      background: var(--accent);
+      color: #fff;
+      padding: 42px 28px 36px;
+      border-radius: 8px;
+      margin-bottom: 28px;
+    }
+    header.hero p.kicker {
+      margin: 0 0 10px;
+      letter-spacing: 0.14em;
+      font-size: 12px;
+      text-transform: uppercase;
+      opacity: 0.85;
+      font-family: "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+    }
+    header.hero h1 {
+      margin: 0 0 14px;
+      font-size: 28px;
+      line-height: 1.35;
+      font-weight: 700;
+    }
+    header.hero .meta {
+      font-size: 14px;
+      opacity: 0.92;
+      font-family: "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+    }
+    nav.toc {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 18px 22px 10px;
+      margin-bottom: 28px;
+    }
+    nav.toc h2 { margin: 0 0 8px; font-size: 16px; }
+    nav.toc ol { margin: 0 0 12px; padding-left: 22px; }
+    nav.toc a { color: var(--accent); text-decoration: none; }
+    nav.toc a:hover { text-decoration: underline; }
+    h2 {
+      margin: 2.2em 0 0.7em;
+      padding-bottom: 0.25em;
+      border-bottom: 2px solid var(--accent);
+      font-size: 22px;
+      color: var(--accent);
+    }
+    h3 { margin: 1.6em 0 0.55em; font-size: 18.5px; }
+    h4 { margin: 1.2em 0 0.4em; font-size: 16.5px; }
+    p { margin: 0.7em 0; }
+    a { color: var(--accent); }
+    ul, ol { padding-left: 1.3em; }
+    li { margin: 0.28em 0; }
+    .lead {
+      background: var(--card);
+      border-left: 5px solid var(--accent);
+      padding: 16px 18px;
+      margin: 0 0 22px;
+    }
+    .note, .warn {
+      border-radius: 6px;
+      padding: 12px 16px;
+      margin: 16px 0;
+      font-size: 15px;
+    }
+    .note { background: var(--ok-bg); border: 1px solid #c5e0d0; }
+    .warn { background: var(--warn-bg); border: 1px solid #ead3b8; color: var(--warn); }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      font-size: 14.5px;
+      margin: 14px 0 22px;
+      font-family: "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      vertical-align: top;
+      text-align: left;
+    }
+    th { background: var(--accent-soft); color: var(--accent); }
+    tr:nth-child(even) td { background: #fbfcfe; }
+    .src a { word-break: break-all; }
+    footer {
+      margin-top: 48px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      font-family: "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", sans-serif;
+    }
+    @media print {
+      body { background: #fff; }
+      .wrap { max-width: none; padding: 0; }
+      header.hero { border-radius: 0; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      a { color: inherit; text-decoration: none; }
+      nav.toc { break-after: page; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <p class="kicker">Legal &amp; Technical Compliance Brief · EU Machinery</p>
+      <h1>欧盟轮式移动设备 CE 认证与公共道路准入<br>一吨轮式装载机合规路径分析</h1>
+      <p class="meta">产品对象：一吨级轮式装载机（earth-moving machinery / loader）<br>
+      分析基准日：2026 年 9 月 6 日<br>
+      主要法律依据：机械指令 2006/42/EC；机械法规 (EU) 2023/1230；非道路移动机械上路法规 (EU) 2025/14</p>
+    </header>
+
+    <nav class="toc">
+      <h2>目录</h2>
+      <ol>
+        <li><a href="#s1">产品定位：一吨轮式装载机在法规里是什么</a></li>
+        <li><a href="#s2">机械法规下的合规路径</a></li>
+        <li><a href="#s3">相关协调标准</a></li>
+        <li><a href="#s4">CE 之外必须叠加的欧盟法规</a></li>
+        <li><a href="#s5">轮式设备上路：欧盟层面正在发生什么</a></li>
+        <li><a href="#s6">德国、法国、意大利的具体要求</a></li>
+        <li><a href="#s7">对一吨轮式装载机的综合建议</a></li>
+        <li><a href="#s8">资料来源</a></li>
+      </ol>
+    </nav>
+
+    <div class="lead">
+      <p><strong>核心结论：</strong>一吨级轮式装载机进入欧盟，走的是<strong>双轨合规</strong>，而不是“做完 CE 就能上路”。</p>
+      <ul>
+        <li><strong>第一轨是产品安全：</strong>目前仍按机械指令 <a href="https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX%3A32006L0042">2006/42/EC</a> 做 CE；从 <strong>2027 年 1 月 20 日</strong>起，新投放市场的机器必须符合机械法规 <a href="https://eur-lex.europa.eu/eli/reg/2023/1230/oj">(EU) 2023/1230</a>，没有新旧法并行窗口。</li>
+        <li><strong>第二轨是道路准入：</strong>CE <strong>不覆盖</strong>公共道路交通安全。在 <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX%3A32025R0014">(EU) 2025/14</a> 全面适用前，德、法、意仍按本国规则办理上路。协调标准 <a href="https://standards.iteh.ai/catalog/standards/cen/86b89849-150f-4352-9a6c-f3ac4bf82181/en-474-3-2022">EN 474-3:2022</a> 也写明：上路的制动、转向、灯光、拖挂等，在欧盟统一要求出台前适用各国交通法规。</li>
+      </ul>
+    </div>
+
+    <div class="warn">
+      本文是法规结构与技术路径分析，供内部合规讨论使用，<strong>不能替代</strong>指定成员国的正式法律意见、公告机构评估或批准当局预审。成员国道路规则会因州/省/市和机器具体参数（车速、质量、宽度、属具）而变化。
+    </div>
+
+    <h2 id="s1">1. 产品定位：一吨轮式装载机在法规里是什么</h2>
+    <p>欧盟把这类机器定义为 <strong>earth-moving machinery / loader</strong>（土方机械—装载机），不是 M/N 类机动车，也不是农用拖拉机 <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32013R0167">(EU) 167/2013</a>。</p>
+    <p>中文“一吨轮式装载机”通常指<strong>额定载重约 1 t</strong> 的紧凑型轮式装载机（ZL10 一类），工作质量多在约 2.5–4.5 t；若是工作质量仅 1 t，则更接近超小型紧凑装载机。两种都落在 EN 474-3:2022 的装载机范围，紧凑型还适用该标准对 compact loaders 的补充条款。</p>
+    <p>关键法律后果：</p>
+    <table>
+      <thead>
+        <tr><th>问题</th><th>结论</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>是否要 CE</td><td>要。作为“机械”投放欧盟市场必须 CE。</td></tr>
+        <tr><td>是否属于机械法规附件 I“高风险清单”</td><td><strong>整机通常不在附件 I</strong>。常规轮式装载机走制造商自我符合性声明（Module A）。</td></tr>
+        <tr><td>何时必须请公告机构</td><td>① 户外噪声指令对装载机有限值，噪声环节要公告机构；② 若安全功能用机器学习/自演化软件，可能进入附件 I Part A/B；③ 单独投放市场的 ROPS/FOPS 属于附件 I Part B 第 18、19 项。</td></tr>
+        <tr><td>CE 能否代替上路牌照</td><td><strong>不能。</strong></td></tr>
+      </tbody>
+    </table>
+
+    <h2 id="s2">2. 机械法规下的合规路径（技术分析）</h2>
+    <h3>2.1 时间线（以 2026-09-06 为基准）</h3>
+    <p><a href="https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX%3A32023R1230">(EU) 2023/1230</a> 已生效，但<strong>全面适用日是 2027 年 1 月 20 日</strong>，当天废止 2006/42/EC，之后投放市场的新机没有“按旧指令清库存”的过渡期。</p>
+    <p>实务建议：</p>
+    <ul>
+      <li><strong>现在到 2027-01-19：</strong>按机械指令做 CE，技术文件尽量按新法规预埋（网络安全、数字说明书、安全带联锁、AI 安全功能等）。</li>
+      <li><strong>2027-01-20 起：</strong>新机必须按机械法规；此前已合法投放的机器可继续流通，不必整机重新认证。</li>
+      <li>2026 年 7 月 <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32026R1744">(EU) 2026/1744</a> 已微调机械法规与 AI 法规的衔接，若机器把 AI 用作安全功能，还要单独评估 AI 法规时间表。</li>
+    </ul>
+
+    <h3>2.2 符合性评定怎么选</h3>
+    <p>机械法规第 25 条：</p>
+    <ul>
+      <li><strong>不在附件 I：</strong>Module A，制造商内部生产控制，<strong>不必</strong>因机械法规本身请公告机构。</li>
+      <li><strong>附件 I Part B 且完整采用该类别协调标准：</strong>仍可用 Module A；未完整采用则必须 Module B+C、H 或 G。</li>
+      <li><strong>附件 I Part A</strong>（含机器学习安全功能等）：强制第三方。</li>
+    </ul>
+    <p>常规一吨轮式装载机（无自演化安全软件、不把 ROPS/FOPS 作为独立安全部件销售）走 <strong>Module A</strong>。这不意味着“自己写份声明就完事”，而是制造商对附件 III 全部适用的基本健康安全要求（EHSR）承担全部责任，技术文件至少保存 10 年。</p>
+    <p>非欧盟制造商还须有欧盟境内经济经营者（进口商或授权代表），以满足市场监管法规 <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32019R1020">(EU) 2019/1020</a> 第 4 条。</p>
+
+    <h3>2.3 必须满足的 EHSR（装载机真正的技术核心）</h3>
+    <p>轮式装载机同时适用附件 III：</p>
+    <ol>
+      <li><strong>第 1 章</strong>通用要求（风险评价、稳定、防护、控制系统、噪声/振动信息、说明书）</li>
+      <li><strong>第 3 章</strong>移动机械补充要求（驾驶位置、制动、转向、ROPS/FOPS、约束系统）</li>
+      <li>若带货叉、起重、吊运人员或高举人员，还可能触发 <strong>第 4 章（起重）</strong>、甚至 <strong>第 6 章（升降人员）</strong>。带货叉作业在 EN 474-3:2022 范围内；若可把人举过 3 m，则整机可能进入附件 I Part B 第 14 项，符合性评定立刻变严。</li>
+    </ol>
+    <p>对一吨轮式装载机，第 3 章里最容易在市场监督中被打的点是：</p>
+
+    <h4>视野（3.2.1）</h4>
+    <p>驾驶位置必须保证驾驶员能安全操作机器和属具，直接视野不足时要用摄像头、雷达、后视镜等补救。土方机械历史上就因视野标准被欧委会限制引用过。</p>
+
+    <h4>安全带与约束系统（3.2.2）</h4>
+    <p>有倾翻风险且装了 ROPS 时，必须有约束系统；<strong>未系安全带时机器不得行驶</strong>，驾驶位置还要有声光提醒。这是相对旧指令的明显加严。</p>
+
+    <h4>起步/行驶（3.3.2）</h4>
+    <p>有人驾驶的自行式机械，驾驶员不在操控位置不得行驶；作业装置超出正常轮廓时，出发前必须能确认已收到行驶位置并锁定。</p>
+
+    <h4>制动（3.3.3）</h4>
+    <p>主制动 + 必要时应急制动 + 驻车制动。标准路径是 ISO 3450（经 EN 474-1 引用）。法规同时写明：<strong>不妨碍道路交通法规</strong>，所以上路制动往往比工地制动更严。</p>
+
+    <h4>转向失效（3.3.5）</h4>
+    <p>助力转向失电后，仍须能在停车所需时间内转向。高于约 20 km/h 的快慢档机型通常还要应急转向。</p>
+
+    <h4>ROPS / FOPS（3.4.3 / 3.4.4）</h4>
+    <p>每种结构都要做试验或委托试验。紧凑装载机常见 ROPS（ISO 3471）+ FOPS Level I；常规装载机多为 FOPS Level II。ROPS、FOPS 若作为独立安全部件投放，属于附件 I Part B。</p>
+
+    <h4>稳定与额定作业能力</h4>
+    <p>按 ISO 14397-1 计算/验证倾翻载荷和额定作业能力。现行协调标准 EN 474-1:2022 在负载试验条款上带官方限制（2026 年 3 月决定）：4.12.7.2 / 4.12.7.3 的 125%/110% 应理解为“至少 100%，且仅在机器确实能达到更高载荷时做到该上限”。</p>
+
+    <h4>网络安全与控制系统（1.1.9、1.2.1）</h4>
+    <p>2027 年后，连接远程诊断、远程锁车、CAN 总线可被外部写入的机型，必须评估对安全功能的“腐败/篡改”防护。这是新法规相对旧指令最实质的增量。</p>
+
+    <h4>说明书</h4>
+    <p>可用数字格式，但用户请求时须免费提供纸质；对安全至关重要的信息仍须纸质随机器。语言为目的成员国官方语言。</p>
+
+    <h3>2.4 推荐的制造商工作流</h3>
+    <ol>
+      <li>明确预期用途：铲装、货叉、起重、是否上路、最高设计车速、是否自动驾驶/遥控。</li>
+      <li>按 EN ISO 12100 做风险评价，覆盖合理可预见误用（满斗上路、超载举升、斜坡横驶等）。</li>
+      <li>用 EN 474-1 + EN 474-3 作为 Type-C 主标准，缺口用 Type-B 标准补。</li>
+      <li>做/委托试验：ROPS、FOPS、制动、视野、稳定、座椅振动、噪声、EMC、排放。</li>
+      <li>编制附件 IV 技术文件（含图纸、计算、软件安全、供应链证书）。</li>
+      <li>起草欧盟符合性声明，覆盖全部适用法规（机械 + 噪声 + EMC + 如有无线电设备指令等）。</li>
+      <li>打 CE、铭牌、保证声功率级、序列号、制造商欧盟地址。</li>
+      <li>若要上路：并行启动各国道路型式批准或为 2028 年欧盟 U 类批准预留接口。</li>
+    </ol>
+
+    <h2 id="s3">3. 相关协调标准（简表）</h2>
+    <p>截至 2026 年 9 月，欧盟官方公报上<strong>仍主要是机械指令 2006/42/EC 的协调标准清单</strong>（实施决定 <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX%3A02023D1586-20240916">(EU) 2023/1586</a>，并经 <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX%3A32026D0546">(EU) 2026/546</a> 等修订）。机械法规的标准化请求 M/605（2025-01-20）已发出，EN 474 系列正在按新法规改版（如 EN 474-1:2022/prA1），但<strong>新法规自己的 OJ 引用清单尚未完整替代旧清单</strong>。</p>
+    <p>对一吨轮式装载机，实务上应采用：</p>
+
+    <h3>Type-C（产品族，优先）</h3>
+    <ul>
+      <li>EN 474-1:2022 土方机械 安全 第 1 部分：通用要求（OJ 带限制）</li>
+      <li>EN 474-3:2022（含 AC:2022）第 3 部分：装载机要求</li>
+    </ul>
+
+    <h3>分类与性能（经 EN 474 引用）</h3>
+    <ul>
+      <li>ISO 6165 土方机械分类</li>
+      <li>ISO 14397-1 额定作业能力 / 倾翻载荷</li>
+      <li>ISO 7546 铲斗容积</li>
+      <li>ISO 3450 制动</li>
+      <li>ISO 5010 转向（轮式土方机械，视结构）</li>
+      <li>EN ISO 3471 / ISO 3471 ROPS</li>
+      <li>EN ISO 3449 FOPS</li>
+      <li>EN ISO 6683 座椅安全带</li>
+      <li>EN ISO 5006 驾驶员视野</li>
+      <li>EN ISO 14401-1/-2 视野辅助与监视装置（若采用摄像头）</li>
+      <li>EN ISO 2867 进出通道</li>
+      <li>EN ISO 3411 驾驶员人体尺寸</li>
+      <li>EN ISO 7096 座椅振动</li>
+      <li>EN ISO 3457 防护装置</li>
+      <li>EN ISO 10968 操纵装置</li>
+      <li>ISO 6395 / ISO 6396 机外/司机耳旁噪声测量</li>
+      <li>EN ISO 13766-1 / -2 土方机械 EMC（与 EMC 指令衔接）</li>
+    </ul>
+
+    <h3>Type-B（通用安全，用于填补 C 类缺口）</h3>
+    <ul>
+      <li>EN ISO 12100:2010 风险评价</li>
+      <li>EN ISO 13849-1 安全相关控制系统（PLr 通常对行驶使能、臂架锁定、安全带联锁等）</li>
+      <li>EN ISO 13850 急停</li>
+      <li>EN ISO 4413 液压系统</li>
+      <li>EN 60204-1 机械电气设备（电动/混动尤其必要）</li>
+      <li>EN ISO 13857 安全距离</li>
+      <li>EN ISO 14120 防护罩</li>
+    </ul>
+    <div class="note">
+      采用协调标准只产生<strong>被该标准覆盖的 EHSR 的符合推定</strong>。标准未覆盖、或被 OJ 限制的条款，必须在风险评价里单独证明。
+    </div>
+
+    <h2 id="s4">4. CE 之外、投放市场仍必须叠加上的欧盟法规</h2>
+    <p>轮式装载机几乎一定是<strong>多指令/多法规 CE</strong>，一份符合性声明里要列全：</p>
+    <table>
+      <thead>
+        <tr><th>法规</th><th>为何适用</th><th>要点</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>户外噪声指令 2000/14/EC 第 12 条</td>
+          <td>loaders &lt; 500 kW 有强制限值</td>
+          <td>必须测保证声功率级、打 LwA 标记；常用附件 VI，<strong>要公告机构</strong>评技术文件并做生产抽查。</td>
+        </tr>
+        <tr>
+          <td>NRMM 排放法规 (EU) 2016/1628</td>
+          <td>非道路移动机械用内燃机</td>
+          <td>新机柴油机须 <strong>Stage V</strong> 型式批准发动机，不是整机道路型式批准。</td>
+        </tr>
+        <tr>
+          <td>EMC 指令 2014/30/EU</td>
+          <td>电子控制、仪表、摄像头</td>
+          <td>土方机械常用 EN ISO 13766。</td>
+        </tr>
+        <tr>
+          <td>无线电设备指令 2014/53/EU</td>
+          <td>4G/5G 远程、遥控、蓝牙钥匙</td>
+          <td>有无线就适用，优先于 EMC。</td>
+        </tr>
+        <tr>
+          <td>电池法规 (EU) 2023/1542</td>
+          <td>电动或混动</td>
+          <td>工业电池的 CE、碳足迹、尽职调查按时间表落地。</td>
+        </tr>
+        <tr>
+          <td>REACH / POP</td>
+          <td>液压油、油漆、轮胎、电缆</td>
+          <td>物质限制与 SCIP 通报。</td>
+        </tr>
+        <tr>
+          <td>压力设备 2014/68/EU</td>
+          <td>仅当蓄能器等超过 PED 阈值</td>
+          <td>多数液压系统走机械法规第 1.5.3，不一定进 PED。</td>
+        </tr>
+      </tbody>
+    </table>
+    <p>机械法规<strong>不管道路交通安全</strong>。CE、Stage V、噪声 CE 都不能让机器合法上路。</p>
+
+    <h2 id="s5">5. 作为轮式设备上路：欧盟层面正在发生什么</h2>
+    <h3>5.1 现状（2026 年 9 月）</h3>
+    <p>公共道路交通安全长期是<strong>成员国保留事项</strong>。在 (EU) 2025/14 全面适用前，上路仍按各国国内法。</p>
+
+    <h3>5.2 新框架：(EU) 2025/14</h3>
+    <p>2024 年 12 月 19 日通过，2025 年 1 月 8 日公布，建立非道路移动机械（NRMM，<strong>U 类车辆</strong>）上路的欧盟型式批准和单车批准。</p>
+    <p>对一吨轮式装载机高度相关的范围条件：</p>
+    <ul>
+      <li>适用于<strong>自行式</strong>、拟在公共道路上偶尔或经常行驶的非道路移动机械。</li>
+      <li><strong>设计最高车速 &gt; 6 km/h 且 ≤ 40 km/h</strong> 才落入该法规；≤ 6 km/h 或 &gt; 40 km/h 被排除。</li>
+      <li>主要用途是运人、运畜、运货的机器被排除，但工地物料转运被“反向纳入”，传统工程机械（含轮式装载机）在范围内。</li>
+      <li>座位少于 3 个（与意国现行“最多 3 座含司机”可对齐）。</li>
+    </ul>
+    <p>时间表：</p>
+    <ul>
+      <li>2025-01-28 生效；成员国<strong>可以</strong>应制造商请求提前发欧盟型式批准（前提是授权法案已就绪）。</li>
+      <li>委员会须在 <strong>2027-01-29 前</strong>通过制动、转向、车速、灯光等详细技术授权法案。</li>
+      <li><strong>2028-01-29</strong> 起原则上适用；此前投放的机器不溯及。</li>
+      <li><strong>2028-01-29 至 2036-01-29：</strong>制造商可在欧盟型式批准、欧盟单车批准、<strong>继续走成员国国内法</strong>三者中选择。</li>
+    </ul>
+    <div class="note">
+      现在设计新产品，车速建议卡在 <strong>6–40 km/h</strong>（很多紧凑装载机选 20 km/h 或 25/40 km/h 选配），并把灯光、后视、制动回路、转向、反光标识按“可同时满足德法意 + 未来 U 类”来预留，避免 2028 年后大改。
+    </div>
+
+    <h2 id="s6">6. 德国、法国、意大利：上路具体要求</h2>
+    <p>三国共同点：CE 是前提，不是上路许可；满斗当货车用通常违法；超限要走异常运输/例外许可。差异很大。</p>
+
+    <h3>6.1 德国</h3>
+    <p>法律定性：轮式装载机是 <strong>selbstfahrende Arbeitsmaschine（自行式作业机械）</strong>，依据 FZV § 2：按结构用于作业，<strong>不是</strong>用于载人或载货。因此公共道路上必须<strong>空斗、臂架收到行驶位置、斗齿有护板</strong>。</p>
+    <table>
+      <thead>
+        <tr><th>项目</th><th>规则</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>道路批准</td><td>需要 <strong>Betriebserlaubnis</strong>（一般是制造商 ABE，或单车 EBE）。无批准不得上路。</td></tr>
+        <tr><td>登记/牌照</td><td>设计最高车速 <strong>≤ 20 km/h</strong>：不强制登记挂牌，但须打 20 限速牌，左侧标注所有人名称住所。</td></tr>
+        <tr><td></td><td><strong>&gt; 20 km/h</strong>：必须登记、挂牌（常见绿字白底）、投保，并提交数据确认、CE 符合性声明、保险证明。ABE <strong>只在德国有效</strong>。</td></tr>
+        <tr><td>定期检验</td><td>&gt; 20 km/h 须两年一次 Hauptuntersuchung；总质量 &gt; 7.5 t 还可能有 Sicherheitsprüfung。</td></tr>
+        <tr><td>装备</td><td>近光/转向/制动灯、喇叭、后视镜、限速牌、轮挡、三角警示架、急救包、反光背心；工作灯上路须关闭。</td></tr>
+        <tr><td>超限</td><td>超尺寸/轴荷/总质量构成“过度使用道路”（StVO § 29），须同时取得行程许可和 StVZO § 70 技术例外。</td></tr>
+        <tr><td>驾照</td><td>≤ 25 km/h：L 类（旧 5 类），无重量上限；更快则按质量：≤ 3.5 t 用 B，≤ 7.5 t 用 C1 等。</td></tr>
+        <tr><td>作业资格</td><td>公共道路驾照之外，职业保险协会还要求建筑机械操作资格，驾驶员通常须满 18 岁。</td></tr>
+      </tbody>
+    </table>
+    <p>对一吨机：若把最高车速限制在 <strong>20 km/h</strong>，德国行政负担最低（要 Betriebserlaubnis，但不要牌照和 HU）。若做 40 km/h 快慢档，就要按机动车逻辑登记、检验、投保，驾照门槛也升高。</p>
+
+    <h3>6.2 法国</h3>
+    <p>工程机械按道路特性分两类：</p>
+    <ul>
+      <li><strong>第 I 类：</strong>道路特性为主（有悬挂等），走 mines/DREAL 道路接收 + 登记，适用几乎全部道路法典，要驾照和定期技术检查。</li>
+      <li><strong>第 II 类：</strong>无主导道路特性（典型是无悬挂的装载机、挖掘机），走特别规则。轮式装载机、挖掘装载机通常是第 II 类。</li>
+    </ul>
+    <p>第 II 类要点：</p>
+    <table>
+      <thead>
+        <tr><th>项目</th><th>规则</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>接收</td><td>不以欧盟整车型式批准为前提，实务上以制造商 <strong>CE 自我声明</strong> 为主；重大改装须由制造商重新证明。</td></tr>
+        <tr><td>牌照</td><td>《道路法典》R317-8：第 II 类 <strong>不得</strong>装登记号牌。</td></tr>
+        <tr><td>车速</td><td>上路限 <strong>25 km/h</strong>，车后须有 25 限速圆盘；除雪作业可到 50 km/h。</td></tr>
+        <tr><td>灯光</td><td>至少位置灯、近光、后红灯、转向灯、反射器；属具遮挡原灯时须补灯。</td></tr>
+        <tr><td>转移模式</td><td>活动部件必须收回；超尺寸/超重走 <strong>transport exceptionnel</strong>。</td></tr>
+        <tr><td>路权</td><td>高速公路和限制进入道路原则上禁止，除非路网警察当局特许。</td></tr>
+        <tr><td>驾照 vs 作业授权</td><td>第 II 类常被解释为<strong>不要求道路驾照</strong>，但《劳动法典》要求雇主签发 <strong>autorisation de conduite</strong>；CACES（装载机常见 R482，≤ 6 t 为 A 类）是通行培训路径，有效期 10 年。</td></tr>
+      </tbody>
+    </table>
+    <p>道路法典 R321-15 授权交通部长列出“通常在道路上使用、须做接收”的公共工程机械清单。一吨装载机是否落入该清单，要以现行 arrêté 核对；即便整机不走第 I 类接收，灯光、制动、限速盘仍是上路条件。</p>
+
+    <h3>6.3 意大利</h3>
+    <p>意大利把轮式装载机放进《道路法典》<strong>macchine operatrici（作业机械）</strong>，比法国第 II 类更“车辆化”。</p>
+    <p>定义与限制（第 58 条）：</p>
+    <ul>
+      <li>自行或拖挂、轮式或履带，用于道路或工地作业。</li>
+      <li>上路只为<strong>自身转移</strong>或运送与本机/工地作业循环相关的物品，不能当普通货车。</li>
+      <li>含司机最多 <strong>3 个座位</strong>。</li>
+      <li>水平路面设计车速：<strong>轮胎轮式 ≤ 40 km/h</strong>；非充气轮或履带 ≤ 15 km/h。</li>
+    </ul>
+    <p>上路义务（第 114 条）：</p>
+    <table>
+      <thead>
+        <tr><th>项目</th><th>规则</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>登记</td><td>必须在 Motorizzazione 登记，取得 <strong>carta di circolazione</strong>。</td></tr>
+        <tr><td>牌照</td><td>自行式必须有含登记数据的号牌。</td></tr>
+        <tr><td>技术</td><td>外形和轴荷须符合第 61、62 条一般限值；构造和装备适用第 106 条。超限则成为 <strong>macchina operatrice eccezionale</strong>，要年度可续期的通行许可。</td></tr>
+        <tr><td>实施细则</td><td>执行条例约第 296–305 条：异常机械信号、视野、登记牌照、防钻入、牵引、<strong>自行式制动（第 301 条）</strong>、轴荷分配、<strong>定期 revisione（第 304 条）</strong>、构造功能（第 305 条）。</td></tr>
+        <tr><td>保险</td><td>公共道路须有 RCA 责任险。</td></tr>
+        <tr><td>改装</td><td>改变构造特性未做 visita e prova，按第 78 条处罚。</td></tr>
+      </tbody>
+    </table>
+    <p>一吨轮式装载机若宽度、质量在一般限值内，意大利路径是：<strong>CE + 国内 omologazione/immatricolazione + 牌照 + RCA + 定期检验</strong>。这与法国“第 II 类不挂牌”正好相反。</p>
+
+    <h3>6.4 三国对照（制造商最该看的差异）</h3>
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>德国</th>
+          <th>法国（第 II 类）</th>
+          <th>意大利</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>法律定性</td><td>自行式作业机械</td><td>公共工程机械第 II 类</td><td>macchine operatrici</td></tr>
+        <tr><td>CE</td><td>必要，不够</td><td>必要，实务上几乎是上路主文件</td><td>必要，不够</td></tr>
+        <tr><td>国内道路批准</td><td>Betriebserlaubnis / ABE 或单车</td><td>通常无整车道路型式批准</td><td>登记 + 行驶证</td></tr>
+        <tr><td>牌照</td><td>≤20 km/h 无；&gt;20 有</td><td>无</td><td>有</td></tr>
+        <tr><td>典型限速</td><td>20 或按批准；驾照门槛 25 km/h</td><td>25 km/h</td><td>设计 ≤40 km/h</td></tr>
+        <tr><td>保险</td><td>&gt;20 km/h 强制；≤20 建议责任险</td><td>企业责任险为主</td><td>RCA 强制</td></tr>
+        <tr><td>驾照</td><td>按车速/质量（L/B/C1…）</td><td>第 II 类常不要求道路驾照，但要作业授权</td><td>按车辆规则，通常至少 B</td></tr>
+        <tr><td>高速路</td><td>受 StVO 一般规则约束</td><td>原则上禁止</td><td>受一般禁限和车速限制</td></tr>
+        <tr><td>满斗行驶</td><td>禁止</td><td>转移模式须收回属具</td><td>仅允许与作业循环相关的物料</td></tr>
+      </tbody>
+    </table>
+    <p>没有“一份德国 ABE 全欧盟通用”。要同时卖德法意，今天只能：<strong>CE 做一次，道路批准做三次</strong>；或等到 2028 年后拿 (EU) 2025/14 的欧盟型式批准（2036 年前仍可选国内法）。</p>
+
+    <h2 id="s7">7. 对一吨轮式装载机的综合建议</h2>
+    <ol>
+      <li><strong>先把产品用途写死。</strong>
+        <ul>
+          <li>仅工地内：CE + 噪声 + Stage V + EMC 即可，说明书写明禁止公共道路（除非拖运）。</li>
+          <li>要自行上路：设计车速建议 <strong>20 km/h（德国友好）或 25 km/h（法国对齐）</strong>，不要超过 40 km/h（否则掉出 2025/14，并在意大利不合法）。</li>
+        </ul>
+      </li>
+      <li><strong>把道路套件做成工厂选装，而不是经销商后装。</strong>近光/转向/制动灯、反射器、倒车报警、后视镜或摄像头、限速牌、斗齿护板、臂架行驶锁定、安全带行驶联锁。后装很容易在意大利被认定为未申报改装。</li>
+      <li><strong>2027 年机械法规断点要现在就按新法设计。</strong>尤其是未系安全带禁行、数字说明书、控制安全与网络安全。2027-01-20 之后出厂的新机没有旧指令缓冲。</li>
+      <li><strong>噪声公告机构不要漏。</strong>机械法规 Module A 不等于全程无第三方；户外噪声对装载机是限值类，通常要公告机构。</li>
+      <li><strong>不要把货叉版做成“升降人员平台”。</strong>一旦可把人举过 3 m，符合性评定从自我声明变成附件 I 程序。</li>
+      <li><strong>目标市场若含意大利，尽早找 Motorizzazione / 技术服务做 omologazione 预审。</strong>视野、制动、防钻入、牌照位置往往是中国紧凑装载机的短板。德国则重点准备 ABE 数据包；法国重点保证 25 km/h、灯光和限速盘。</li>
+    </ol>
+    <p>若下一步要落到具体机型（柴油/电动、最高车速、是否货叉、是否遥控），可按该配置把 EHSR、试验项目和三国道路选装清单做成对照检查表。</p>
+
+    <h2 id="s8">8. 资料来源</h2>
+    <ul class="src">
+      <li><a href="https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX%3A02023R1230-20260529">Regulation (EU) 2023/1230 consolidated</a>（2026-05）</li>
+      <li><a href="https://eur-lex.europa.eu/legal-content/EN/ALL/?uri=CELEX%3A32023R1230">EUR-Lex procedure dates for 2023/1230</a></li>
+      <li><a href="https://www.ce-copilot.de/en/guides/eu-machinery-regulation-2027">EU Machinery Regulation application 20 January 2027</a></li>
+      <li><a href="https://www.fabrico.io/blog/eu-machinery-regulation-2023-1230/">Fabrico: no transition after 20 January 2027</a>（2026-08）</li>
+      <li><a href="https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX%3A02023D1586-20240916">Implementing Decision (EU) 2023/1586 on harmonised standards</a></li>
+      <li><a href="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX%3A32026D0546">Implementing Decision (EU) 2026/546 EN 474-1 restriction</a>（2026-03）</li>
+      <li><a href="https://www.agoria.be/system/files/documents/2025-01/c2025129_0.pdf">Standardisation request M/605 / C(2025) 129</a>（2025-01）</li>
+      <li><a href="https://standards.iteh.ai/catalog/standards/cen/86b89849-150f-4352-9a6c-f3ac4bf82181/en-474-3-2022">EN 474-3:2022</a></li>
+      <li><a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32000L0014">Directive 2000/14/EC</a></li>
+      <li><a href="https://www.legislation.gov.uk/eur/2016/1628/pdfs/eur_20161628_adopted_en.pdf">Regulation (EU) 2016/1628 Stage V</a></li>
+      <li><a href="https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX%3A32025R0014">Regulation (EU) 2025/14</a>（2025-01）</li>
+      <li><a href="https://www.cece.eu/news/new-regulation-on-non-road-mobile-machinery-published-in-eu-official-journal">CECE on 2025/14</a></li>
+      <li><a href="https://www.noerr.com/en/insights/new-eu-type-approval-regime-for-non-road-mobile-machinery">Noerr: new EU type-approval regime for NRMM</a>（2025-01）</li>
+      <li><a href="https://www.dlg.org/en/events/sc-expert-stage-eu-type-approval-for-mobile-machinery-regulation-eu-2025-14-sets-the-framework-for-road-access">DLG: 2025/14 covers wheel loaders</a></li>
+      <li><a href="https://baublatt.de/rechtssicher-auf-eigener-achse-unterwegs/">Baublatt: compact wheel loaders on German public roads</a></li>
+      <li><a href="https://www.zeppelin-cat.de/presse/regeln-strassenverkehr-kompakte-radlader/">Zeppelin Cat: StVZO/StVO rules</a></li>
+      <li><a href="https://www.oekolandbau.nrw.de/rad-und-teleskoplader-zulassen">Ökolandbau NRW: Betriebserlaubnis</a></li>
+      <li><a href="https://www.fntp.fr/les-engins-de-travaux-publics-et-le-code-de-la-route/">FNTP: engins de TP et code de la route</a></li>
+      <li><a href="https://dtrf.cerema.fr/pdf/pj/Dtrf/0008/Dtrf-0008392/DT8055.pdf">CEREMA: matériels de travaux publics</a></li>
+      <li><a href="https://aci.gov.it/codice-della-strada/art-58/">ACI: Codice della Strada art. 58</a>（updated 2026-05）</li>
+      <li><a href="https://www.brocardi.it/codice-della-strada/titolo-iii/capo-iv/art114.html">Brocardi: art. 114</a></li>
+      <li><a href="https://www.automobilista.it/cosa-prevede-il-codice-per-la-circolazione-delle-macchine-operatrici-2/">Automobilista.it: macchine operatrici</a>（2026-07）</li>
+    </ul>
+
+    <footer>
+      <p>文件路径：<code>docs/eu-wheeled-loader-ce-compliance.htm</code>。可用浏览器直接打开；打印时目录后可按章节分页。</p>
+      <p>免责声明：本文仅供合规路径研讨，不构成律师意见或认证结论。适用要求以欧盟官方公报及成员国主管当局最新文本为准。</p>
+    </footer>
+  </div>
+</body>
+</html>
