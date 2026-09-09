@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>四冲程内燃机排气压力特性：频率、幅值、燃烧做功与负荷</title>
+  <style>
+    :root {
+      --bg: #f4f1ea;
+      --paper: #fffdf8;
+      --ink: #1c2430;
+      --muted: #5b6573;
+      --line: #d9d0c3;
+      --accent: #3d4f63;
+      --accent-soft: #e7eef4;
+      --formula-bg: #f3f6f8;
+      --formula-border: #b7c4d0;
+      --table-head: #2c3a4d;
+      --ok: #2f6b4f;
+      --warn-c: #b7791f;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; background: var(--bg); color: var(--ink);
+      font-family: "Source Han Serif SC", "Noto Serif SC", "Songti SC", "SimSun", "Times New Roman", serif;
+      line-height: 1.75; font-size: 17px;
+    }
+    .page {
+      max-width: 920px; margin: 32px auto 64px; background: var(--paper);
+      border: 1px solid var(--line); box-shadow: 0 12px 40px rgba(40, 30, 20, 0.08);
+      padding: 56px 64px 72px;
+    }
+    header.cover { border-bottom: 3px solid var(--accent); padding-bottom: 28px; margin-bottom: 36px; }
+    .kicker {
+      color: var(--accent); letter-spacing: 0.18em; font-size: 12px;
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+      font-weight: 600; text-transform: uppercase;
+    }
+    h1 { font-size: 32px; line-height: 1.35; margin: 10px 0 12px; font-weight: 700; }
+    .subtitle { color: var(--muted); font-size: 16px; margin: 0; }
+    .meta {
+      margin-top: 18px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 24px;
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+      font-size: 13px; color: var(--muted);
+    }
+    h2 { font-size: 22px; margin: 42px 0 14px; padding-left: 12px; border-left: 5px solid var(--accent); }
+    h3 { font-size: 18px; margin: 28px 0 10px; }
+    p { margin: 10px 0 14px; }
+    ul, ol { margin: 8px 0 16px; padding-left: 1.4em; }
+    li { margin: 4px 0; }
+    .lead {
+      font-size: 18px; background: var(--accent-soft); border: 1px solid #c5d3df;
+      padding: 16px 18px; margin: 18px 0 28px;
+    }
+    .note, .warn, .okbox {
+      border: 1px solid var(--line); padding: 14px 16px; margin: 16px 0; background: #fbf8f3;
+    }
+    .warn { border-left: 5px solid var(--warn-c); }
+    .okbox { border-left: 5px solid var(--ok); }
+    .note { border-left: 5px solid var(--accent); }
+    .label {
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 6px;
+    }
+    table {
+      width: 100%; border-collapse: collapse; margin: 14px 0 22px; font-size: 15px;
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+    }
+    th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: var(--table-head); color: #fff; font-weight: 600; }
+    tr:nth-child(even) td { background: #faf6f0; }
+    .formula {
+      display: block; width: 100%; margin: 16px 0; padding: 18px 12px;
+      background: var(--formula-bg); border: 1px dashed var(--formula-border);
+      text-align: center; overflow-x: auto;
+      font-family: "Times New Roman", "STIX Two Math", "Cambria Math", serif;
+      font-size: 20px; line-height: 1.45;
+    }
+    .formula .tag {
+      display: block; font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif;
+      font-size: 12px; color: var(--muted); margin-top: 8px;
+    }
+    .frac {
+      display: inline-flex; flex-direction: column; align-items: center;
+      vertical-align: middle; margin: 0 4px; font-size: 0.95em;
+    }
+    .frac .num, .frac .den { padding: 0 8px; line-height: 1.2; }
+    .frac .num { border-bottom: 1.5px solid currentColor; padding-bottom: 3px; }
+    .frac .den { padding-top: 3px; }
+    .sqrt { display: inline-flex; align-items: stretch; margin: 0 2px; }
+    .sqrt .sym { font-size: 1.15em; line-height: 1; padding-right: 1px; }
+    .sqrt .rad { border-top: 1.5px solid currentColor; padding: 0 4px 1px; }
+    sub, sup { font-size: 0.68em; }
+    .toc {
+      background: #f4f7f9; border: 1px solid var(--line); padding: 16px 22px; margin: 8px 0 28px;
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+    }
+    .toc a { color: var(--ink); text-decoration: none; }
+    .toc a:hover { color: var(--accent); }
+    .toc ol { margin: 0; }
+    code {
+      font-family: "IBM Plex Mono", "Menlo", "Consolas", monospace;
+      font-size: 0.92em; background: #e6edf2; padding: 0 4px;
+    }
+    .flow {
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+      font-size: 14.5px; background: #f7fafc; border: 1px solid var(--line);
+      padding: 14px 16px; margin: 16px 0; line-height: 1.9;
+      text-align: center;
+    }
+    .footer {
+      margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--line);
+      color: var(--muted); font-size: 13px;
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+    }
+    @media print {
+      body { background: #fff; }
+      .page { margin: 0; border: none; box-shadow: none; max-width: none; padding: 12mm; }
+    }
+    @media (max-width: 720px) {
+      .page { margin: 0; padding: 28px 18px 40px; border: none; }
+      .meta { grid-template-columns: 1fr; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <article class="page">
+    <header class="cover">
+      <div class="kicker">发动机试验 / 进排气系统 · 对照进气阻力分析</div>
+      <h1>四冲程内燃机排气压力特性<br />频率、幅值、燃烧做功与负荷</h1>
+      <p class="subtitle">以洋马 3TNV76（三缸、四冲程、自然吸气柴油机）为对象，说明排气歧管压力波形由什么决定，以及它和缸内做功、发动机负荷是否有关。</p>
+      <div class="meta">
+        <div>对照前文：进气阻力正弦波分析</div>
+        <div>机型参照：Yanmar 3TNV76</div>
+        <div>排气事件间隔：240°CA（三缸四冲程）</div>
+        <div>核心问题：排气压力是否随负荷变化</div>
+      </div>
+    </header>
+
+    <div class="lead">
+      <strong>先给结论：</strong>排气压力的<strong>频率</strong>几乎只跟转速、缸数、冲程有关，和负荷基本无关。
+      排气压力的<strong>脉动幅值</strong>和排气门开启瞬间的缸内剩余压力强相关，因此和<strong>燃烧做功、负荷强相关</strong>。
+      这和自然吸气柴油机的进气阻力正好相反：进气脉动主要跟转速有关，跟油门关系很弱。
+    </div>
+
+    <nav class="toc">
+      <div class="label">目录</div>
+      <ol>
+        <li><a href="#s0">排气压力要拆成哪几部分</a></li>
+        <li><a href="#s1">频率和什么有关</a></li>
+        <li><a href="#s2">幅值和什么有关</a></li>
+        <li><a href="#s3">排气压力如何接到缸内燃烧做功</a></li>
+        <li><a href="#s4">排气压力和发动机负荷是否有关</a></li>
+        <li><a href="#s5">和进气阻力的对照（3TNV76）</a></li>
+        <li><a href="#s6">若你去测排气压力，有效数据怎么取</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="s0">0. 排气压力要拆成哪几部分</h2>
+    <p>
+      测点通常在排气歧管、涡轮前（有增压时）或消声器前。瞬时排气压力同样写成直流 + 交流：
+    </p>
+    <div class="formula">
+      p<sub>ex</sub>(t) = p<sub>ex,mean</sub> + p<sub>ex,ac</sub>(t)
+      <span class="tag">式 (1)　平均排气压力（或称排气背压） + 排气脉动</span>
+    </div>
+    <p>这两个量的物理来源完全不同，不能混成一个“排气压力”去谈负荷。</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>量</th>
+          <th>工程含义</th>
+          <th>主要来源</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>p<sub>ex,mean</sub></td>
+          <td>平均排气背压</td>
+          <td>排气管、消声器、颗粒捕集器、涡轮的通流阻力；排气质量流量和温度</td>
+        </tr>
+        <tr>
+          <td>p<sub>ex,ac</sub></td>
+          <td>排气脉动（你看到的波形高低）</td>
+          <td>每缸排气门打开时的吹下（blowdown）压力波，再叠加活塞上止点排挤阶段</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>四冲程每一缸的排气过程本身就有<strong>两段</strong>，所以排气波形往往不像进气那样接近纯正弦：</p>
+    <ol>
+      <li>
+        <strong>吹下阶段（blowdown）</strong>：排气门在下止点前打开（EVO，常见 40°–60°BBDC）。
+        此时缸内压力仍明显高于歧管，燃气以临界或近临界流喷出，形成陡峭的压力脉冲。
+      </li>
+      <li>
+        <strong>排挤阶段（displacement）</strong>：活塞从下止点向上走，把剩余废气推出去。
+        这一段更接近“活塞泵”，压力较低、较宽。
+      </li>
+    </ol>
+    <div class="note">
+      <div class="label">和进气波形的直观差别</div>
+      进气是活塞下行抽吸，歧管容积一滤波，三缸均匀叠加后容易变成正弦。
+      排气先有一次高压喷放，再有一次活塞推挤，频谱里高次谐波更强，时域上更容易看到“尖峰 + 平台”，而不是圆正弦。
+      测点离排气门越远、消声器容积越大，尖峰会被削圆，看起来又会接近正弦。
+    </div>
+
+    <h2 id="s1">1. 频率和什么有关</h2>
+    <p>主频的公式与进气事件频率相同：四冲程每缸每两转排一次，三缸间隔 240°CA，仍是 <strong>1.5 阶</strong>。</p>
+    <div class="formula">
+      f<sub>p</sub> =
+      <span class="frac"><span class="num">i</span><span class="den">τ</span></span>
+      ·
+      <span class="frac"><span class="num">n</span><span class="den">60</span></span>
+      = 1.5 ×
+      <span class="frac"><span class="num">n</span><span class="den">60</span></span>
+      =
+      <span class="frac"><span class="num">n</span><span class="den">40</span></span>
+      <span class="tag">式 (2)　三缸四冲程排气事件主频（Hz）。i = 3，τ = 2</span>
+    </div>
+    <p>对应 3TNV76 常用转速：</p>
+    <table>
+      <thead>
+        <tr>
+          <th>转速 n</th>
+          <th>排气主频（1.5 阶）</th>
+          <th>吹下 + 排挤带来的 3 阶</th>
+          <th>曲轴 1 阶（各缸不均时）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1300 r/min</td><td><strong>32.5 Hz</strong></td><td>65.0 Hz</td><td>21.7 Hz</td></tr>
+        <tr><td>1800 r/min</td><td><strong>45.0 Hz</strong></td><td>90.0 Hz</td><td>30.0 Hz</td></tr>
+        <tr><td>2350 r/min</td><td><strong>58.8 Hz</strong></td><td>117.5 Hz</td><td>39.2 Hz</td></tr>
+      </tbody>
+    </table>
+
+    <h3>1.1 决定频率的因素（按重要性）</h3>
+    <table>
+      <thead>
+        <tr><th>因素</th><th>对主频的影响</th><th>说明</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>转速 n</td>
+          <td>成正比，最强</td>
+          <td>主频锁转速。负荷变、喷油量变，主频基本不动。</td>
+        </tr>
+        <tr>
+          <td>缸数 i、冲程数 τ</td>
+          <td>决定阶次</td>
+          <td>三缸四冲程 = 1.5 阶；四缸四冲程 = 2 阶；六缸 = 3 阶。</td>
+        </tr>
+        <tr>
+          <td>排气门开、关各一次</td>
+          <td>产生 2 倍频（3 阶）</td>
+          <td>吹下尖峰对应 EVO，排挤对应活塞运动。排气比进气更容易看到 3 阶。</td>
+        </tr>
+        <tr>
+          <td>排气管长度、消声器空腔</td>
+          <td>出现与转速无关的固有频率</td>
+          <td>当 1.5 阶扫过管道/消声器共振时，幅值鼓包，频率仍是发动机阶次。</td>
+        </tr>
+        <tr>
+          <td>负荷、燃烧、空滤</td>
+          <td>几乎不改主频</td>
+          <td>只改脉冲强弱和波形尖不尖。</td>
+        </tr>
+        <tr>
+          <td>某缸失火、气门间隙异常</td>
+          <td>抬高 0.5 阶或 1 阶</td>
+          <td>三缸若一缸不工作，均匀 240° 被破坏，频谱不再干净。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>排气管四分之一波长（一端开、一端近似闭）的声学频率：</p>
+    <div class="formula">
+      f<sub>pipe</sub> =
+      <span class="frac"><span class="num">c</span><span class="den">4L</span></span>
+      ，　c ≈
+      <span class="sqrt"><span class="sym">√</span><span class="rad">γRT<sub>ex</sub></span></span>
+      <span class="tag">式 (3)　排气管固有频率。排气温度随负荷升高，声速 c 也升高，共振转速会略微外移</span>
+    </div>
+    <div class="warn">
+      <div class="label">负荷对“频率”仅有的间接影响</div>
+      负荷本身不产生新的发动机阶次。但高负荷排气温度高，声速变大，管道共振对应的转速会稍稍升高。
+      FFT 主峰仍然是 1.5 × n/60，不会变成“负荷频率”。
+    </div>
+
+    <h2 id="s2">2. 幅值和什么有关</h2>
+    <p>幅值要分开谈：平均背压的高低，和脉动峰峰值的高低。</p>
+
+    <h3>2.1 平均排气背压 p<sub>ex,mean</sub></h3>
+    <p>排气管系阻力仍接近二次型，但排气是热气，体积流量随温度涨得很快：</p>
+    <div class="formula">
+      ṁ<sub>ex</sub> = ṁ<sub>a</sub> + ṁ<sub>f</sub>
+      <span class="tag">式 (4)　排气质量流量 = 空气 + 燃油</span>
+    </div>
+    <div class="formula">
+      Δp<sub>mean</sub> ≈ k ·
+      <span class="frac"><span class="num">ṁ<sub>ex</sub><sup>2</sup></span><span class="den">ρ<sub>ex</sub></span></span>
+      ，　ρ<sub>ex</sub> =
+      <span class="frac"><span class="num">p<sub>ex</sub></span><span class="den">RT<sub>ex</sub></span></span>
+      <span class="tag">式 (5)　平均背压。k 由管径、弯头、消声器、后处理决定</span>
+    </div>
+    <p>因此平均背压取决于：</p>
+    <ul>
+      <li><strong>转速</strong>：空气质量流量近似正比于 n，平均背压大致随 n² 上升（与进气阻力同类）。</li>
+      <li><strong>系统阻力 k</strong>：消声器堵塞、DPF 积碳、排气管压扁，会整体抬高中线。</li>
+      <li><strong>排气温度 T<sub>ex</sub></strong>：密度下降，同样质量流过时体积流量变大，压损增加。</li>
+      <li><strong>有涡轮时</strong>：平均背压主要是涡轮做功需要的膨胀比，和负荷、增压需求强相关。</li>
+    </ul>
+
+    <h3>2.2 脉动幅值 p<sub>ex,ac</sub>（峰峰值或脉动 RMS）</h3>
+    <p>脉动的源头是排气门开启瞬间缸内压力与歧管压力之差：</p>
+    <div class="formula">
+      Δp<sub>blowdown</sub> ≈ p<sub>cyl</sub>(θ<sub>EVO</sub>) − p<sub>ex,mean</sub>
+      <span class="tag">式 (6)　吹下压差。这是排气脉动幅值的第一决定量</span>
+    </div>
+    <p>通过排气门的瞬时质量流（一维准稳态）：</p>
+    <div class="formula">
+      ṁ<sub>v</sub> = C<sub>d</sub> A(θ) ·
+      <span class="frac">
+        <span class="num">p<sub>cyl</sub></span>
+        <span class="den">√(R T<sub>cyl</sub>)</span>
+      </span>
+      · Ψ(π)
+      <span class="tag">式 (7)　π = p<sub>ex</sub>/p<sub>cyl</sub>。压差大时经常达到临界流，Ψ 封顶</span>
+    </div>
+    <p>脉动幅值因此还受这些因素调制：</p>
+    <table>
+      <thead>
+        <tr><th>因素</th><th>如何影响幅值</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>缸内 EVO 压力 p<sub>EVO</sub></td>
+          <td>最强。由喷油量、燃烧相位、压缩比、进气量共同决定。负荷一加，这项显著上升。</td>
+        </tr>
+        <tr>
+          <td>转速 / 活塞速度</td>
+          <td>转速高，吹下可用时间变短，瞬时流量更猛；同时下一缸事件更密，脉动叠加更强。</td>
+        </tr>
+        <tr>
+          <td>排气门正时与升程</td>
+          <td>EVO 越早，p<sub>EVO</sub> 越高（膨胀没做完），脉冲越陡、越强，但指示功会掉。</td>
+        </tr>
+        <tr>
+          <td>歧管容积、管长、是否分缸排气</td>
+          <td>容积大则脉冲被稀释；三缸共用一根歧管时，240° 间隔的脉冲会互相顶。</td>
+        </tr>
+        <tr>
+          <td>测点位置</td>
+          <td>靠近某缸排气口：该缸吹下尖峰极大。消声器后：脉动被滤掉，几乎只剩平均值。</td>
+        </tr>
+        <tr>
+          <td>消声器 / 后处理</td>
+          <td>对平均值是阻力（抬中线），对脉动是低通（削峰）。所以“消声器后幅值小”不等于“发动机排气弱”。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="s3">3. 排气压力如何接到缸内燃烧做功</h2>
+    <p>
+      这是把“缸内燃烧”和“管里测到的排气压力”连起来的一条因果链。
+      排气脉动<strong>不是</strong>燃烧做功本身，它是做功之后<strong>没被膨胀行程抽走、残在燃气里的焓</strong>，在排气门打开时泄放到歧管里。
+    </p>
+
+    <div class="flow">
+      喷油量 m<sub>f</sub>（负荷）
+      → 放热 Q<sub>comb</sub>
+      → 缸压 p<sub>cyl</sub>(θ)、温度 T<sub>cyl</sub>(θ)
+      → 膨胀做功 W<sub>i</sub>
+      → 排气门开启时剩余 p<sub>EVO</sub>、T<sub>EVO</sub>
+      → 吹下脉冲 p<sub>ex,ac</sub>
+      → 排气管平均背压 p<sub>ex,mean</sub>（再反作用于下一循环泵气损失）
+    </div>
+
+    <h3>3.1 缸内指示功</h3>
+    <p>一个循环的指示功（活塞顶面气体对活塞做的净功）：</p>
+    <div class="formula">
+      W<sub>i</sub> = ∮ p<sub>cyl</sub> dV
+      ，　IMEP =
+      <span class="frac"><span class="num">W<sub>i</sub></span><span class="den">V<sub>h</sub></span></span>
+      <span class="tag">式 (8)　指示平均有效压力。负荷在台架上最终表现为转矩 / BMEP，它来自 IMEP 减去摩擦和泵气</span>
+    </div>
+    <div class="formula">
+      BMEP = IMEP − FMEP − PMEP
+      <span class="tag">式 (9)　BMEP 是你油门/测功机看到的负荷。PMEP 含进排气泵气，排气背压越高，PMEP 越吃功</span>
+    </div>
+
+    <h3>3.2 燃料能量怎么分</h3>
+    <p>喷进去的燃料化学能，在一个循环里大致分成四块：</p>
+    <div class="formula">
+      m<sub>f</sub> · H<sub>u</sub> · η<sub>comb</sub> ≈ W<sub>i</sub> + Q<sub>cool</sub> + H<sub>exh</sub> + Q<sub>other</sub>
+      <span class="tag">式 (10)　H<sub>u</sub> 低热值；H<sub>exh</sub> 是排气焓，也就是排气压力/温度脉动的能量来源</span>
+    </div>
+    <ul>
+      <li><strong>W<sub>i</sub></strong>：活塞真正拿到的指示功。膨胀越充分，这块越大。</li>
+      <li><strong>Q<sub>cool</sub></strong>：缸壁、缸盖、冷却液带走的热。</li>
+      <li><strong>H<sub>exh</sub></strong>：废气离开气缸时仍带着的焓。p<sub>EVO</sub>、T<sub>EVO</sub> 越高，这块越大，吹下脉冲越强。</li>
+      <li><strong>Q<sub>other</sub></strong>：不完全燃烧、辐射、漏气等。</li>
+    </ul>
+    <p>所以：<strong>同样多的油，燃烧得越及时、膨胀得越干净，指示功越大，排气脉冲往往越弱；燃烧越晚、EVO 开得越早，指示功越小，排气脉冲越强。</strong>
+      负荷增加时两边都会变：油多了，W<sub>i</sub> 和 H<sub>exh</sub> 一起涨，排气脉冲还是会变强。</p>
+
+    <h3>3.3 从燃烧放热到 EVO 缸压</h3>
+    <p>压缩、燃烧、膨胀段，忽略漏气时能量方程可写成：</p>
+    <div class="formula">
+      <span class="frac"><span class="num">dQ<sub>comb</sub></span><span class="den">dθ</span></span>
+      −
+      <span class="frac"><span class="num">dQ<sub>cool</sub></span><span class="den">dθ</span></span>
+      = p
+      <span class="frac"><span class="num">dV</span><span class="den">dθ</span></span>
+      + m c<sub>v</sub>
+      <span class="frac"><span class="num">dT</span><span class="den">dθ</span></span>
+      <span class="tag">式 (11)　放热一边抬缸压，活塞下行一边把压力“做成功”卸掉</span>
+    </div>
+    <p>
+      柴油机负荷的本质是 <strong>m<sub>f</sub></strong>。自然吸气机进气量几乎不随油门变，过量空气系数 λ 随负荷下降：
+    </p>
+    <div class="formula">
+      λ =
+      <span class="frac"><span class="num">ṁ<sub>a</sub></span><span class="den">ṁ<sub>f</sub> · L<sub>st</sub></span></span>
+      <span class="tag">式 (12)　3TNV76 这类自然吸气柴油机：怠速 λ 很高，标定负荷 λ 降到约 1.2–1.6</span>
+    </div>
+    <p>负荷升高时的缸内后果：</p>
+    <ol>
+      <li>循环放热增加 → 最高爆发压力 p<sub>max</sub>、最高温度上升。</li>
+      <li>膨胀比是几何固定的（由压缩比和 EVO 角决定），放热多了，膨胀到 EVO 时<strong>剩下来的压力、温度也更高</strong>。</li>
+      <li>因此 p<sub>EVO</sub>(高负荷) ≫ p<sub>EVO</sub>(怠速)。怠速时吹下压差很小，排气波形接近弱正弦；大负荷时吹下是明显尖峰。</li>
+    </ol>
+
+    <p>若把膨胀近似看成多变过程（只为建立数量级，不是精确循环）：</p>
+    <div class="formula">
+      p<sub>EVO</sub> ≈ p<sub>max</sub>
+      <span class="frac" style="font-size:0.85em">
+        <span class="num">V<sub>pmax</sub></span>
+        <span class="den">V<sub>EVO</sub></span>
+      </span><sup>n<sub>exp</sub></sup>
+      <span class="tag">式 (13)　p<sub>max</sub> 随负荷升，V<sub>EVO</sub> 由凸轮决定。EVO 越早，V<sub>EVO</sub> 越小，p<sub>EVO</sub> 越大</span>
+    </div>
+
+    <h3>3.4 吹下：缸内剩余压力如何变成管里的脉冲</h3>
+    <p>
+      排气门一开，气缸与歧管连通。若 p<sub>EVO</sub> / p<sub>ex</sub> 大于临界压比（对热废气大约 1.8–2.0），阀喉达到声速，质量流只取决于缸内状态，短时间内把一股高压气体“射”进歧管。
+      歧管是有限容积，于是出现压力突升，这就是你传感器看到的脉冲前沿。
+    </p>
+    <div class="formula">
+      <span class="frac"><span class="num">dp<sub>man</sub></span><span class="den">dt</span></span>
+      ≈
+      <span class="frac"><span class="num">RT<sub>ex</sub></span><span class="den">V<sub>man</sub></span></span>
+      (ṁ<sub>v</sub> − ṁ<sub>pipe</sub>)
+      <span class="tag">式 (14)　歧管容积越小，同样吹下质量造成的压力跳变越大。3TNV76 排气歧管小，脉冲会很“狠”</span>
+    </div>
+    <p>
+      吹下结束后，缸压已经落到接近歧管压力，此后主要靠活塞上行排挤。排挤段的瞬时流量近似：
+    </p>
+    <div class="formula">
+      ṁ<sub>disp</sub> ≈ ρ<sub>ex</sub> · A<sub>piston</sub> · u<sub>p</sub>(θ)
+      ，　u<sub>p</sub> ∝ n · sinθ
+      <span class="tag">式 (15)　排挤段更像进气的“镜像”，和转速关系大，和燃烧关系相对小</span>
+    </div>
+    <p>
+      因此高负荷排气波形 = <strong>强吹下尖峰</strong>（跟燃烧、负荷有关）+ <strong>较宽的排挤鼓包</strong>（跟转速、活塞运动有关）。
+      低负荷时吹下几乎看不见，只剩排挤，波形会圆一些，有点像进气正弦。
+    </p>
+
+    <h3>3.5 反过来：排气压力也会吃掉一部分做功</h3>
+    <p>泵气损失里，排气冲程活塞要克服排气背压：</p>
+    <div class="formula">
+      W<sub>exh,pump</sub> = ∫<sub>BDC</sub><sup>TDC</sup> p<sub>ex</sub>(θ) dV
+      <span class="tag">式 (16)　平均背压越高、脉冲在排挤段叠加越高，活塞越费劲，BMEP 越低</span>
+    </div>
+    <p>三缸特别要小心相位干涉：</p>
+    <ul>
+      <li>点火间隔 240°CA。</li>
+      <li>排气门开启角往往 230°–260°CA。</li>
+      <li>A 缸吹下的高压波，正好可能撞上 B 缸还在往外排的排挤段。</li>
+    </ul>
+    <p>
+      结果是 B 缸扫气变差、残余废气增加、下一循环指示功下降。
+      所以排气压力不仅是“燃烧的结果”，也会在下一循环变成“燃烧的边界条件”。
+      自然吸气三缸机的低速大扭矩区，这种脉冲干涉经常能在排气压力和油耗上同时看到。
+    </p>
+
+    <h3>3.6 燃烧相位：同样负荷，排气脉冲可以不一样</h3>
+    <p>这是测试时最容易误判的点。负荷（转矩）相同，并不等于排气幅值相同。</p>
+    <table>
+      <thead>
+        <tr>
+          <th>燃烧状态</th>
+          <th>指示功 W<sub>i</sub></th>
+          <th>EVO 剩余焓</th>
+          <th>排气脉动</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>喷油及时，CA50 合适</td>
+          <td>高</td>
+          <td>较低</td>
+          <td>相对较弱、较圆</td>
+        </tr>
+        <tr>
+          <td>喷油过晚、后燃多</td>
+          <td>掉</td>
+          <td>高（排气温度也高）</td>
+          <td>尖峰更强，平均背压也升</td>
+        </tr>
+        <tr>
+          <td>EVO 开得过早</td>
+          <td>膨胀没做完，W<sub>i</sub> 掉</td>
+          <td>p<sub>EVO</sub> 高</td>
+          <td>吹下极强</td>
+        </tr>
+        <tr>
+          <td>某缸失火</td>
+          <td>该缸 W<sub>i</sub> ≈ 0</td>
+          <td>该缸几乎无吹下</td>
+          <td>1.5 阶减弱，1 阶出现</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="okbox">
+      <div class="label">一句话对准“做功”</div>
+      台架上的负荷（转矩 / BMEP）来自缸内净指示功减去摩擦和泵气。
+      排气脉动幅值来自<strong>膨胀结束时还没做成功的那部分缸压</strong>。
+      所以：负荷↑ → 通常排气脉动↑；但排气脉动↑ 不一定等于负荷↑，也可能是燃烧变晚、排气门过早或排气管堵了。
+    </div>
+
+    <h2 id="s4">4. 排气压力和发动机负荷是否有关</h2>
+    <p><strong>有关，而且对自然吸气柴油机来说，排气脉动幅值是少数几个“对负荷敏感、对进气不敏感”的管路信号之一。</strong></p>
+
+    <h3>4.1 先把“负荷”说清楚</h3>
+    <p>
+      柴油机油门改变的是喷油量 m<sub>f</sub>，不是节气门。3TNV76 没有进气节流。
+      因此同一转速下：
+    </p>
+    <ul>
+      <li>进气质量流量几乎不变 → 进气阻力平均值、进气脉动幅值随负荷变化很弱（前文结论）。</li>
+      <li>循环放热随 m<sub>f</sub> 变 → p<sub>max</sub>、p<sub>EVO</sub>、T<sub>ex</sub> 随负荷变 → <strong>排气脉动幅值随负荷变</strong>。</li>
+    </ul>
+
+    <h3>4.2 同一转速下，负荷对三个排气量的影响</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>排气量</th>
+          <th>与负荷的关系（NA 柴油，固定转速）</th>
+          <th>原因</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>主频 f<sub>p</sub></td>
+          <td><strong>基本无关</strong></td>
+          <td>只锁转速和缸数</td>
+        </tr>
+        <tr>
+          <td>脉动峰峰值 / 吹下尖峰</td>
+          <td><strong>强相关，随负荷明显上升</strong></td>
+          <td>p<sub>EVO</sub> 随喷油量和放热增加</td>
+        </tr>
+        <tr>
+          <td>平均背压 p<sub>ex,mean</sub></td>
+          <td><strong>中等相关，通常缓升</strong></td>
+          <td>ṁ<sub>f</sub> 只占排气质量的 3%–6%，但 T<sub>ex</sub> 可从怠速一两百摄氏度升到满载四五百摄氏度，体积流量和消声器压损上升</td>
+        </tr>
+        <tr>
+          <td>排气温度 T<sub>ex</sub></td>
+          <td><strong>强相关</strong></td>
+          <td>最直接的负荷热信号，常比压力平均值更线性</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>4.3 为什么质量流量几乎不变，压力脉动却对负荷很敏感</h3>
+    <p>
+      这是柴油机特有的逻辑。自然吸气柴油机每循环吸入的空气差不多，多喷的油只增加几个百分点的排气质量。
+      但多喷的油把燃气温度、压力在膨胀末期抬上去了。吹下是<strong>压力驱动的射流</strong>，不是“多出来那点质量”在起作用。
+    </p>
+    <p>数量级概念（同一转速）：</p>
+    <ul>
+      <li>怠速 / 极小负荷：λ 很大，p<sub>EVO</sub> 可能只略高于大气，吹下很弱。</li>
+      <li>中等负荷：吹下开始清晰，峰峰值明显大于进气脉动。</li>
+      <li>标定 / 大负荷：p<sub>EVO</sub> 可达数个大气压量级（取决于 EVO 角和燃烧），歧管脉冲峰峰值远大于平均背压本身。</li>
+    </ul>
+    <p>
+      所以如果你在排气歧管上用 1000 Hz 采样，会看到：
+      <strong>中线（平均值）随负荷慢慢抬；振幅随负荷明显变大；频率不动。</strong>
+    </p>
+
+    <h3>4.4 不同机型，结论不能照搬</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>机型</th>
+          <th>负荷如何实现</th>
+          <th>排气压力 vs 负荷</th>
+          <th>进气压力 vs 负荷</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>自然吸气柴油（3TNV76）</td>
+          <td>只改喷油量</td>
+          <td>脉动强相关；平均中等相关</td>
+          <td>很弱（前文）</td>
+        </tr>
+        <tr>
+          <td>增压柴油</td>
+          <td>喷油 + 增压随负荷升</td>
+          <td>涡前平均压力、脉动都强相关（涡轮要吃焓）</td>
+          <td>进气压力（增压）也强相关</td>
+        </tr>
+        <tr>
+          <td>节气门汽油机</td>
+          <td>节气门改进气量</td>
+          <td>相关（进气少则燃烧少，p<sub>EVO</sub> 低）</td>
+          <td>强相关（进气歧管真空就是负荷计）</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>4.5 不能把排气幅值直接当负荷计</h3>
+    <p>虽然方向上“负荷大 → 排气脉冲大”，但中间还有几层混淆：</p>
+    <ol>
+      <li><strong>转速耦合。</strong> 必须先固定转速再比幅值。转速一变，1.5 阶频率和活塞排挤强度都变。</li>
+      <li><strong>燃烧相位。</strong> 同样转矩，喷油推迟会让排气更热、脉冲更尖。</li>
+      <li><strong>排气阻力。</strong> 消声器堵了会抬平均背压，脉冲形状也变，看起来像“负荷大了”。</li>
+      <li><strong>测点。</strong> 歧管口和消声器后完全不是同一个信号。</li>
+      <li><strong>冷却和水温。</strong> 冷机后燃多，排气温度和脉冲都会偏大。</li>
+    </ol>
+    <div class="warn">
+      <div class="label">正确用法</div>
+      要用排气压力判断负荷，应当：固定转速 → 用脉动峰峰值或 1.5 阶幅值，而不是只用平均值 → 先用测功机做一条标定曲线（转矩 vs 排气脉动）。
+      没有这条标定，排气压力只能做定性：比怠速大多了，说明在带载。
+    </div>
+
+    <h2 id="s5">5. 和进气阻力的对照（针对 3TNV76）</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>项目</th>
+          <th>进气阻力（前文）</th>
+          <th>排气压力（本文）</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>主频</td>
+          <td>1.5 阶，f = n/40</td>
+          <td>同样 1.5 阶，f = n/40</td>
+        </tr>
+        <tr>
+          <td>时域波形</td>
+          <td>三缸叠加后易呈正弦</td>
+          <td>吹下尖峰 + 排挤，谐波更重；低负荷才较圆</td>
+        </tr>
+        <tr>
+          <td>平均值随转速</td>
+          <td>大致 ∝ n²</td>
+          <td>大致 ∝ n²，再叠加温度项</td>
+        </tr>
+        <tr>
+          <td>平均值随负荷</td>
+          <td>很弱</td>
+          <td>中等（温度 / 体积流量）</td>
+        </tr>
+        <tr>
+          <td>脉动幅值随负荷</td>
+          <td>很弱</td>
+          <td><strong>强</strong>（p<sub>EVO</sub>）</td>
+        </tr>
+        <tr>
+          <td>和燃烧做功的关系</td>
+          <td>间接、很弱</td>
+          <td>直接：做功剩余焓 → 吹下脉冲；背压又反过来增加泵气损失</td>
+        </tr>
+        <tr>
+          <td>对外报告的有效值</td>
+          <td>时均值 Δp<sub>mean</sub></td>
+          <td>时均值 = 背压；脉动另报。不可用峰值当背压</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="s6">6. 若你去测排气压力，有效数据怎么取</h2>
+    <p>处理原则与进气相同，但解释相反：进气看中线做阻力；排气要同时看中线和振幅，因为振幅才带负荷信息。</p>
+    <ol>
+      <li>核对 FFT 主峰是否等于 n/40。对不上先查转速和采样。</li>
+      <li>
+        按整数个排气周期做算术平均，得到 p<sub>ex,mean</sub>（背压）。
+        周期 T<sub>p</sub> = 40/n 秒。建议每个工况 2–10 s。
+      </li>
+      <li>
+        去直流后算峰峰值 p<sub>pp</sub> 和脉动 RMS。高负荷时 p<sub>pp</sub> 往往明显大于 2.828 × RMS，说明不是纯正弦，这是吹下尖峰的正常结果，不要按进气那套正弦自检去判废。
+      </li>
+      <li>固定转速、改变测功机负荷，分别画 p<sub>ex,mean</sub>(负荷) 和 p<sub>pp</sub>(负荷)。前者缓升、后者陡升，就和本文一致。</li>
+      <li>有条件再加排气温度。T<sub>ex</sub> 和 p<sub>pp</sub> 一起看，比单看平均背压更能对上燃烧负荷。</li>
+    </ol>
+
+    <div class="note">
+      <div class="label">可带到台架上的判断口诀</div>
+      频率认转速；中线认排气管堵不堵；振幅认燃烧和负荷；尖不尖认 EVO 和燃烧早晚。
+      三缸机再加一条：相邻缸脉冲会互相顶，低速大负荷时幅值和残余废气都会变差。
+    </div>
+
+    <div class="footer">
+      本文与《洋马 3TNV76 进气阻力波形分析与数据处理指南》配套。公式为页面内排版，浏览器打开即可阅读，也可打印为 PDF。
+    </div>
+  </article>
+</body>
+</html>

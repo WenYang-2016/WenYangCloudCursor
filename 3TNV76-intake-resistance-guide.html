@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>洋马 3TNV76 进气阻力波形分析与数据处理指南</title>
+  <style>
+    :root {
+      --bg: #f4f1ea;
+      --paper: #fffdf8;
+      --ink: #1c2430;
+      --muted: #5b6573;
+      --line: #d9d0c3;
+      --accent: #8b3a2a;
+      --accent-soft: #f3e6df;
+      --formula-bg: #f7f3ec;
+      --formula-border: #c9b8a4;
+      --table-head: #2c3a4d;
+      --ok: #2f6b4f;
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--ink);
+      font-family: "Source Han Serif SC", "Noto Serif SC", "Songti SC", "SimSun", "Times New Roman", serif;
+      line-height: 1.75;
+      font-size: 17px;
+    }
+
+    .page {
+      max-width: 920px;
+      margin: 32px auto 64px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+      box-shadow: 0 12px 40px rgba(40, 30, 20, 0.08);
+      padding: 56px 64px 72px;
+    }
+
+    header.cover {
+      border-bottom: 3px solid var(--accent);
+      padding-bottom: 28px;
+      margin-bottom: 36px;
+    }
+
+    .kicker {
+      color: var(--accent);
+      letter-spacing: 0.18em;
+      font-size: 12px;
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: 32px;
+      line-height: 1.35;
+      margin: 10px 0 12px;
+      font-weight: 700;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 16px;
+      margin: 0;
+    }
+
+    .meta {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px 24px;
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    h2 {
+      font-size: 22px;
+      margin: 42px 0 14px;
+      padding-left: 12px;
+      border-left: 5px solid var(--accent);
+    }
+
+    h3 {
+      font-size: 18px;
+      margin: 28px 0 10px;
+    }
+
+    p { margin: 10px 0 14px; }
+
+    ul, ol { margin: 8px 0 16px; padding-left: 1.4em; }
+    li { margin: 4px 0; }
+
+    .lead {
+      font-size: 18px;
+      background: var(--accent-soft);
+      border: 1px solid #e2cfc4;
+      padding: 16px 18px;
+      margin: 18px 0 28px;
+    }
+
+    .note, .warn, .okbox {
+      border: 1px solid var(--line);
+      padding: 14px 16px;
+      margin: 16px 0;
+      background: #fbf8f3;
+    }
+
+    .warn { border-left: 5px solid #b7791f; }
+    .okbox { border-left: 5px solid var(--ok); }
+    .note { border-left: 5px solid var(--accent); }
+
+    .label {
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      margin-bottom: 6px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 14px 0 22px;
+      font-size: 15px;
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+    }
+
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--table-head);
+      color: #fff;
+      font-weight: 600;
+    }
+
+    tr:nth-child(even) td { background: #faf6f0; }
+
+    .formula {
+      display: block;
+      width: 100%;
+      margin: 16px 0;
+      padding: 18px 12px;
+      background: var(--formula-bg);
+      border: 1px dashed var(--formula-border);
+      text-align: center;
+      overflow-x: auto;
+      font-family: "Times New Roman", "STIX Two Math", "Cambria Math", serif;
+      font-size: 20px;
+      line-height: 1.45;
+    }
+
+    .formula .tag {
+      display: block;
+      font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    .frac {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      vertical-align: middle;
+      margin: 0 4px;
+      font-size: 0.95em;
+    }
+
+    .frac .num, .frac .den {
+      padding: 0 8px;
+      line-height: 1.2;
+    }
+
+    .frac .num {
+      border-bottom: 1.5px solid currentColor;
+      padding-bottom: 3px;
+    }
+
+    .frac .den { padding-top: 3px; }
+
+    .sqrt {
+      display: inline-flex;
+      align-items: stretch;
+      margin: 0 2px;
+    }
+
+    .sqrt .sym {
+      font-size: 1.15em;
+      line-height: 1;
+      padding-right: 1px;
+    }
+
+    .sqrt .rad {
+      border-top: 1.5px solid currentColor;
+      padding: 0 4px 1px;
+    }
+
+    .op { margin: 0 8px; }
+    sub, sup { font-size: 0.68em; }
+
+    .toc {
+      background: #f8f4ee;
+      border: 1px solid var(--line);
+      padding: 16px 22px;
+      margin: 8px 0 28px;
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+    }
+
+    .toc a {
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .toc a:hover { color: var(--accent); }
+    .toc ol { margin: 0; }
+
+    code {
+      font-family: "IBM Plex Mono", "Menlo", "Consolas", monospace;
+      font-size: 0.92em;
+      background: #efe8dc;
+      padding: 0 4px;
+    }
+
+    .footer {
+      margin-top: 48px;
+      padding-top: 16px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page {
+        margin: 0;
+        border: none;
+        box-shadow: none;
+        max-width: none;
+        padding: 12mm;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .page { margin: 0; padding: 28px 18px 40px; border: none; }
+      .meta { grid-template-columns: 1fr; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <article class="page">
+    <header class="cover">
+      <div class="kicker">发动机试验 / 进排气系统</div>
+      <h1>洋马 3TNV76 四冲程三缸柴油机<br />进气阻力波形分析与数据处理指南</h1>
+      <p class="subtitle">面向测试工程师：解释原始正弦波形的频率、幅值，以及如何从原始数据得到有效进气阻力。</p>
+      <div class="meta">
+        <div>机型：洋马 Yanmar 3TNV76</div>
+        <div>型式：四冲程、三缸、自然吸气柴油机</div>
+        <div>测点：进气歧管</div>
+        <div>转速范围：1300–2350 r/min</div>
+        <div>采样频率：1000 Hz</div>
+        <div>原始现象：进气阻力呈正弦波形</div>
+      </div>
+    </header>
+
+    <div class="lead">
+      原始数据呈正弦波，是三缸四冲程柴油机进气歧管压力脉动的正常现象，不是传感器失效。
+      报告中的“进气阻力”应取该正弦波的<strong>中线（时间平均值）</strong>；正弦本身是进气事件造成的交流脉动。
+    </div>
+
+    <nav class="toc">
+      <div class="label">目录</div>
+      <ol>
+        <li><a href="#s0">物理量定义</a></li>
+        <li><a href="#s1">进气阻力波形的频率和什么有关</a></li>
+        <li><a href="#s2">进气阻力波形的幅值和什么有关</a></li>
+        <li><a href="#s3">如何从正弦原始波形得到有效数据</a></li>
+        <li><a href="#s4">3TNV76 现场判断要点</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="s0">0. 先把物理量说清楚</h2>
+    <p>
+      测点在进气歧管、相对大气的压差，工程上称为<strong>进气阻力</strong>
+      （intake depression / restriction）：
+    </p>
+
+    <div class="formula">
+      Δp(t) = p<sub>atm</sub> − p<sub>manifold</sub>(t)
+      <span class="tag">式 (1)　瞬时进气阻力</span>
+    </div>
+
+    <p>瞬时值一定可以拆成直流和交流两部分：</p>
+
+    <div class="formula">
+      Δp(t) = Δp<sub>mean</sub> + Δp<sub>ac</sub>(t)
+      <span class="tag">式 (2)　平均值 + 进气脉动</span>
+    </div>
+
+    <div class="note">
+      <div class="label">关键结论</div>
+      你看到的正弦波就是 Δp<sub>ac</sub>(t)。柴油机没有节气门，3TNV76 歧管容积又小，这个脉动会非常明显。
+      <strong>有效进气阻力是 Δp<sub>mean</sub>（正弦的中线）</strong>，不是峰值，也不是把整段波形直接当有效值。
+    </div>
+
+    <h2 id="s1">1. 波形频率和什么有关？</h2>
+    <p>
+      <strong>主频几乎只由转速、缸数、冲程数决定</strong>，与负荷、滤清器脏不脏关系很小。
+    </p>
+    <p>
+      四冲程每缸每两转进气一次。三缸均匀点火间隔为 240°CA，因此进气事件频率是
+      <strong>1.5 阶</strong>：
+    </p>
+
+    <div class="formula">
+      f<sub>p</sub> =
+      <span class="frac">
+        <span class="num">i</span>
+        <span class="den">τ</span>
+      </span>
+      ·
+      <span class="frac">
+        <span class="num">n</span>
+        <span class="den">60</span>
+      </span>
+      =
+      <span class="frac">
+        <span class="num">3</span>
+        <span class="den">2</span>
+      </span>
+      ·
+      <span class="frac">
+        <span class="num">n</span>
+        <span class="den">60</span>
+      </span>
+      = 1.5 ×
+      <span class="frac">
+        <span class="num">n</span>
+        <span class="den">60</span>
+      </span>
+      <span class="tag">式 (3)　进气脉动主频（单位：Hz）</span>
+    </div>
+
+    <p>
+      其中：<strong>i = 3</strong>（缸数），<strong>τ = 2</strong>（四冲程），
+      <strong>n</strong> 为发动机转速（r/min）。
+      也可写成更方便的现场公式：
+    </p>
+
+    <div class="formula">
+      f<sub>p</sub> =
+      <span class="frac">
+        <span class="num">n</span>
+        <span class="den">40</span>
+      </span>
+      ，　T<sub>p</sub> =
+      <span class="frac">
+        <span class="num">40</span>
+        <span class="den">n</span>
+      </span>
+      <span class="tag">式 (4)　3 缸四冲程专用：频率与周期</span>
+    </div>
+
+    <p>对应本次试验转速：</p>
+
+    <table>
+      <thead>
+        <tr>
+          <th>转速 n</th>
+          <th>曲轴 1 阶　n/60</th>
+          <th>进气主频（1.5 阶）</th>
+          <th>2 倍频（3 阶）</th>
+          <th>脉动周期 T<sub>p</sub></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1300 r/min</td>
+          <td>21.7 Hz</td>
+          <td><strong>32.5 Hz</strong></td>
+          <td>65.0 Hz</td>
+          <td>30.8 ms</td>
+        </tr>
+        <tr>
+          <td>1800 r/min</td>
+          <td>30.0 Hz</td>
+          <td><strong>45.0 Hz</strong></td>
+          <td>90.0 Hz</td>
+          <td>22.2 ms</td>
+        </tr>
+        <tr>
+          <td>2350 r/min</td>
+          <td>39.2 Hz</td>
+          <td><strong>58.8 Hz</strong></td>
+          <td>117.5 Hz</td>
+          <td>17.0 ms</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="okbox">
+      <div class="label">采样率是否足够</div>
+      1000 Hz 采样完全够用：2350 r/min 时每个脉动周期大约 17 个点，Nyquist 频率为 500 Hz，远高于 58.8 Hz 主频。
+      若要看气门开启瞬间的尖峰或管道高频反射，1000 Hz 才偏紧（该转速下约每点 14°CA）。
+    </div>
+
+    <h3>1.1 为什么看起来像正弦，而不是方波或尖脉冲？</h3>
+    <ol>
+      <li>
+        <strong>三缸进气相位均匀。</strong>
+        进气门开启角一般 220°–250°CA，与 240° 间隔接近，三缸进气几乎首尾相接，时域上接近连续谐波，而不是单缸那种孤立负压坑。
+      </li>
+      <li>
+        <strong>歧管容积起低通作用。</strong>
+        容积是气容，滤清器/接管是气阻，高次谐波被衰减，剩下 1.5 阶基波，波形就圆成正弦。
+      </li>
+      <li>
+        <strong>测压管、接头、传感器带宽</strong>再滤一层高频。
+      </li>
+    </ol>
+    <p>因此：<strong>频率锁转速；波形圆不圆锁进气系统声学/容积滤波。</strong></p>
+
+    <h3>1.2 频谱里还可能看到什么</h3>
+    <ul>
+      <li><strong>3 阶（2 倍进气事件）</strong>：气门开、关各打一次压力波。</li>
+      <li><strong>1 阶</strong>：曲轴不平衡、单缸进气不均、某缸气门间隙异常。</li>
+      <li>
+        <strong>与转速无关的峰</strong>：进气管 Helmholtz 固有频率。
+        当 1.5 阶扫过这个固有频率时，幅值会突然变大，转速再升高又落下来。
+        这是进气阻力幅值随转速非单调变化的常见原因。
+      </li>
+    </ul>
+
+    <p>Helmholtz 固有频率近似为：</p>
+    <div class="formula">
+      f<sub>H</sub> =
+      <span class="frac">
+        <span class="num">c</span>
+        <span class="den">2π</span>
+      </span>
+      <span class="sqrt">
+        <span class="sym">√</span>
+        <span class="rad">A / (V · L<sub>eq</sub>)</span>
+      </span>
+      <span class="tag">式 (5)　进气管 Helmholtz 频率。c 为声速，随进气温度变化</span>
+    </div>
+
+    <div class="warn">
+      <div class="label">数据有效性判据（当场可做）</div>
+      对原始信号做 FFT，主峰应满足
+      <strong>f<sub>p,测</sub> ≈ 1.5 × n / 60</strong>。
+      建议每个工况记录 f<sub>p,测</sub> / f<sub>p,理</sub>。
+      若偏差大于约 3%，先查转速信号、采样时钟、测点漏气，而不是先怀疑发动机。
+    </div>
+
+    <h2 id="s2">2. 波形幅值和什么有关？</h2>
+    <p>
+      幅值（峰峰值或脉动 RMS）和<strong>平均进气阻力不是一回事</strong>。
+      平均阻力是直流；幅值是交流。
+    </p>
+
+    <h3>2.1 平均进气阻力 Δp<sub>mean</sub>（正弦的中线）</h3>
+    <p>自然吸气柴油机进气质量流量：</p>
+    <div class="formula">
+      ṁ<sub>a</sub> ≈ ρ · V<sub>h</sub> · η<sub>v</sub> ·
+      <span class="frac">
+        <span class="num">n</span>
+        <span class="den">120</span>
+      </span>
+      <span class="tag">式 (6)　四冲程进气质量流量</span>
+    </div>
+
+    <p>滤清器 + 管路阻力近似二次型：</p>
+    <div class="formula">
+      Δp<sub>mean</sub> ≈ k ·
+      <span class="frac">
+        <span class="num">ṁ<sub>a</sub><sup>2</sup></span>
+        <span class="den">ρ</span>
+      </span>
+      ∝ k · ρ · η<sub>v</sub><sup>2</sup> · n<sup>2</sup>
+      <span class="tag">式 (7)　平均进气阻力大致随转速平方上升</span>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>因素</th>
+          <th>对平均进气阻力的作用</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>转速 n</td>
+          <td>最强，大致按 n² 上升</td>
+        </tr>
+        <tr>
+          <td>容积效率 η<sub>v</sub></td>
+          <td>气门正时、进排气干涉、进气温度</td>
+        </tr>
+        <tr>
+          <td>系统阻力系数 k</td>
+          <td>空滤脏污、弯头、管径、进气口堵塞</td>
+        </tr>
+        <tr>
+          <td>空气密度 ρ</td>
+          <td>大气压、进气温度、海拔</td>
+        </tr>
+        <tr>
+          <td>负荷</td>
+          <td>柴油机基本不节流，负荷影响弱；高负荷时排气背压/残余废气会略改 η<sub>v</sub></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3>2.2 脉动幅值 Δp<sub>ac</sub>（正弦的高低差）</h3>
+    <p>瞬时负压来自活塞下行抽气。单缸进气行程中活塞速度近似：</p>
+    <div class="formula">
+      u<sub>p</sub> ∝ n · sinθ
+      <span class="tag">式 (8)　活塞瞬时速度随曲轴转角变化</span>
+    </div>
+
+    <p>脉动幅值主要取决于下列因素：</p>
+    <ol>
+      <li>
+        <strong>转速 / 活塞平均速度。</strong>
+        转速越高，瞬时抽气越猛，压力波越强。因此 2350 r/min 的峰峰值通常明显大于 1300 r/min
+        （除非撞上共振）。
+      </li>
+      <li>
+        <strong>进气歧管容积（气容）。</strong>
+        容积越大，同样缸内抽气造成的压力波动越小：
+        <div class="formula">
+          Δp ∼
+          <span class="frac">
+            <span class="num">Δm</span>
+            <span class="den">ρ · V<sub>man</sub></span>
+          </span>
+          <span class="tag">式 (9)　容积越大，脉动越小</span>
+        </div>
+        3TNV76 歧管很小，所以正弦幅值会显得“夸张”，这是机型特征，不是测坏了。
+      </li>
+      <li>
+        <strong>进气管长度、直径、空滤空腔 → 声学共振。</strong>
+        当 1.5 × n/60 ≈ f<sub>H</sub> 时，幅值会出现一个鼓包。这是进气系统设计问题，不是平均阻力突然变大。
+      </li>
+      <li>
+        <strong>气门凸轮型线与气门间隙。</strong>
+        开启越陡、重叠越不合适，高次谐波越强，峰峰值越大。
+        三缸若某一缸间隙异常，1 阶分量会抬起来，波形不再是干净正弦。
+      </li>
+      <li>
+        <strong>测点位置。</strong>
+        越靠近某缸进气道口，该缸进气行程的局部抽吸越强，幅值越大、波形越不像纯正弦。
+        越靠近空滤出口/稳压腔，幅值越小、更接近平均值。
+        同一台机、不同测点，幅值可以差一倍以上，<strong>平均值通常差得少</strong>。
+      </li>
+      <li>
+        <strong>负荷。</strong>
+        自然吸气柴油机空气量几乎不随油门变，脉动幅值随负荷变化远小于汽油机。
+        若负荷一加幅值大变，优先查排气、EGR（若有）、进气管漏气。
+      </li>
+      <li>
+        <strong>测量链。</strong>
+        测压软管太长、内径太细、接头泄漏、传感器量程过大，都会改变表观幅值（衰减或引入寄生振荡），但主频一般还在。
+      </li>
+    </ol>
+
+    <div class="note">
+      <div class="label">一句话</div>
+      频率告诉你“几缸、几冲程、多少转”；幅值告诉你“抽气有多猛、歧管有多小、管长有没有共振、测点靠哪缸”。
+    </div>
+
+    <h2 id="s3">3. 如何从正弦原始波形得到有效数据？</h2>
+    <p>
+      测试报告里的“进气阻力”几乎一律是<strong>时均值（直流分量）</strong>，不是峰值。
+      脉动要另报。不要把正弦波像交流电压那样直接当“有效值”去报进气阻力。
+    </p>
+
+    <h3>3.1 有效平均进气阻力（主指标）</h3>
+    <p>对长度为 T 的记录：</p>
+    <div class="formula">
+      Δp<sub>mean</sub> =
+      <span class="frac">
+        <span class="num">1</span>
+        <span class="den">T</span>
+      </span>
+      ∫<sub>0</sub><sup>T</sup> Δp(t) dt
+      ≈
+      <span class="frac">
+        <span class="num">1</span>
+        <span class="den">N</span>
+      </span>
+      Σ<sub>k=1</sub><sup>N</sup> Δp[k]
+      <span class="tag">式 (10)　时间平均 = 算术平均</span>
+    </div>
+
+    <p>
+      T 必须覆盖<strong>整数个进气周期</strong>，否则正弦截断会带来偏置。
+      周期由式 (4) 给出：T<sub>p</sub> = 40 / n（秒）。
+    </p>
+
+    <div class="okbox">
+      <div class="label">实用截取长度</div>
+      每个工况至少取 <strong>20–50 个进气周期</strong>，更稳妥是 <strong>2–10 s 稳态</strong>再平均。<br />
+      例：1300 r/min，T<sub>p</sub> = 30.8 ms，取 2 s 大约 65 个周期，足够。
+    </div>
+
+    <p>数字滤波等价做法：</p>
+    <ul>
+      <li>低通截止远低于主频，例如 f<sub>c</sub> = 5–10 Hz（1300 r/min 主频已是 32.5 Hz）。</li>
+      <li>用零相位 FIR 或 <code>filtfilt</code>，避免相位把均值边缘搞歪。</li>
+      <li>丢掉滤波器过渡段后再平均。</li>
+    </ul>
+
+    <p><strong>不要</strong>用峰值、峰峰值、或把整段 RMS 当进气阻力。整段 RMS 会把直流和交流混在一起：</p>
+    <div class="formula">
+      p<sub>RMS</sub> =
+      <span class="sqrt">
+        <span class="sym">√</span>
+        <span class="rad">Δp<sub>mean</sub><sup>2</sup> + Δp<sub>ac,RMS</sub><sup>2</sup></span>
+      </span>
+      <span class="tag">式 (11)　整段 RMS ≠ 进气阻力。空滤是否该换，看的是 Δp<sub>mean</sub></span>
+    </div>
+
+    <h3>3.2 脉动指标（辅指标，建议同时出）</h3>
+    <p>从去直流后的交流分量计算：</p>
+    <div class="formula">
+      Δp<sub>ac</sub>(t) = Δp(t) − Δp<sub>mean</sub>
+      <span class="tag">式 (12)</span>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>指标</th>
+          <th>定义</th>
+          <th>用途</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>峰峰值 p<sub>pp</sub></td>
+          <td>max − min</td>
+          <td>看瞬时极值；对传感器量程、空滤纸板疲劳有意义</td>
+        </tr>
+        <tr>
+          <td>脉动 RMS</td>
+          <td>√(Δp<sub>ac</sub>² 的平均)</td>
+          <td>能量意义；纯正弦时 ≈ p<sub>pp</sub> / (2√2)</td>
+        </tr>
+        <tr>
+          <td>脉动系数</td>
+          <td>p<sub>pp</sub> / Δp<sub>mean</sub><br />或 p<sub>RMS</sub> / Δp<sub>mean</sub></td>
+          <td>比较不同转速</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>波形若接近纯正弦，可用下式自检：</p>
+    <div class="formula">
+      p<sub>pp</sub> ≈ 2√2 · p<sub>ac,RMS</sub> ≈ 2.828 · p<sub>ac,RMS</sub>
+      <span class="tag">式 (13)　正弦关系自检。偏差大，说明有谐波或削波</span>
+    </div>
+
+    <h3>3.3 推荐处理流程（1000 Hz 原始数据）</h3>
+    <ol>
+      <li>
+        <strong>检查单位与极性。</strong>
+        表压真空应为正的进气阻力。确认大气压通道，必要时用绝对压力减当地大气压。
+      </li>
+      <li>
+        <strong>去坏点。</strong>
+        尖刺、超量程、接头松动造成的掉零。
+      </li>
+      <li>
+        <strong>转速同步核对频率。</strong>
+        FFT 主峰应等于 1.5 × n / 60。每个工况记一笔 f<sub>p,测</sub> / f<sub>p,理</sub>，作为数据有效性门槛。
+      </li>
+      <li>
+        <strong>稳态判定。</strong>
+        转速、油门、水温稳定后再截取。可用滑动平均阻力的标准差小于某阈值
+        （例如 2% 或 0.05 kPa）作为稳态。
+      </li>
+      <li>
+        <strong>按整数周期截取并算术平均</strong> → 得到该转速的 Δp<sub>mean</sub>。
+      </li>
+      <li>
+        <strong>同时输出</strong> p<sub>pp</sub>、p<sub>ac,RMS</sub>、主频。
+      </li>
+      <li>
+        <strong>绘制两条曲线：</strong>
+        <ul>
+          <li>Δp<sub>mean</sub> = f(n)：空滤/管路阻力特性，应大致随 n² 上升。</li>
+          <li>p<sub>pp</sub> = f(n)：若某处鼓包，查进气管 Helmholtz 共振。</li>
+        </ul>
+      </li>
+      <li>
+        <strong>（可选）曲轴转角域。</strong>
+        1000 Hz @ 2350 r/min 大约每点 14°CA，对气门事件偏粗，但对三缸整机进气阻力已经够。
+        若以后要看某缸进气道口波形，需要编码器 + 至少 0.5–1°CA 分辨率。
+      </li>
+    </ol>
+
+    <h3>3.4 和台架惯例对齐</h3>
+    <p>
+      发动机性能试验（如 GB/T 18297、ISO 3046 一类）报的进气阻力是
+      <strong>平均进气真空度</strong>，常常还规定测点（空滤后、压气机前或歧管规定位置）和允许上限。
+      空滤本身的阻力特性另有滤清器试验方法，不要和发动机歧管脉动混成一个数。
+    </p>
+    <p>
+      现场若仪表抖动读不出数，老做法是测压管加阻尼孔/稳压壶。
+      现在 1000 Hz 数字采样，<strong>用数字低通 + 周期平均即可替代机械阻尼</strong>，而且能把脉动单独留下来，比稳压壶更完整。
+    </p>
+
+    <h3>3.5 本次采样率能力边界</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>目的</th>
+          <th>1000 Hz 是否够</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>报平均值、脉动 RMS、主频</td>
+          <td>足够</td>
+        </tr>
+        <tr>
+          <td>核对 1.5 阶 / 3 阶频谱</td>
+          <td>足够</td>
+        </tr>
+        <tr>
+          <td>看气门开启瞬间尖峰、管道高频反射</td>
+          <td>偏紧，尤其 2350 r/min；需更高采样和更短、更粗的测压管</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="s4">4. 针对 3TNV76 的现场判断</h2>
+    <ul>
+      <li>
+        三缸四冲程 → 只认 <strong>1.5 阶</strong>。
+        1300 r/min 约 32.5 Hz，2350 r/min 约 58.8 Hz。对得上，数据物理上就成立。
+      </li>
+      <li>
+        自然吸气、歧管小 → 正弦幅值大是正常的；有效数据仍是中线（平均值）。
+      </li>
+      <li>
+        平均阻力随转速应大致二次上升；若平均值几乎不变而幅值猛跳，多半是声学共振或测压管共振，不是空滤突然堵死。
+      </li>
+      <li>
+        若波形从正弦变成明显“一头深一头浅”，查各缸进气门间隙、某缸进气道堵塞、测点是否太贴某一缸口。
+      </li>
+    </ul>
+
+    <h3>建议对外报告的最小数据集</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>项目</th>
+          <th>符号</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>平均进气阻力</td>
+          <td>Δp<sub>mean</sub></td>
+          <td>主指标，对外报告用这个</td>
+        </tr>
+        <tr>
+          <td>脉动峰峰值</td>
+          <td>p<sub>pp</sub></td>
+          <td>辅指标</td>
+        </tr>
+        <tr>
+          <td>脉动 RMS</td>
+          <td>p<sub>ac,RMS</sub></td>
+          <td>辅指标</td>
+        </tr>
+        <tr>
+          <td>主频</td>
+          <td>f<sub>p</sub></td>
+          <td>应 ≈ n/40，用于证明数据有效</td>
+        </tr>
+        <tr>
+          <td>测点 / 采样率 / 平均时长</td>
+          <td>—</td>
+          <td>试验条件，必须写入报告</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="footer">
+      本文档针对洋马 3TNV76 四冲程三缸柴油机进气歧管进气阻力测试（1300–2350 r/min，1000 Hz）。
+      公式已用页面内排版，无需联网即可阅读。可用浏览器直接打开，或打印为 PDF。
+    </div>
+  </article>
+</body>
+</html>

@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>四冲程内燃机排气背压：平均值、排气温度与负荷</title>
+  <style>
+    :root {
+      --bg: #f4f1ea;
+      --paper: #fffdf8;
+      --ink: #1c2430;
+      --muted: #5b6573;
+      --line: #d9d0c3;
+      --accent: #3d4f63;
+      --accent-soft: #e7eef4;
+      --formula-bg: #f3f6f8;
+      --formula-border: #b7c4d0;
+      --table-head: #2c3a4d;
+      --ok: #2f6b4f;
+      --warn-c: #b7791f;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; background: var(--bg); color: var(--ink);
+      font-family: "Source Han Serif SC", "Noto Serif SC", "Songti SC", "SimSun", "Times New Roman", serif;
+      line-height: 1.75; font-size: 17px;
+    }
+    .page {
+      max-width: 920px; margin: 32px auto 64px; background: var(--paper);
+      border: 1px solid var(--line); box-shadow: 0 12px 40px rgba(40, 30, 20, 0.08);
+      padding: 56px 64px 72px;
+    }
+    header.cover { border-bottom: 3px solid var(--accent); padding-bottom: 28px; margin-bottom: 36px; }
+    .kicker {
+      color: var(--accent); letter-spacing: 0.18em; font-size: 12px;
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+      font-weight: 600; text-transform: uppercase;
+    }
+    h1 { font-size: 32px; line-height: 1.35; margin: 10px 0 12px; font-weight: 700; }
+    .subtitle { color: var(--muted); font-size: 16px; margin: 0; }
+    .meta {
+      margin-top: 18px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 24px;
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+      font-size: 13px; color: var(--muted);
+    }
+    h2 { font-size: 22px; margin: 42px 0 14px; padding-left: 12px; border-left: 5px solid var(--accent); }
+    h3 { font-size: 18px; margin: 28px 0 10px; }
+    p { margin: 10px 0 14px; }
+    ul, ol { margin: 8px 0 16px; padding-left: 1.4em; }
+    li { margin: 4px 0; }
+    .lead {
+      font-size: 18px; background: var(--accent-soft); border: 1px solid #c5d3df;
+      padding: 16px 18px; margin: 18px 0 28px;
+    }
+    .note, .warn, .okbox {
+      border: 1px solid var(--line); padding: 14px 16px; margin: 16px 0; background: #fbf8f3;
+    }
+    .warn { border-left: 5px solid var(--warn-c); }
+    .okbox { border-left: 5px solid var(--ok); }
+    .note { border-left: 5px solid var(--accent); }
+    .label {
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 6px;
+    }
+    table {
+      width: 100%; border-collapse: collapse; margin: 14px 0 22px; font-size: 15px;
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+    }
+    th, td { border: 1px solid var(--line); padding: 8px 10px; text-align: left; vertical-align: top; }
+    th { background: var(--table-head); color: #fff; font-weight: 600; }
+    tr:nth-child(even) td { background: #faf6f0; }
+    .formula {
+      display: block; width: 100%; margin: 16px 0; padding: 18px 12px;
+      background: var(--formula-bg); border: 1px dashed var(--formula-border);
+      text-align: center; overflow-x: auto;
+      font-family: "Times New Roman", "STIX Two Math", "Cambria Math", serif;
+      font-size: 20px; line-height: 1.45;
+    }
+    .formula .tag {
+      display: block; font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif;
+      font-size: 12px; color: var(--muted); margin-top: 8px;
+    }
+    .frac {
+      display: inline-flex; flex-direction: column; align-items: center;
+      vertical-align: middle; margin: 0 4px; font-size: 0.95em;
+    }
+    .frac .num, .frac .den { padding: 0 8px; line-height: 1.2; }
+    .frac .num { border-bottom: 1.5px solid currentColor; padding-bottom: 3px; }
+    .frac .den { padding-top: 3px; }
+    .sqrt { display: inline-flex; align-items: stretch; margin: 0 2px; }
+    .sqrt .sym { font-size: 1.15em; line-height: 1; padding-right: 1px; }
+    .sqrt .rad { border-top: 1.5px solid currentColor; padding: 0 4px 1px; }
+    sub, sup { font-size: 0.68em; }
+    .toc {
+      background: #f4f7f9; border: 1px solid var(--line); padding: 16px 22px; margin: 8px 0 28px;
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+    }
+    .toc a { color: var(--ink); text-decoration: none; }
+    .toc a:hover { color: var(--accent); }
+    .toc ol { margin: 0; }
+    .flow {
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+      font-size: 14.5px; background: #f7fafc; border: 1px solid var(--line);
+      padding: 14px 16px; margin: 16px 0; line-height: 1.9; text-align: center;
+    }
+    .footer {
+      margin-top: 48px; padding-top: 16px; border-top: 1px solid var(--line);
+      color: var(--muted); font-size: 13px;
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+    }
+    @media print {
+      body { background: #fff; }
+      .page { margin: 0; border: none; box-shadow: none; max-width: none; padding: 12mm; }
+    }
+    @media (max-width: 720px) {
+      .page { margin: 0; padding: 28px 18px 40px; border: none; }
+      .meta { grid-template-columns: 1fr; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <article class="page">
+    <header class="cover">
+      <div class="kicker">发动机试验 / 排气系统 · 仅讨论平均背压</div>
+      <h1>四冲程内燃机排气背压<br />平均值、排气温度与发动机负荷</h1>
+      <p class="subtitle">本文只讨论排气背压（瞬时波形的中线 / 时间平均值），不把脉动峰峰值当成背压。对象按洋马 3TNV76：三缸、四冲程、自然吸气柴油机。</p>
+      <div class="meta">
+        <div>核心量：p<sub>ex,mean</sub>（平均排气背压）</div>
+        <div>对照：进气阻力看中线；排气脉动另文处理</div>
+        <div>关键链：负荷 → 排气温度 → 体积流量 → 平均背压</div>
+        <div>限定：同一转速下这条链才是主因</div>
+      </div>
+    </header>
+
+    <div class="lead">
+      <strong>可以这么理解，但要收窄范围：</strong>
+      同一转速下，自然吸气柴油机的平均排气背压，很大程度上是被排气温度带着走的。
+      负荷升高 → 喷油增多 → 排气温度升高 → 废气变稀、体积流量变大 → 流过同一套排气管和消声器时，平均背压升高。
+      转速一变，质量流量才是中线升高的大头。平均背压随负荷升得比较温和，不要把它当成最灵敏的负荷计。
+    </div>
+
+    <nav class="toc">
+      <div class="label">目录</div>
+      <ol>
+        <li><a href="#s0">排气背压到底指哪一个数</a></li>
+        <li><a href="#s1">平均背压由哪几项决定</a></li>
+        <li><a href="#s2">为什么平均值会跟排气温度有关</a></li>
+        <li><a href="#s3">排气温度和负荷的关系</a></li>
+        <li><a href="#s4">负荷 → 温度 → 背压，这条链何时成立</a></li>
+        <li><a href="#s5">不要把背压和脉动、转速效果混在一起</a></li>
+        <li><a href="#s6">台架上如何得到有效的排气背压</a></li>
+      </ol>
+    </nav>
+
+    <h2 id="s0">1. 排气背压到底指哪一个数</h2>
+    <p>排气歧管上采到的瞬时压力一定在跳。它必须拆成：</p>
+    <div class="formula">
+      p<sub>ex</sub>(t) = p<sub>ex,mean</sub> + p<sub>ex,ac</sub>(t)
+      <span class="tag">式 (1)　中线 = 背压；交流 = 排气脉动。本文只讨论中线</span>
+    </div>
+    <p>
+      工程上说的<strong>排气背压</strong>，指的是相对大气的平均压差，也就是正弦或脉冲波形的<strong>中线</strong>：
+    </p>
+    <div class="formula">
+      Δp<sub>back</sub> = p<sub>ex,mean</sub> − p<sub>atm</sub>
+      =
+      <span class="frac"><span class="num">1</span><span class="den">T</span></span>
+      ∫<sub>0</sub><sup>T</sup> [ p<sub>ex</sub>(t) − p<sub>atm</sub> ] dt
+      <span class="tag">式 (2)　对外报告的排气背压。T 必须覆盖整数个排气周期</span>
+    </div>
+
+    <div class="warn">
+      <div class="label">不要用峰值当背压</div>
+      吹下尖峰可以比中线高很多。峰值反映排气门刚打开时缸内剩余压力，跟负荷、燃烧相位关系更强，但那不是排气管通流阻力意义上的背压。
+      消声器是否该换、管路是否堵塞，看的是 <strong>Δp<sub>back</sub>（平均值）</strong>。
+    </div>
+
+    <p>对三缸四冲程，排气事件频率仍是 1.5 阶，只用来保证平均时截取了整数周期，它本身不是背压的大小：</p>
+    <div class="formula">
+      f<sub>p</sub> =
+      <span class="frac"><span class="num">n</span><span class="den">40</span></span>
+      ，　T<sub>p</sub> =
+      <span class="frac"><span class="num">40</span><span class="den">n</span></span>
+      <span class="tag">式 (3)　单位：Hz 与秒。1300 r/min → 32.5 Hz；2350 r/min → 58.8 Hz</span>
+    </div>
+
+    <h2 id="s1">2. 平均背压由哪几项决定</h2>
+    <p>排气管、弯头、消声器对稳态通流近似二次型阻力。热气的密度随温度变，所以必须把密度写进去：</p>
+    <div class="formula">
+      ṁ<sub>ex</sub> = ṁ<sub>a</sub> + ṁ<sub>f</sub>
+      <span class="tag">式 (4)　排气质量流量 = 空气 + 燃油</span>
+    </div>
+    <div class="formula">
+      Δp<sub>back</sub> ≈ k ·
+      <span class="frac"><span class="num">ṁ<sub>ex</sub><sup>2</sup></span><span class="den">ρ<sub>ex</sub></span></span>
+      ，　ρ<sub>ex</sub> =
+      <span class="frac"><span class="num">p<sub>ex</sub></span><span class="den">R T<sub>ex</sub></span></span>
+      <span class="tag">式 (5)　k 由管径、弯头、消声器、后处理决定，堵塞时 k 变大</span>
+    </div>
+    <p>把密度代进去，平均背压的结构就清楚了：</p>
+    <div class="formula">
+      Δp<sub>back</sub> ∝ k · ṁ<sub>ex</sub><sup>2</sup> · T<sub>ex</sub>
+      <span class="tag">式 (6)　同一套管路：质量流量的平方 × 排气温度。这是本文全部讨论的出发点</span>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>因素</th>
+          <th>符号</th>
+          <th>怎样改变平均背压</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>系统阻力</td>
+          <td>k</td>
+          <td>消声器积碳、管路压扁、弯头过多 → 中线整体抬高。与负荷无直接关系。</td>
+        </tr>
+        <tr>
+          <td>质量流量</td>
+          <td>ṁ<sub>ex</sub></td>
+          <td>自然吸气机主要由转速决定（空气量 ∝ n）。燃油只占百分之几。</td>
+        </tr>
+        <tr>
+          <td>排气温度</td>
+          <td>T<sub>ex</sub></td>
+          <td>同一转速下，这是负荷能明显推动平均背压的主要通道。</td>
+        </tr>
+        <tr>
+          <td>当地压力</td>
+          <td>p<sub>ex</sub></td>
+          <td>密度里有 p，背压升高会略微把密度补回来，是弱的负反馈，通常可忽略。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="s2">3. 为什么平均值会跟排气温度有关</h2>
+    <p>
+      消声器和排气管“看见”的不是质量有多少公斤，而是<strong>体积流量</strong>有多大。
+      同样 1 kg 的废气，温度高就膨胀得更厉害，穿过同一截面积时速度更高，压损按速度平方上升。
+    </p>
+    <div class="formula">
+      V̇<sub>ex</sub> =
+      <span class="frac"><span class="num">ṁ<sub>ex</sub></span><span class="den">ρ<sub>ex</sub></span></span>
+      =
+      ṁ<sub>ex</sub> ·
+      <span class="frac"><span class="num">R T<sub>ex</sub></span><span class="den">p<sub>ex</sub></span></span>
+      <span class="tag">式 (7)　体积流量随绝对温度线性增加</span>
+    </div>
+    <p>因此：质量流量几乎不变时，温度从 200 °C 升到 500 °C（绝对温度约 473 K → 773 K），体积流量大约增加到 1.6 倍，二次型压损大约增加到 2.6 倍量级。这就是“温度把平均背压抬起来”的数量级来源。</p>
+
+    <div class="okbox">
+      <div class="label">同一转速、自然吸气柴油机</div>
+      进气量几乎不随油门变，多喷的油只增加 3%–6% 的排气质量。
+      质量项几乎不动，温度项动得很明显。
+      所以：<strong>这一转速下平均背压随负荷变化，主要就是排气温度在起作用。</strong>
+    </div>
+
+    <h2 id="s3">4. 排气温度和负荷的关系</h2>
+    <p>
+      柴油机油门改变的是喷油量 m<sub>f</sub>，不是节气门。负荷升高，循环放热增加，膨胀结束时燃气仍带着更高的焓，排气就更热。
+    </p>
+    <div class="formula">
+      m<sub>f</sub> · H<sub>u</sub> · η<sub>comb</sub> ≈ W<sub>i</sub> + Q<sub>cool</sub> + H<sub>exh</sub> + Q<sub>other</sub>
+      <span class="tag">式 (8)　没做成指示功、也没被冷却带走的部分，进入排气焓 H<sub>exh</sub>，表现为 T<sub>ex</sub></span>
+    </div>
+    <div class="flow">
+      负荷升高（转矩 / BMEP ↑）
+      → 喷油量 m<sub>f</sub> ↑
+      → 过量空气系数 λ ↓
+      → 膨胀末期 T<sub>EVO</sub>、焓 ↑
+      → 排气温度 T<sub>ex</sub> ↑
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>工况变化</th>
+          <th>T<sub>ex</sub> 怎么变</th>
+          <th>说明</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>同一转速，负荷升高</td>
+          <td>明显升高</td>
+          <td>主通道。怠速一两百摄氏度，到标定负荷可到四五百摄氏度量级（视机型和测点）。</td>
+        </tr>
+        <tr>
+          <td>同样负荷，喷油偏晚 / 后燃</td>
+          <td>也会升高</td>
+          <td>指示功减少，排气焓增加。这时温度高并不等于负荷更大。</td>
+        </tr>
+        <tr>
+          <td>空滤堵、进气量不足</td>
+          <td>往往升高</td>
+          <td>λ 变浓，燃烧更热。不是负荷变了，是进气边界变了。</td>
+        </tr>
+        <tr>
+          <td>冷却不良、水温过高</td>
+          <td>偏高</td>
+          <td>Q<sub>cool</sub> 变小，更多热进排气。</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="warn">
+      <div class="label">负荷和温度是强相关，不是一一对应</div>
+      可以说“负荷高，排气温度通常高”。
+      不可以说“温度高就一定是负荷大”。喷油正时、空燃比、冷却都会单独推动 T<sub>ex</sub>。
+    </div>
+
+    <h2 id="s4">5. 负荷 → 温度 → 背压，这条链何时成立</h2>
+    <p>把式 (6) 和上一节合在一起，就是讨论中的因果链：</p>
+    <div class="flow">
+      负荷 ↑　→　T<sub>ex</sub> ↑　→　ρ<sub>ex</sub> ↓　→　体积流量 V̇<sub>ex</sub> ↑　→　Δp<sub>back</sub> ↑
+    </div>
+    <p>这条链<strong>成立</strong>，但必须同时满足下面的范围。</p>
+
+    <h3>5.1 成立条件</h3>
+    <ul>
+      <li><strong>转速基本不变。</strong> 一比不同转速，质量流量按 n 变，中线按近似 n² 变，温度不再是第一原因。</li>
+      <li><strong>自然吸气、用油量控制负荷。</strong> 3TNV76 属于这一类。进气几乎不节流，负荷主要通过温度影响背压。</li>
+      <li><strong>测的是管系通流阻力</strong>（歧管到消声器出口），不是涡轮前压力。有涡轮时，平均压力主要是涡轮要吃焓、要建立膨胀比，不能理解成“气热了所以管子堵”。</li>
+      <li><strong>k 没有同时在变。</strong> 消声器没有突然堵塞，管路没有被改掉。</li>
+    </ul>
+
+    <h3>5.2 同一转速下各量对负荷有多灵敏</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>量</th>
+          <th>同一转速下随负荷</th>
+          <th>原因</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>排气温度 T<sub>ex</sub></td>
+          <td>明显上升</td>
+          <td>喷油量和排气焓的直接热信号</td>
+        </tr>
+        <tr>
+          <td>平均背压 Δp<sub>back</sub></td>
+          <td>中等、缓慢上升</td>
+          <td>质量几乎不变，只靠温度把体积流量抬上去；k 小的时候绝对增量不大</td>
+        </tr>
+        <tr>
+          <td>排气脉动峰峰值</td>
+          <td>明显上升（本文不把它当背压）</td>
+          <td>排气门开启时缸压 p<sub>EVO</sub> 升高，那是另一条链</td>
+        </tr>
+        <tr>
+          <td>排气质量流量</td>
+          <td>几乎不变（只多了燃油那几个百分点）</td>
+          <td>自然吸气柴油机的特征</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note">
+      <div class="label">对“背压高是因为温度高”的准确说法</div>
+      同一转速下：负荷高 → 温度高 → 平均背压偏高，方向正确。
+      平均背压是这条链上比较钝的一个结果。要看负荷，排气温度通常比平均背压更灵敏；平均背压更适合判断排气管系堵不堵。
+    </div>
+
+    <h3>5.3 何时这条链解释不了</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>现象</th>
+          <th>不宜再用“温度导致背压”解释</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>平均背压升很多，温度没有按比例升</td>
+          <td>优先查 k：消声器积碳、管路堵塞、测点漏气或取错位置</td>
+        </tr>
+        <tr>
+          <td>转速从 1300 变到 2350，中线明显抬高</td>
+          <td>主因是空气质量流量，不是负荷温度</td>
+        </tr>
+        <tr>
+          <td>同样转矩，喷油变晚，温度和背压都升</td>
+          <td>燃烧相位变了，不是负荷变大</td>
+        </tr>
+        <tr>
+          <td>涡轮增压机的涡前平均压力随负荷猛升</td>
+          <td>涡轮通流/膨胀比，不是消声器管阻的温度项</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="s5">6. 不要把背压和脉动、转速效果混在一起</h2>
+    <p>把三个常见混淆并排写清楚，避免把“排气压力”一个词用成三种意思。</p>
+    <table>
+      <thead>
+        <tr>
+          <th>比较</th>
+          <th>平均排气背压 Δp<sub>back</sub></th>
+          <th>排气脉动幅值</th>
+          <th>转速升高带来的中线升高</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>波形上</td>
+          <td>中线</td>
+          <td>高低差 / 吹下尖峰</td>
+          <td>也是中线，但是换转速造成的</td>
+        </tr>
+        <tr>
+          <td>物理来源</td>
+          <td>管系阻力 × 体积流量</td>
+          <td>排气门开启时的缸内剩余压力</td>
+          <td>空气质量流量随 n 增加</td>
+        </tr>
+        <tr>
+          <td>与温度</td>
+          <td>同一转速下主要靠温度</td>
+          <td>间接（热气声速、密度），主因不是温度</td>
+          <td>温度会变，但不是主因</td>
+        </tr>
+        <tr>
+          <td>与负荷</td>
+          <td>中等相关，缓升</td>
+          <td>强相关</td>
+          <td>应先固定负荷再谈转速，或固定转速再谈负荷</td>
+        </tr>
+        <tr>
+          <td>台架用途</td>
+          <td>判断消声器/管路是否堵塞</td>
+          <td>看燃烧和负荷（需标定）</td>
+          <td>进排气阻力随转速的平方特性</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>和进气阻力对照（都是“平均值 / 中线”）：</p>
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>进气阻力平均值</th>
+          <th>排气背压平均值</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>随转速</td>
+          <td>大致 ∝ n²（空气流量）</td>
+          <td>大致 ∝ n²，再乘温度项</td>
+        </tr>
+        <tr>
+          <td>同一转速随负荷</td>
+          <td>很弱（柴油机不节流）</td>
+          <td>中等（主要通过 T<sub>ex</sub>）</td>
+        </tr>
+        <tr>
+          <td>对外报告</td>
+          <td>报中线</td>
+          <td>同样报中线，不要报峰值</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2 id="s6">7. 台架上如何得到有效的排气背压</h2>
+    <ol>
+      <li>
+        <strong>测点。</strong>
+        报告背压必须写清位置：排气歧管、消声器前或消声器后。越靠后，脉动越小，平均值越接近“管系阻力”本身。
+      </li>
+      <li>
+        <strong>极性与大气压。</strong>
+        背压是相对当地大气压的正压。绝对压力传感器要减去当时大气压。
+      </li>
+      <li>
+        <strong>按整数周期取平均。</strong>
+        用式 (3) 的 T<sub>p</sub> = 40/n，每个工况取 2–10 s 稳态再算术平均，得到 Δp<sub>back</sub>。
+        低通截止远低于主频（例如 5–10 Hz）再平均，效果等价。
+      </li>
+      <li>
+        <strong>同时记转速、负荷、排气温度。</strong>
+        没有这三项，平均背压无法解释。建议每个转速做一条 Δp<sub>back</sub> = f(负荷)，并叠一条 T<sub>ex</sub> = f(负荷)。
+      </li>
+      <li>
+        <strong>判读。</strong>
+        <ul>
+          <li>同一转速，负荷升，T<sub>ex</sub> 升、Δp<sub>back</sub> 缓升 → 符合本文的温度链。</li>
+          <li>同一转速，T<sub>ex</sub> 几乎不变而 Δp<sub>back</sub> 猛升 → 查 k（堵塞）。</li>
+          <li>负荷、温度都变了不多，只是转速升了、中线升了 → 质量流量，不是负荷温度。</li>
+        </ul>
+      </li>
+    </ol>
+
+    <div class="okbox">
+      <div class="label">可以带到现场的四句话</div>
+      1. 排气背压 = 瞬时压力的时间平均值，不是峰值。<br />
+      2. 同一转速下，平均背压很大程度上跟排气温度有关。<br />
+      3. 排气温度跟负荷强相关，所以负荷高往往平均背压也偏高。<br />
+      4. 转速变了先看流量；中线单独猛升而温度不动，先看排气管堵不堵。
+    </div>
+
+    <div class="footer">
+      本文只整理排气背压（平均值）与温度、负荷的关系，作为进气阻力分析、排气压力（含脉动）分析的配套文档。
+      公式为页面内排版，浏览器打开即可阅读，也可打印为 PDF。
+    </div>
+  </article>
+</body>
+</html>
