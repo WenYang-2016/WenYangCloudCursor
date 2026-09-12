@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ISO 5010 轮式装载机转向性能要求与一吨级铰接式装载机设计分解</title>
+  <style>
+    :root {
+      --ink: #1a2332;
+      --muted: #4a5568;
+      --line: #d7dee8;
+      --bg: #f4f6f9;
+      --card: #ffffff;
+      --accent: #0b5cab;
+      --accent-2: #0e7c66;
+      --warn: #b45309;
+      --danger: #b42318;
+      --ok: #067647;
+      --chip: #e8f1fb;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Noto Sans SC", "Source Han Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+      color: var(--ink);
+      background: var(--bg);
+      line-height: 1.7;
+    }
+    .wrap { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; }
+    nav {
+      position: sticky; top: 0; height: 100vh; overflow: auto;
+      background: #102033; color: #dbe7f5; padding: 24px 18px 40px;
+    }
+    nav h1 { font-size: 15px; margin: 0 0 8px; color: #fff; line-height: 1.4; }
+    nav p { font-size: 12px; color: #93a8c2; margin: 0 0 18px; }
+    nav a { color: #c9d9ea; text-decoration: none; display: block; padding: 5px 8px; border-radius: 6px; font-size: 13px; }
+    nav a:hover, nav a:focus { background: #1c3654; color: #fff; }
+    nav .lvl2 { padding-left: 16px; font-size: 12px; color: #a9bdd3; }
+    main { padding: 36px 48px 80px; max-width: 1080px; }
+    header.cover {
+      background: linear-gradient(135deg, #0b3b6e 0%, #0e6b8a 60%, #0e7c66 100%);
+      color: #fff; padding: 36px; border-radius: 16px; margin-bottom: 28px;
+    }
+    header.cover h1 { margin: 0 0 10px; font-size: 28px; line-height: 1.35; }
+    header.cover .meta { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 13px; opacity: .95; }
+    .chip { display: inline-block; background: rgba(255,255,255,.16); padding: 3px 10px; border-radius: 999px; }
+    h2 { font-size: 22px; border-bottom: 2px solid var(--accent); padding-bottom: 8px; margin-top: 42px; }
+    h3 { font-size: 18px; color: #16324f; margin-top: 28px; }
+    h4 { font-size: 15px; color: #1f4e79; margin-top: 20px; }
+    p, li { font-size: 15px; }
+    .note, .warn, .ok, .danger {
+      border-left: 4px solid var(--accent); background: #eef5fc; padding: 12px 14px; border-radius: 0 10px 10px 0; margin: 16px 0;
+    }
+    .warn { border-color: var(--warn); background: #fff7ed; }
+    .ok { border-color: var(--ok); background: #ecfdf3; }
+    .danger { border-color: var(--danger); background: #fef3f2; }
+    table { width: 100%; border-collapse: collapse; margin: 14px 0 22px; font-size: 13.5px; background: var(--card); }
+    th, td { border: 1px solid var(--line); padding: 8px 10px; vertical-align: top; }
+    th { background: #e8eef6; text-align: left; }
+    tr:nth-child(even) td { background: #fafbfd; }
+    code { background: #eef2f7; padding: 1px 5px; border-radius: 4px; font-size: 90%; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; }
+    .kpi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 16px 0; }
+    .kpi .card { text-align: center; }
+    .kpi b { display: block; font-size: 20px; color: var(--accent); }
+    .kpi span { font-size: 12px; color: var(--muted); }
+    svg.fig { width: 100%; height: auto; background: #fff; border: 1px solid var(--line); border-radius: 12px; }
+    figcaption { font-size: 12.5px; color: var(--muted); margin: 6px 0 18px; }
+    a { color: var(--accent); }
+    ol.refs { font-size: 13.5px; }
+    ol.refs li { margin: 6px 0; }
+    .tag { font-size: 11px; padding: 1px 7px; border-radius: 999px; background: var(--chip); color: #0b5cab; margin-left: 6px; }
+    .tag.std { background: #e7f8f0; color: #067647; }
+    .tag.cust { background: #fff1e7; color: #b45309; }
+    .tag.lit { background: #f3e8ff; color: #6d28d9; }
+    footer { margin-top: 48px; font-size: 12.5px; color: var(--muted); }
+    @media (max-width: 980px) {
+      .wrap { grid-template-columns: 1fr; }
+      nav { position: relative; height: auto; }
+      main { padding: 20px; }
+      .kpi, .grid { grid-template-columns: 1fr; }
+    }
+    @media print {
+      nav { display: none; }
+      .wrap { display: block; }
+      main { max-width: none; padding: 0; }
+      header.cover { background: #0b3b6e; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      a { color: inherit; text-decoration: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+<nav>
+  <h1>ISO 5010 转向性能技术说明书</h1>
+  <p>一吨级铰接式轮式装载机 · 设计开发用</p>
+  <a href="#cover">封面与使用说明</a>
+  <a href="#s0">0. 执行摘要</a>
+  <a href="#s1">1. ISO 5010 标准梳理</a>
+  <a class="lvl2" href="#s1-1">1.1 标准定位与版本</a>
+  <a class="lvl2" href="#s1-2">1.2 范围、引用与术语</a>
+  <a class="lvl2" href="#s1-3">1.3 一般要求（第4章）</a>
+  <a class="lvl2" href="#s1-4">1.4 转向力与工效</a>
+  <a class="lvl2" href="#s1-5">1.5 主/辅助转向性能</a>
+  <a class="lvl2" href="#s1-6">1.6 试验场地与程序</a>
+  <a class="lvl2" href="#s1-7">1.7 报告与使用信息</a>
+  <a class="lvl2" href="#s1-8">1.8 相关标准族</a>
+  <a href="#s2">2. 一吨铰接机分解</a>
+  <a class="lvl2" href="#s2-1">2.1 产品画像与适用性</a>
+  <a class="lvl2" href="#s2-2">2.2 条款逐条落地</a>
+  <a class="lvl2" href="#s2-3">2.3 目标指标建议</a>
+  <a href="#s3">3. 影响因素与改善</a>
+  <a class="lvl2" href="#s3-1">3.1 转向能力</a>
+  <a class="lvl2" href="#s3-2">3.2 转向力</a>
+  <a class="lvl2" href="#s3-3">3.3 转向速率与平稳性</a>
+  <a class="lvl2" href="#s3-4">3.4 侧倾与轮胎离地</a>
+  <a class="lvl2" href="#s3-5">3.5 改善路径</a>
+  <a class="lvl2" href="#s3-6">3.6 文献</a>
+  <a href="#s4">4. 急转向轮胎不离地</a>
+  <a class="lvl2" href="#s4-1">4.1 需求解读</a>
+  <a class="lvl2" href="#s4-2">4.2 机理</a>
+  <a class="lvl2" href="#s4-3">4.3 结构设计</a>
+  <a class="lvl2" href="#s4-4">4.4 转向系统设计</a>
+  <a class="lvl2" href="#s4-5">4.5 验证试验</a>
+  <a href="#s5">5. 设计检查清单</a>
+  <a href="#refs">参考文献与链接</a>
+</nav>
+<main>
+<header class="cover" id="cover">
+  <div class="chip">内部设计开发技术说明书 · 非标准替代文本</div>
+  <h1>轮式装载机转向性能要求<br/>ISO 5010 梳理、一吨级铰接机分解与急转向轮胎不离地设计</h1>
+  <div class="meta">
+    <span>对象：一吨级铰接式轮式装载机</span>
+    <span>主标准：ISO 5010:2019 / GB/T 14781-2023（IDT）</span>
+    <span>配套：ISO 7457、ISO 14397-1、ISO 20474-3、EN 474-1</span>
+    <span>日期：2026-09-12</span>
+  </div>
+</header>
+
+<div class="warn">
+  <strong>版权与使用边界。</strong>ISO 5010 与 GB/T 14781 受版权保护。本文是面向设计开发的<strong>结构化梳理、适用性分解与工程解读</strong>，不是标准全文复制，也不能替代正式采购的标准文本做符合性声明。数值条款凡能从公开预览页、历史版本公开样章与国家标准目录核对的，均标明出处；ISO 5010:2019 第 8 章个别试验细节若与采购文本有出入，以正式标准为准。
+</div>
+
+<section id="s0">
+  <h2>0. 执行摘要</h2>
+  <p>ISO 5010:2019《土方机械 — 轮式机器 — 转向要求》由 ISO/TC 127/SC 2 发布，2019-11 出版，2025 年确认仍为现行版。它规定驾乘式轮式土方机械转向系统的<strong>试验方法与性能准则</strong>，覆盖机械、工效、维修、操纵系统和行驶功能相关危险，但<strong>不覆盖转向系统功能安全</strong>（需另按 ISO 19014 / ISO 13849 等处理）。中国现行对应标准为 <strong>GB/T 14781-2023</strong>（等同采用 ISO 5010:2019）。<a href="#r-iso">[S1]</a><a href="#r-gbt">[S2]</a></p>
+  <div class="kpi">
+    <div class="card"><b>≥20 km/h</b><span>须设辅助（二次）转向，手动主转向除外</span></div>
+    <div class="card"><b>≤115 N</b><span>主转向试验转向力历史限值</span></div>
+    <div class="card"><b>≤350 N</b><span>辅助/应急转向试验转向力历史限值</span></div>
+    <div class="card"><b>900 / 1000 N</b><span>转向柱结构完整性加载</span></div>
+  </div>
+  <p>对当前一吨级铰接式轮式装载机，三条结论最关键：</p>
+  <ol>
+    <li><strong>标准适用。</strong>2019 版已把最大速度 &lt;20 km/h 的轮式驾乘机械纳入范围；无论最高车速是否达到 20 km/h，主转向系统都必须满足转向能力、可控性、松开方向盘后转弯半径不缩小、液压优先与结构强度等要求。<a href="#r-iso2019pdf">[S3]</a></li>
+    <li><strong>辅助转向是否强制，取决于实测最高车速。</strong>最高车速 ≥20 km/h 且主转向为动力转向时，必须设置辅助转向；许多一吨级机型恰在 18–24 km/h 边界，必须按 ISO 6014 实测后定性。<a href="#r-iso2019pdf">[S3]</a></li>
+    <li><strong>“急转向轮胎不离地”不是 ISO 5010 的合格判据，而是比标准更严的企业/客户稳定性要求。</strong>ISO 5010 要求轮胎轨迹落在试验廊道内；ISO 14397-1 甚至把“对侧车轮离地”定义为倾翻载荷试验终点。该客户需求必须从整车质心、轮距、铰接角、摆动桥、转向角速度与驱动力封闭单独设计与试验。<a href="#r-iso14397">[S4]</a><a href="#r-li2016">[L1]</a></li>
+  </ol>
+</section>
+
+<section id="s1">
+  <h2>1. ISO 5010 标准梳理：对轮式装载机转向性能的规定与要求</h2>
+
+  <h3 id="s1-1">1.1 标准定位、版本沿革与法律角色</h3>
+  <table>
+    <thead>
+      <tr><th>版本</th><th>标题要点</th><th>适用范围要点</th><th>状态</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>ISO 5010:1984</td><td>Rubber-tyred machines — Steering capability</td><td>含公路/非公路不同廊道；曾有 4 s / 6 s 备选转向时间试验</td><td>作废</td></tr>
+      <tr><td>ISO 5010:1992</td><td>Rubber-tyred machines — Steering requirements</td><td>仅速度 &gt;20 km/h；删除较松的备选试验，保留更严的廊道试验</td><td>作废</td></tr>
+      <tr><td>ISO 5010:2007</td><td>同上</td><td>仍仅 &gt;20 km/h；增加电子传递装置、功能安全引用</td><td>作废</td></tr>
+      <tr><td><strong>ISO 5010:2019</strong></td><td><strong>Wheeled machines — Steering requirements</strong></td><td>驾乘式轮式土方机械（含滚筒、履带轮总成）；<strong>新增 &lt;20 km/h 机器要求</strong></td><td>现行，2025 确认</td></tr>
+      <tr><td>EN ISO 5010:2019</td><td>欧洲等同</td><td>与 ISO 5010:2019 对应，被 EN 474-1:2022 引用为转向系统要求</td><td>现行</td></tr>
+      <tr><td>GB/T 14781-2023</td><td>土方机械 轮式机器 转向要求</td><td><strong>ISO 5010:2019, IDT</strong>；代替 GB/T 14781-2014</td><td>现行（2023-09-07）</td></tr>
+    </tbody>
+  </table>
+  <p>2019 版在 ISO 12100 体系中属于 <strong>C 类标准</strong>：对已按本标准设计制造的机器，当 C 类要求与 A/B 类不同时，<strong>C 类优先</strong>。<a href="#r-iso2019pdf">[S3]</a> 欧洲机械安全框架中，EN 474-1:2022 第 4.6 节“转向系统”规范性引用 EN ISO 5010:2019。<a href="#r-en474">[S5]</a> 装载机专用安全要求见 ISO 20474-3:2017 / EN 474-3:2022，转向本身仍回到 5010，装载机部分重点补的是稳定性与额定载重量。<a href="#r-iso20474">[S6]</a></p>
+  <div class="note">
+    <strong>2019 相对 2007 的两项结构变化（前言明确写出）：</strong>标题由“轮胎式”改为“轮式”，以纳入滚筒和履带轮总成；并为最大速度 &lt;20 km/h 的土方机械给出要求。<a href="#r-iso2019pdf">[S3]</a>
+  </div>
+
+  <h3 id="s1-2">1.2 范围、规范性引用、术语（第1–3章）</h3>
+  <h4>1.2.1 范围（必须全部纳入设计输入）</h4>
+  <ul>
+    <li>对象：ISO 6165:2012 定义的<strong>轮式、驾乘式</strong>土方机械；轮式包括车轮、一个或多个滚筒、履带轮总成。<a href="#r-iso">[S1]</a></li>
+    <li>内容：转向系统<strong>试验与性能准则</strong>，用于评价转向能力。</li>
+    <li>覆盖危险：机械；工效；维修；操纵系统；行驶功能。</li>
+    <li><strong>不覆盖：</strong>转向系统功能安全。功能安全指引见 ISO 15998、ISO/TS 15998-2、ISO 13849-1、ISO 19014 系列。<a href="#r-iso2019pdf">[S3]</a></li>
+    <li><strong>不追溯：</strong>不适用于本文件发布日期前生产的轮式机器。</li>
+  </ul>
+  <p>轮式装载机（ISO 6165 / ISO 7131 的 loader）属于本范围。一吨级若操作质量 ≤4500 kg，同时属于 ISO 20474-3 / ISO 6165 的 <strong>compact loader（小型装载机）</strong>。<a href="#r-iso20474">[S6]</a></p>
+
+  <h4>1.2.2 规范性引用（设计必须联用）</h4>
+  <table>
+    <thead><tr><th>标准</th><th>在转向设计中的作用</th></tr></thead>
+    <tbody>
+      <tr><td>ISO 3450:2011</td><td>制动；转向液压优先时，紧急制动性能不得被牺牲</td></tr>
+      <tr><td>ISO 6016:2008</td><td>整机、工作装置、部件质量测量</td></tr>
+      <tr><td>ISO 7457:1997</td><td>轮式机器转向尺寸；外侧车轮通过直径（车轮通过圆）</td></tr>
+      <tr><td>ISO 12100:2010</td><td>风险评价与风险减小总则</td></tr>
+      <tr><td>ISO 10968</td><td>操纵件方向、布置、强度；非方向盘操纵件</td></tr>
+      <tr><td>ISO 18752:2014</td><td>液压软管（2019 新增引用）</td></tr>
+      <tr><td>ISO 6014（经最大速度定义引用）</td><td>地面速度测定，决定是否强制辅助转向</td></tr>
+    </tbody>
+  </table>
+
+  <h4>1.2.3 关键术语（设计语言必须统一）</h4>
+  <table>
+    <thead><tr><th>术语</th><th>含义与设计含义</th></tr></thead>
+    <tbody>
+      <tr><td>转向系统</td><td>操作者到接地车轮/滚筒/履带轮总成之间所有参与转向的元件</td></tr>
+      <tr><td>手动转向</td><td>仅靠操作者肌力</td></tr>
+      <tr><td>动力转向</td><td>辅助或替代肌力（泵、空压机、发电机等）</td></tr>
+      <tr><td>主转向系统</td><td>系统按预期工作时使用的转向系统</td></tr>
+      <tr><td>辅助转向系统（二次转向）</td><td>主转向动力源丧失时用于转向的系统</td></tr>
+      <tr><td>主转向动力源失效</td><td>主转向动力源<strong>完全、瞬时</strong>丧失；假定不同时发生一个以上失效</td></tr>
+      <tr><td>转向操纵元件</td><td>方向盘、手柄、先导手柄、按钮/触控、踏板等</td></tr>
+      <tr><td>转向力（steering effort）</td><td>操作者为转向施加在操纵元件上的力</td></tr>
+      <tr><td>转向角</td><td>前、后轮绕一个或多个垂直转向轴线相对直线状态的总位移角。铰接式即前后车架相对铰接角；多轴取最前与最后轴之间</td></tr>
+      <tr><td>车轮总宽度 / 外侧车轮通过直径 / 车轮通过圆</td><td>按 ISO 7457 第 7 条最急实用转向时，最外侧车轮承载断面最外点轨迹直径</td></tr>
+      <tr><td>机器最大速度</td><td>按 ISO 6014 测定</td></tr>
+    </tbody>
+  </table>
+  <p>2019 把 2007 的 “normal / emergency steering” 术语调整为 <strong>primary / secondary</strong>，并明确辅助动力源示例：液压泵、空压机、<strong>蓄能器、蓄电池</strong>。<a href="#r-iso2019pdf">[S3]</a></p>
+
+  <h3 id="s1-3">1.3 一般要求（第4章）——不得遗漏的强制性设计约束</h3>
+  <p>以下按 2019 条款结构列出。这是装载机转向系统设计的“应当条款”全集。</p>
+
+  <h4>4.1 通则</h4>
+  <ul>
+    <li>满足本条安全要求/防护措施，除非被系列标准特定部分修改。</li>
+    <li>对本文件未作为重大危险处理、但仍相关的危险，按 ISO 12100:2010 原则设计。<a href="#r-iso2019pdf">[S3]</a></li>
+  </ul>
+
+  <h4>4.2 必须配备的转向系统</h4>
+  <table>
+    <thead><tr><th>条款</th><th>要求</th><th>对装载机的含义</th></tr></thead>
+    <tbody>
+      <tr><td>4.2.1</td><td>所有机器应有<strong>主转向系统</strong></td><td>无例外</td></tr>
+      <tr><td>4.2.2</td><td>最大速度 <strong>≥20 km/h</strong> 应有<strong>辅助转向系统</strong>；主转向为手动系统的除外</td><td>全液压铰接转向属于动力转向，一旦车速达标就必须有二次动力源（蓄能器、应急泵、电动泵等）</td></tr>
+    </tbody>
+  </table>
+
+  <h4>4.3 所有转向系统（主、辅都适用）</h4>
+  <table>
+    <thead><tr><th>条款</th><th>要求要点</th><th>工程落实</th></tr></thead>
+    <tbody>
+      <tr><td>4.3.1</td><td>主转向动力源失效后，<strong>原转向操纵元件仍应是操作者的转向手段</strong>；多操纵件见 4.8</td><td>应急转向不得改成另一套互不相关、操作者来不及切换的手柄（除非按备用操纵件条款专门试验）</td></tr>
+      <tr><td>4.3.2</td><td>松开操纵件后，所选<strong>车轮通过圆应保持不变或变大</strong>（前进）</td><td>禁止松开方向盘后自动收紧转弯；铰接阀中位应封闭或使铰接角不继续增大。注：详见 8.1.2</td></tr>
+      <tr><td>4.3.3</td><td>操纵运动与效果一致；不明显则设操作标志；符合 ISO 10968</td><td>方向盘顺时针=右转（工效条款延续）</td></tr>
+      <tr><td>4.3.4</td><td>正常操作中不得因操纵件操作发生<strong>非受控转向</strong></td><td>排除阀卡滞、先导泄漏导致自行铰接、电液失控</td></tr>
+      <tr><td>4.3.5</td><td>通过元件选择与布置提高可靠性，便于检查与维护</td><td>铰点、油管、优先阀可接近</td></tr>
+      <tr><td>4.3.6.1</td><td>其他机器功能引起的转向扰动应尽量减小。示例：<strong>车轴摆动、车轮制动转矩</strong></td><td>摆动桥与铰接转向解耦；制动不耦合出附加转向力矩</td></tr>
+      <tr><td>4.3.6.2</td><td>设计用途内的外力（示例：<strong>铰接机器在典型工地车辙中行驶</strong>）不得显著影响转向控制</td><td>这是专门针对铰接式的条款：车辙、单边阻力下仍可转向</td></tr>
+      <tr><td>4.3.7</td><td>除传统方向盘外，其他转向操纵件应设计、布置、互锁或固定，降低上下车误触发</td><td>若用先导手柄转向，必须有进出互锁</td></tr>
+      <tr><td>4.3.8</td><td>主、辅转向在前进与倒退应有<strong>相似的力、速率与持续时间能力</strong>；倒车速度 &lt;20 km/h 除外。可用原理图或计算验证，<strong>不要求倒车实车试验</strong></td><td>一吨机倒车通常 &lt;20 km/h，可豁免“相似能力”，但仍建议校核</td></tr>
+    </tbody>
+  </table>
+
+  <h4>4.4 所有转向系统的试验（结构完整性）</h4>
+  <p>2019 把转向柱安装后的结构试验独立出来：<a href="#r-iteh2019">[S7]</a></p>
+  <ul>
+    <li>带方向盘的转向柱：分别独立施加 <strong>F = 900 N</strong>（图2：约 90° 竖直方向；图3：约 180° 水平方向）。</li>
+    <li>可调转向柱在调节范围中点试验；试验后系统（含调节机构）仍应能转向；试验中调节位置可以移动，但调节功能试验后应仍可用。</li>
+    <li>若进出驾驶室时可能抓握方向盘，再沿主要入口方向施加 <strong>F = 1000 N</strong>（图4）。注：1000 N 依据 ISO 2867 扶手最小力。</li>
+    <li>其他操纵件满足 ISO 10968 最低机械强度，并仍能用于导向。</li>
+    <li>转向性能按第 8 章试验；车轮应保持在图 5、图 6 试验路径界限内（三轴及以上带半挂/挂车者，挂车轨迹可除外）。</li>
+  </ul>
+  <p>1992/2007 的对应要求是：所有转向系统应能承受沿操纵件运动方向 <strong>900 N</strong> 而无功能损坏。<a href="#r-iso1992pdf">[S8]</a></p>
+
+  <h4>4.5–4.8 主转向、辅助转向、动力转向、双操纵件</h4>
+  <p>2019 目录将以下内容单列（正文细节在正式标准第 4.5–4.8 与第 8 章展开）。结合 2007/1992 仍有效的工程内容，设计必须覆盖：<a href="#r-iso2007pdf">[S9]</a><a href="#r-iso1992pdf">[S8]</a></p>
+  <table>
+    <thead><tr><th>主题</th><th>要求</th></tr></thead>
+    <tbody>
+      <tr><td>灵敏度/调制</td><td>熟练操作者应能把机器稳定保持在预定作业路径；以通过第 8 章主转向试验验证。若转向速度不能逐渐调节（无调制），则最大车速限制到 <strong>≤10 km/h</strong>（2007:4.1.1.4 / 4.1.3）</td></tr>
+      <tr><td>后轴转向稳定性</td><td>后轴转向机器另做松开操纵件圆周行驶试验（装载机一般为铰接而非纯后轴转向，但若有后桥转向模式仍适用）</td></tr>
+      <tr><td>液压回路</td><td>应有压力控制，避免回路过压；软管/接头/硬管爆破压力至少为工作回路压力控制装置设定值的 <strong>4 倍</strong>（1992/2007）；2019 另引 ISO 18752；布置避免过小弯曲半径、扭转、擦磨</td></tr>
+      <tr><td>动力优先</td><td>动力转向宜与其他回路分开；若共用，转向应优先于其他回路，<strong>但辅助转向和紧急制动（ISO 3450）除外且须保持其性能</strong></td></tr>
+      <tr><td>共用动力源的其他执行机构失效</td><td>视为与主转向动力源失效相同 → 必须能切入辅助转向逻辑</td></tr>
+      <tr><td>失效后传动比变化</td><td>允许，只要辅助转向试验仍合格</td></tr>
+      <tr><td>辅助转向优先</td><td>宜独立；若共用，辅助转向装置优先于除紧急制动外的所有回路</td></tr>
+      <tr><td>电子/电液传递</td><td>2007 单列电气电子传递装置与安全状态；2019 把功能安全整体移出，改指引 ISO 19014 / ISO 13849</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="s1-4">1.4 工效与转向力限值</h3>
+  <p>2019 第 4.9 节为人类工效学要求。可公开核对的定量限值，在 1992 第 5 章写得最完整，2007 继续沿用同一数量级，并被行业与 GB/T 14781 历史版本广泛采用：<a href="#r-iso1992pdf">[S8]</a></p>
+  <table>
+    <thead><tr><th>项目</th><th>限值 / 规定</th><th>出处</th></tr></thead>
+    <tbody>
+      <tr><td>转向方向一致性</td><td>方向盘顺时针 → 机器右转；逆时针 → 左转</td><td>ISO 5010:1992 5.1；ISO 10968</td></tr>
+      <tr><td>主转向转向力</td><td>应尽可能低，且在规定转向试验中 <strong>≤115 N</strong></td><td>1992 5.2.1 / 6.1 / 10.2.3</td></tr>
+      <tr><td>辅助/应急转向转向力</td><td>规定试验中 <strong>≤350 N</strong></td><td>1992 5.2.2 / 6.2 / 6.3 / 10.3.7</td></tr>
+      <tr><td>左右不对称</td><td>达到同一效果所需操纵件行程，在转向角至 30° 范围内左右相差 <strong>≤25%</strong>（可用计算）；阿克曼以内侧轮转角计</td><td>1992 5.3</td></tr>
+      <tr><td>变传动比（建议）</td><td>若需持续转动操纵件才能持续改变转向角，希望直线附近单位转角对应更大操纵行程</td><td>1992 5.4（“desirable”）</td></tr>
+      <tr><td>全动力转向的判定（2007）</td><td>若无助力时转向需 <strong>≥115 N</strong> 肌力，可描述为全动力转向</td><td>2007 3.1.3 注</td></tr>
+    </tbody>
+  </table>
+  <div class="warn">
+    115 N / 350 N 是 1992 与 2007 明确写出、且 2019 工效章仍以“转向力限制”为核心的历史连续限值。正式符合性试验应以采购的 ISO 5010:2019 / GB/T 14781-2023 第 8 章为准。一吨机设计目标建议<strong>按 115 N / 350 N 作为上限，并按更小的内部目标（例如主转向 ≤80 N）做裕度</strong>。
+  </div>
+
+  <h3 id="s1-5">1.5 主转向与辅助转向的性能要求（“转向能力”的法定含义）</h3>
+  <p>ISO 5010 所说的转向能力，不是“最小转弯半径越小越好”，而是：在规定场地、规定速度、规定转向力下，<strong>轮胎轨迹不越出廊道，且系统在恐慌力和动力源失效后仍可控</strong>。</p>
+
+  <h4>1.5.1 主转向系统性能（1992 第 6.1 / 10.2，2019 对应 8.1）</h4>
+  <ol>
+    <li><strong>直线保持：</strong>以最大前进速度行驶，在长 100 m、宽为最大车轮总宽度 <strong>1.25 倍</strong> 的直道内保持轮胎不越界；允许正常修正。<a href="#r-iso1992pdf">[S8]</a></li>
+    <li><strong>后轴转向稳定性（若适用）：</strong>以 8±2 km/h 沿约最大转向角一半对应的圆周行驶，松开操纵件后<strong>转向角不得增大</strong>。</li>
+    <li><strong>弯道廊道试验：</strong>以 <strong>16±2 km/h</strong> 持续速度通过图 1 试验廊道（尺寸由车轮通过圆、轴距、车轮总宽度决定），转向力 <strong>≤115 N</strong>。允许若干次练习以形成均匀肌力。</li>
+  </ol>
+
+  <h4>1.5.2 辅助/应急转向（1992 第 6.2–6.3 / 10.3，2019 对应 4.6 与 8.2）</h4>
+  <p>动力转向且速度 ≥20 km/h 时为强制项。要点：</p>
+  <table>
+    <thead><tr><th>项目</th><th>要求</th></tr></thead>
+    <tbody>
+      <tr><td>动力辅助转向若肌力应急仍 ≤350 N</td><td>可按“助力转向的应急”路径；否则按全动力转向，必须有独立应急动力源</td></tr>
+      <tr><td>全动力转向</td><td>必须有应急动力源（泵、蓄能器、电池等）</td></tr>
+      <tr><td>失效报警</td><td>声或光，由主转向动力源失效触发。例外：若无论时间和转向次数，应急能力始终满足 350 N 限值，且转向力或方向盘行程显著增加已能明确提示失效，则可免独立应急源和报警（仅适用于助力路径）</td></tr>
+      <tr><td>倒车</td><td>若最大倒车速度 &gt;20 km/h，应急转向在倒车也须工作</td></tr>
+      <tr><td>直线保持</td><td>16±2 km/h，100 m × 1.25 倍车轮总宽度</td></tr>
+      <tr><td>应急开始时的可用能量</td><td>不得多于“刚指示主转向动力源失效那一瞬”通常可用的能量（禁止试验前把蓄能器充满到不真实水平）</td></tr>
+      <tr><td>廊道试验（力与持续时间）</td><td>8±2 km/h 通过图 1 廊道</td></tr>
+      <tr><td>廊道试验（力与速率）</td><td>16±2 km/h 通过图 1 廊道</td></tr>
+      <tr><td>转向力</td><td>上述廊道试验 ≤350 N</td></tr>
+      <tr><td>响应试验</td><td>16±2 km/h 进入图 2 路径；在 A 点开始转向并同时模拟主动力源失效；完成 90° 转向且轮胎轨迹不越界</td></tr>
+      <tr><td>发动机驱动的主泵</td><td>试验中须断开主转向动力（因要用发动机驱动车辆走完廊道）</td></tr>
+    </tbody>
+  </table>
+
+  <h4>1.5.3 历史备选“转向时间”指标（1984，1992 已删除）</h4>
+  <p>ISO 5010:1984 曾对公路行驶机器给出备选试验：10±2 km/h 下，主转向从直线转到规定转向角 <strong>≤4 s</strong> 且力 ≤115 N；应急连续左右各一次并回到直线；应急从直线转到规定角 <strong>≤6 s</strong> 且力 ≤350 N。<a href="#r-iso1984">[S10]</a> 1992 前言写明已删除较松的备选试验。今日设计可将“满舵时间”作为<strong>内部性能指标</strong>（建议一吨机怠速满舵 2.5–4.0 s 量级），但<strong>合格评定仍以廊道试验为准</strong>。</p>
+
+  <h3 id="s1-6">1.6 试验场地、样机状态、车轮通过圆（第5–7章 / 1992 第7–9章）</h3>
+  <table>
+    <thead><tr><th>项目</th><th>规定</th></tr></thead>
+    <tbody>
+      <tr><td>路面</td><td>压实土或铺装，平坦，任意方向坡度 <strong>≤3%</strong></td></tr>
+      <tr><td>廊道尺寸（图1）</td><td>由车轮通过圆、轴距、车轮总宽度、机器类型决定；给出最小尺寸以保证小型机器仍有合理廊道</td></tr>
+      <tr><td>图1 关键几何（1992 图注）</td><td>A = 1.1×车轮通过圆或 14 m（取大）；n = 1.73×车轮通过圆或 22 m（取大）；CC = 2×最大轴距或 15 m（取小）；廊道宽 = 1.25×最大车轮总宽度；另有 2.5 倍车轮总宽度段落。通过圆 &lt;12 m 的机器、轮式拖拉机、平地机从 Start1 到 Finish1，其余从 Start2 到 Finish2。允许镜像</td></tr>
+      <tr><td>应急响应路径（图2）</td><td>A = 1.1×车轮通过圆或 14 m（取大）；在原前进方向垂直方向完成 90°</td></tr>
+      <tr><td>轮胎选择</td><td>有可选轮胎时，用制造商批准的<strong>最窄胎面宽度</strong>轮胎试验（更苛刻）</td></tr>
+      <tr><td>装载机样机质量</td><td>制造商空车质量 + 使转向轴负荷最大的最重工作装置/属具组合 + <strong>75 kg 操作者</strong> + 满油箱（1992 8.2）</td></tr>
+      <tr><td>参数状态</td><td>轮胎规格与气压、液压压力与流量、报警触发点等均在制造商规定范围内</td></tr>
+      <tr><td>车轮通过圆测定</td><td>只用正常操纵件和主转向系统；不得用转向制动、轮倾、后转向架等；左右不等时取较小圆；带挂车的多轴机器测定时不带挂车</td></tr>
+    </tbody>
+  </table>
+  <figure>
+    <svg class="fig" viewBox="0 0 980 220" role="img" aria-label="ISO 5010 试验廊道示意">
+      <rect x="20" y="30" width="940" height="160" fill="#f7fafc" stroke="#cbd5e1"/>
+      <text x="30" y="22" font-size="13" fill="#334155">ISO 5010 图1类转向廊道（示意，非按比例）</text>
+      <path d="M80 150 H260 Q320 150 360 110 T520 70 H900" fill="none" stroke="#94a3b8" stroke-width="44" stroke-linecap="round"/>
+      <path d="M80 150 H260 Q320 150 360 110 T520 70 H900" fill="none" stroke="#0b5cab" stroke-width="2" stroke-dasharray="8 6"/>
+      <circle cx="140" cy="150" r="10" fill="#0e7c66"/>
+      <text x="120" y="178" font-size="12">Start</text>
+      <circle cx="860" cy="70" r="10" fill="#b42318"/>
+      <text x="830" y="58" font-size="12">Finish</text>
+      <text x="400" y="200" font-size="12" fill="#475569">廊道宽度 ≈ 1.25 × 车轮总宽度；弯曲段由车轮通过圆与轴距决定</text>
+    </svg>
+    <figcaption>图 1　ISO 5010 转向廊道试验概念：评价的是“规定速度 + 规定转向力下的路径跟踪能力”，不是最小转弯半径本身。</figcaption>
+  </figure>
+
+  <h3 id="s1-7">1.7 试验报告与使用信息（第9–10章）</h3>
+  <p>2019 要求形成试验报告，并在使用信息中至少覆盖：<a href="#r-iso2019pdf">[S3]</a></p>
+  <ul>
+    <li>10.2.1 装备动力转向系统的机器：动力转向特性、限制、维护要点。</li>
+    <li>10.2.2 装备辅助转向的机器：应在使用手册中写明（延续 1992 4.9）——① 装备了辅助转向；② 能力限制；③ 现场功能验证方法。</li>
+    <li>10.2.3 备用转向操纵件且速度受控/受限时：速度限制信息。</li>
+  </ul>
+
+  <h3 id="s1-8">1.8 与轮式装载机转向相关、但 ISO 5010 不替代的标准</h3>
+  <table>
+    <thead><tr><th>标准</th><th>与转向性能的交界面</th></tr></thead>
+    <tbody>
+      <tr><td>ISO 7457</td><td>外侧车轮通过直径、墙到墙转弯半径、机具最外点半径等几何尺寸</td></tr>
+      <tr><td>ISO 14397-1:2007+Amd.1:2019</td><td>铰接装载机须在直线和左右最大铰接位评定倾翻载荷；铲斗工况稳定系数 k=0.50；试验终点是后轮或对侧车轮离地</td></tr>
+      <tr><td>ISO 20474-1 / -3、EN 474-1/-3</td><td>装载机安全：转向按 5010；稳定性按 14397；小型装载机进出互锁</td></tr>
+      <tr><td>ISO 10968</td><td>操纵件行程、力、方向、防误操作</td></tr>
+      <tr><td>ISO 3450</td><td>制动；与转向液压优先权耦合</td></tr>
+      <tr><td>ISO 13849 / ISO 19014</td><td>电液转向、速度相关限转角等安全功能的 PL/AgPL</td></tr>
+      <tr><td>ISO 3471 / ISO 3449</td><td>ROPS/FOPS；急转向侧翻时的乘员保护，不能用来替代“不离地”设计</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="s2">
+  <h2>2. 针对一吨级铰接式轮式装载机的要求分解</h2>
+
+  <h3 id="s2-1">2.1 产品画像与标准适用性判定</h3>
+  <p>中国工程机械行业所称“一吨式/一吨级轮式装载机”，通常指<strong>额定载重量约 1000 kg</strong> 的铰接式轮式装载机，而不是操作质量正好 1 t。典型量级（设计输入，需用实车数据替换）：</p>
+  <table>
+    <thead><tr><th>参数</th><th>一吨级常见范围</th><th>标准接口</th></tr></thead>
+    <tbody>
+      <tr><td>额定载重量</td><td>1000 kg 量级</td><td>ISO 14397-1：N = min(k·m_tip, m_lift)，铲斗 k=0.50</td></tr>
+      <tr><td>操作质量</td><td>约 2.5–4.5 t</td><td>≤4500 kg → compact loader（ISO 6165 / ISO 20474-3）</td></tr>
+      <tr><td>转向型式</td><td>车架铰接 + 双转向油缸 + 全液压转向器（Orbitrol）</td><td>动力转向 / 通常为全动力转向</td></tr>
+      <tr><td>单侧铰接角</td><td>约 35°–42°（总转角约 70°–80°）</td><td>转向角定义；紧凑机常见 40° 级，见小型机样本<a href="#r-yanmar">[S11]</a></td></tr>
+      <tr><td>后桥</td><td>摆动桥，约 ±8°–12°</td><td>5010 的“车轴摆动扰动”；不离地设计的核心</td></tr>
+      <tr><td>驱动</td><td>静液压四驱或机械四驱</td><td>急转向运动学干涉、车轮滑转/抬起</td></tr>
+      <tr><td>最高车速</td><td>常见 15–25 km/h</td><td><strong>20 km/h 是辅助转向强制线</strong></td></tr>
+    </tbody>
+  </table>
+  <div class="ok">
+    <strong>适用结论：</strong>该产品是 ISO 5010:2019 / GB/T 14781-2023 的适用对象。2007 版曾把 ≤20 km/h 机器排除在外，2019 已纳入。不能再以“小型机、低速机”为由不满足转向性能条款。
+  </div>
+
+  <h4>2.1.1 必须先做的三个定性试验/计算</h4>
+  <ol>
+    <li>按 ISO 6014 测最大前进/倒车速度 → 判定 4.2.2 辅助转向是否强制。</li>
+    <li>无转向助力时方向盘力是否 ≥115 N → 判定全动力转向，从而判定失效后能否靠肌力应急。</li>
+    <li>按 ISO 7457 测车轮通过圆、墙到墙半径 → 生成 5010 廊道尺寸与样本承诺转弯半径。</li>
+  </ol>
+
+  <h3 id="s2-2">2.2 把 ISO 5010 逐条落到本产品</h3>
+  <table>
+    <thead>
+      <tr><th>标准主题</th><th>一吨铰接机具体规定</th><th>设计动作</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>主转向</td>
+        <td>必须。推荐：负荷传感优先阀 + 全液压转向器 + 双油缸，怠速亦可转向（行业成熟方案）。<a href="#r-yanmar">[S11]</a></td>
+        <td>转向泵排量按怠速满舵时间选型；优先阀保证动臂动作时转向不“变沉”</td>
+      </tr>
+      <tr>
+        <td>辅助转向</td>
+        <td>若 Vmax ≥20 km/h：强制。全液压铰接几乎不可能在失效后靠 350 N 肌力推动车架，故必须设<strong>蓄能器或应急转向泵</strong>（由行走驱动、飞轮或电机带动）</td>
+        <td>蓄能器容积按 8 km/h 廊道持续时间 + 16 km/h 速率 + 90° 响应三次试验的最不利能量核算；失效声光报警</td>
+      </tr>
+      <tr>
+        <td>Vmax &lt;20 km/h</td>
+        <td>辅助转向非强制，但主转向全部条款仍适用。若营销宣称可上路或实际超 20 km/h，按 ≥20 处理</td>
+        <td>限速策略与铭牌、手册一致</td>
+      </tr>
+      <tr>
+        <td>松开方向盘</td>
+        <td>前进时铰接角不得自行增大（转弯不得自动变急）</td>
+        <td>转向器中位封闭；油缸内泄、补油与负载保持校核；禁止用会“继续靠拢”的阀芯泄漏</td>
+      </tr>
+      <tr>
+        <td>车辙/外力扰动</td>
+        <td>标准点名铰接机器在工地车辙中不得显著失控</td>
+        <td>铰接刚度（液压等效扭转弹簧）足够；轮胎侧偏刚度匹配；避免过小的转向油缸封闭容积</td>
+      </tr>
+      <tr>
+        <td>摆动桥扰动</td>
+        <td>后桥摆动不得耦合出附加转向</td>
+        <td>摆动轴线与铰接轴线几何正交、共面或受控偏置；限位缓冲</td>
+      </tr>
+      <tr>
+        <td>制动耦合</td>
+        <td>车轮制动转矩不得明显改变转向</td>
+        <td>左右制动力对称；避免单边制动转向作为唯一转向手段（5010 测通过圆时禁止用转向制动）</td>
+      </tr>
+      <tr>
+        <td>转向力</td>
+        <td>主转向廊道 ≤115 N；建议内部目标 ≤60–80 N（小型机方向盘直径较小，同样力矩下切向力更大）</td>
+        <td>转向器排量、转向泵流量、优先阀压差联合匹配</td>
+      </tr>
+      <tr>
+        <td>左右一致性</td>
+        <td>至 30° 行程差 ≤25%</td>
+        <td>双缸铰点对称优化，减小行程差与力臂差<a href="#r-zhou2018">[L2]</a></td>
+      </tr>
+      <tr>
+        <td>结构强度</td>
+        <td>方向盘 900 N 两向；若当扶手再 1000 N</td>
+        <td>转向柱、驾驶室前围、铰接轴承座、油缸支座有限元 + 实车加载</td>
+      </tr>
+      <tr>
+        <td>液压安全</td>
+        <td>溢流/缓冲；软管 4 倍爆破裕度；ISO 18752 软管等级</td>
+        <td>转向回路独立溢流；油缸极限位置缓冲（行业已普遍）<a href="#r-yanmar">[S11]</a></td>
+      </tr>
+      <tr>
+        <td>优先权</td>
+        <td>转向优先于工作装置，紧急制动优先于转向</td>
+        <td>LS 优先阀；制动蓄能器独立</td>
+      </tr>
+      <tr>
+        <td>无调制转向</td>
+        <td>若用开关式电磁阀猛打方向，车速须 ≤10 km/h</td>
+        <td>一吨机若用电控手柄转向，必须比例控制</td>
+      </tr>
+      <tr>
+        <td>试验质量状态</td>
+        <td>空车 + 使转向轴负荷最大的最重属具 + 75 kg + 满油</td>
+        <td>对铰接装载机通常是空斗、配重在后、前桥较轻的状态，对急转向抬轮更不利</td>
+      </tr>
+      <tr>
+        <td>手册</td>
+        <td>辅助转向有无、能力限制、现场检查方法；备用操纵件限速</td>
+        <td>写入《使用说明书》第 10 章对应内容</td>
+      </tr>
+      <tr>
+        <td>功能安全（5010 不管）</td>
+        <td>电控限速、限铰接角、遥控、线控转向</td>
+        <td>按 ISO 19014 / ISO 13849 另做 PL 计算，不写进 5010 合格证就算完</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 id="s2-3">2.3 建议的产品级转向性能指标（标准 + 产品竞争力）</h3>
+  <p>下表把“法定底线”和“一吨级产品建议目标”分开。带 <span class="tag std">标准</span> 的是 ISO 5010 族要求；带 <span class="tag cust">客户</span> 的是本次“急转向不离地”；其余为建议的内部工程指标。</p>
+  <table>
+    <thead><tr><th>维度</th><th>建议指标</th><th>备注</th></tr></thead>
+    <tbody>
+      <tr><td>主转向力<span class="tag std">标准</span></td><td>16±2 km/h 廊道 ≤115 N；设计目标 ≤80 N</td><td>方向盘半径小的机型按切向力校核</td></tr>
+      <tr><td>辅助转向力<span class="tag std">标准</span></td><td>≤350 N（若适用）</td><td>Vmax≥20 km/h 强制</td></tr>
+      <tr><td>直线保持<span class="tag std">标准</span></td><td>Vmax 下 100 m × 1.25 车宽不越线</td><td>考核蛇行稳定性</td></tr>
+      <tr><td>松开方向盘<span class="tag std">标准</span></td><td>前进时铰接角不增大</td><td>中位封闭</td></tr>
+      <tr><td>车轮通过圆 / 外侧转弯半径</td><td>按竞品：约 2.5–3.5 m 量级（随轴距而变）</td><td>几何能力，ISO 7457 报告，非 5010 限值</td></tr>
+      <tr><td>怠速满舵时间</td><td>2.5–4.0 s（左右）</td><td>过快会抬轮；过慢损失作业节拍</td></tr>
+      <tr><td>左右满舵时间差</td><td>≤10%（严于 25% 行程差）</td><td>铰点优化</td></tr>
+      <tr><td>转向终了冲击</td><td>油缸进出油压超调下降；驾驶室横向加速度收敛</td><td>缓冲阀可显著减振<a href="#r-wang2022">[L3]</a></td></tr>
+      <tr><td>急转向轮胎离地<span class="tag cust">客户</span></td><td>规定工况下四轮法向力 &gt;0，LTR&lt;0.8 建议</td><td>见第 4 章；严于 5010</td></tr>
+      <tr><td>满载满铰接静态倾翻裕度</td><td>额定载重 ≤50% 倾翻载荷</td><td>ISO 14397-1 / ISO 20474-3</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="s3">
+  <h2>3. 轮式装载机转向性能影响因素与改善路径</h2>
+  <p>转向性能建议拆成四个可测量维度：<strong>转向能力（几何与路径跟踪）</strong>、<strong>转向力</strong>、<strong>转向速率/平稳性</strong>、<strong>转向时的侧倾稳定性（含轮胎离地）</strong>。ISO 5010 法定化的是前三项中的路径跟踪与转向力；第四项主要由多体动力学与 ISO 14397 稳定性体系覆盖。</p>
+
+  <h3 id="s3-1">3.1 转向能力（Steering capability）</h3>
+  <div class="grid">
+    <div class="card">
+      <h4>几何能力</h4>
+      <ul>
+        <li>最大铰接角、轴距、轮距、轮胎静力半径、铲斗前悬</li>
+        <li>评价指标：ISO 7457 外侧车轮通过直径、墙到墙半径、机具最外点半径</li>
+        <li>铰接式优点：前后轮迹接近重合，窄场通过性好，作业时铲斗可对正料堆。<a href="#r-yanmar">[S11]</a></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>动态路径跟踪能力（5010 本义）</h4>
+      <ul>
+        <li>转向阀流量、转向器排量、优先阀动态、轮胎侧偏、铰接液压刚度</li>
+        <li>蛇行（snaking）与铰接角振荡会破坏直线保持和廊道试验</li>
+        <li>质心位置与液压封闭刚度对临界车速影响最大。<a href="#r-lei2021">[L4]</a></li>
+      </ul>
+    </div>
+  </div>
+  <p><strong>改善：</strong>在满足不抬轮的前提下增大铰接角或缩短轴距以减小转弯半径；优化油缸铰点使左右力臂对称；提高中位液压扭转刚度以抑制蛇行；对 ≥20 km/h 机型做特征值分析，确保常用车速远离蛇行临界速度。<a href="#r-lei2021">[L4]</a><a href="#r-zhou2018">[L2]</a></p>
+
+  <h3 id="s3-2">3.2 转向力（Steering effort / 油缸转向力）</h3>
+  <p>操作者转向力与系统转向力矩是两条链：</p>
+  <ol>
+    <li><strong>人–方向盘：</strong>F_hand ≈ T_orbitrol / R_wheel。目标：廊道试验 ≤115 N。</li>
+    <li><strong>油缸–车架：</strong>T_steer = p·A·d_arm。需克服：轮胎回正与刮擦阻力、轴向推力、坡道分力、惯性力矩、密封与铰点摩擦。</li>
+  </ol>
+  <p>铰接点布置决定行程差 Δl 与力臂差 Δd。二者导致左右油压波动、噪声、转矩浪费和结构应力。遗传算法优化 FW50GL 装载机铰点后，行程差降约 92%、力臂差降约 78%；后续研究进一步表明<strong>力臂差是压力波动的主因</strong>，应以力臂差和缸压为目标函数再优化。<a href="#r-zhou2018">[L2]</a><a href="#r-xu2019">[L5]</a> 工程上，铰点优化还可降低转向功耗与车架应力。<a href="#r-inacomm">[L6]</a></p>
+  <p><strong>改善转向力的杠杆：</strong></p>
+  <ul>
+    <li>增大方向盘直径或转向器排量（降低手力，可能增加圈数）。</li>
+    <li>保证怠速流量：转向泵排量 × 怠速转速 − 泄漏 ≥ 满舵所需平均流量。</li>
+    <li>负荷传感优先阀：工作装置大流量时转向仍有优先 LS 信号。</li>
+    <li>降低转向阻力矩：合理前束/外倾（铰接机车轮一般不转向，主要是轮胎气压、花纹、配重、桥荷）。</li>
+    <li>铰点优化：减小力臂差 → 峰值油压下降 → 同样溢流设定下更轻、更稳。</li>
+    <li>避免转向与工作泵严重抢油；必要时转向独立泵。</li>
+  </ul>
+
+  <h3 id="s3-3">3.3 转向速率、冲击与振动</h3>
+  <p>装载机常见投诉是“打方向起步和打到极限时前车架与驾驶室猛晃”。压力采集与 AMESim 表明：转向器 A/B 口在起停时出现压力冲击与吸空。加装缓冲阀后，起步冲击约降 50%、停止振动约降 75%，吸空消失。<a href="#r-wang2022">[L3]</a> 行业主机已普遍采用“双转向油缸 + 两端限位缓冲 + LS 优先”。<a href="#r-yanmar">[S11]</a></p>
+  <p><strong>改善：</strong>油缸行程末端缓冲套/节流孔；转向器与油缸间缓冲阀；限制最大铰接角速度（节流或电控）；避免过大的转向泵排量“为了快而快”——这与第 4 章不抬轮直接冲突。</p>
+
+  <h3 id="s3-4">3.4 侧倾稳定性、LTR 与轮胎离地</h3>
+  <p>铰接转向车辆（ASV）由前车架、后车架、摆动后桥三体组成。转弯时整车质心向弯内侧横向迁移，稳定性下降；无悬架，LTR 难以用悬架行程估算。<a href="#r-li2016">[L1]</a> 吉林大学团队建立 7 自由度非线性模型，并用比例样机验证，覆盖：平路急转、直线过障、转向过障、坡道过障。<a href="#r-li2013">[L7]</a></p>
+  <ul>
+    <li><strong>LTR（横向载荷转移比）</strong>：0 表示左右轮荷相等，趋近 ±1 表示一侧车轮离地。<a href="#r-li2016">[L1]</a></li>
+    <li>侧倾分两级：摆动桥未到限位（后车架相对后桥滚转）→ 摆动桥压死限位（整车绕轮胎接地点翻）。<a href="#r-li2016">[L1]</a></li>
+    <li>仅用侧向加速度或仅用侧倾角速度作阈值都不够：过障时瞬时加速度大但未必失稳；缓坡上很小的侧倾角速度也可能失稳。<a href="#r-li2016">[L1]</a></li>
+    <li>质心位置、液压转向刚度对蛇行/失稳形态影响大于许多其他参数。<a href="#r-lei2021">[L4]</a></li>
+    <li>作业循环中装载/卸载时车速低，滚翻风险反而低于<strong>运载行驶（动臂位置与载荷相对固定）</strong>。<a href="#r-li2016">[L1]</a></li>
+  </ul>
+
+  <h3 id="s3-5">3.5 综合改善地图（按维度）</h3>
+  <table>
+    <thead><tr><th>维度</th><th>主要影响因素</th><th>提高/改善措施</th></tr></thead>
+    <tbody>
+      <tr><td>转向能力-几何</td><td>铰接角、轴距、轮胎、铲斗前悬</td><td>在稳定性约束下优化铰接角；缩短前悬；给出 ISO 7457 全套半径</td></tr>
+      <tr><td>转向能力-跟踪</td><td>液压刚度、质心、车速、轮胎侧偏</td><td>减小中位泄漏；避免过高车速；必要时车速-铰接角包络限制</td></tr>
+      <tr><td>转向力-人手</td><td>转向器排量、泵流量、优先阀、方向盘半径</td><td>怠速可转向；LS 优先；目标 ≤80 N</td></tr>
+      <tr><td>转向力-油缸</td><td>铰点力臂、阻力矩、溢流压力</td><td>GA/ADAMS 优化铰点；降低峰值压力与结构应力</td></tr>
+      <tr><td>速率与冲击</td><td>流量、末端缓冲、油液体积模量与含气</td><td>缓冲阀/缓冲套；合理满舵时间；排气与合适的软管容积</td></tr>
+      <tr><td>不离地/防侧翻</td><td>质心高、轮距、铰接角、转向角加速度、摆动桥、四驱封闭、动臂姿态</td><td>见第 4 章完整清单</td></tr>
+      <tr><td>可靠性</td><td>软管磨损、铰销润滑、阀污染</td><td>5010 的可维护布置；4 倍爆破；防擦磨</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="s3-6">3.6 核心文献（可点击）</h3>
+  <p>文献摘要与链接集中在文末“参考文献”章，设计引用时优先以下 8 篇：</p>
+  <ul>
+    <li>Li 等，铰接转向车辆侧倾失稳机理与稳定性指标，<em>Mathematical Problems in Engineering</em>，2016。<a href="https://doi.org/10.1155/2016/7816503">https://doi.org/10.1155/2016/7816503</a></li>
+    <li>Li 等，铰接装载机坡道与越障动力学模型，<em>Vehicle System Dynamics</em>，2013。<a href="https://doi.org/10.1080/00423114.2013.800893">https://doi.org/10.1080/00423114.2013.800893</a></li>
+    <li>Li 等，铰接装载机侧向稳定性与滚翻机理，<em>Math. Comput. Model. Dyn. Syst.</em>，2014。<a href="https://doi.org/10.1080/13873954.2013.825871">https://doi.org/10.1080/13873954.2013.825871</a></li>
+    <li>Lei 等，铰接车辆建模与稳定性分析，<em>Applied Sciences</em>，2021。<a href="https://doi.org/10.3390/app11083663">https://doi.org/10.3390/app11083663</a> · <a href="https://www.mdpi.com/2076-3417/11/8/3663">全文 HTML</a></li>
+    <li>Zhou 等，铰接越野车转向机构遗传算法优化，<em>Algorithms</em>，2018。<a href="https://doi.org/10.3390/a11020022">https://doi.org/10.3390/a11020022</a> · <a href="https://www.mdpi.com/1999-4893/11/2/22">全文</a></li>
+    <li>Xu 等，铰接转向铰点深度优化，<em>Algorithms</em>，2019。<a href="https://doi.org/10.3390/a12030055">https://doi.org/10.3390/a12030055</a> · <a href="https://www.mdpi.com/1999-4893/12/3/55">全文</a></li>
+    <li>Wang 等，装载机转向振动与缓冲阀，<em>Energies</em>，2022。<a href="https://doi.org/10.3390/en15030805">https://doi.org/10.3390/en15030805</a> · <a href="https://www.mdpi.com/1996-1073/15/3/805">全文</a></li>
+    <li>Pazooki 等，铰接车架转向车辆三维耦合模型，<em>Int. J. Vehicle Performance</em>，2014。<a href="https://doi.org/10.1504/IJVP.2014.069107">https://doi.org/10.1504/IJVP.2014.069107</a></li>
+  </ul>
+</section>
+
+<section id="s4">
+  <h2>4. 客户需求：急转向过程中轮胎不得离开地面</h2>
+
+  <h3 id="s4-1">4.1 需求在标准中的位置</h3>
+  <div class="danger">
+    <strong>ISO 5010 不要求“四轮始终接地”。</strong>它要求轮胎轨迹留在廊道内。ISO 14397-1 在倾翻载荷试验中，铰接样机摆动桥不锁死，以<strong>倾翻线对侧一个车轮离地</strong>作为测量终点。<a href="#r-iso14397">[S4]</a> 因此“急转向不离地”是<strong>企业/客户加严要求</strong>，属于动态稳定性与乘坐安全，必须单独写成设计输入、仿真工况和出厂试验。
+  </div>
+  <p>建议把客户语句工程化为可试验规范，例如：</p>
+  <blockquote>
+    在水平、干燥、附着良好的混凝土或压实路面上，空载与额定载重、动臂处于运输位置及最高位置、前进与倒退、左右两个方向，以最大转向操纵速率从直线打至机械限位；试验车速取 0（原地）、5 km/h、最高档的 50% 与 80%（不超过制造商允许转向车速）。全过程四轮胎面法向力 &gt; 0（或高速摄影/位移传感器确认胎面未脱离），且 LTR 峰值 ≤ 0.80（内部门限，1.0 为离地）。
+  </blockquote>
+
+  <h3 id="s4-2">4.2 急转向抬轮的物理机理（铰接装载机特有）</h3>
+  <figure>
+    <svg class="fig" viewBox="0 0 980 300" role="img" aria-label="铰接急转向抬轮机示意">
+      <text x="24" y="28" font-size="14" fill="#1e293b">铰接急转向时的载荷转移（俯视 + 侧倾）</text>
+      <rect x="40" y="50" width="160" height="70" rx="8" fill="#dbeafe" stroke="#1d4ed8"/>
+      <text x="70" y="90" font-size="13">前车架+铲斗</text>
+      <rect x="260" y="55" width="150" height="60" rx="8" fill="#dcfce7" stroke="#15803d"/>
+      <text x="290" y="90" font-size="13">后车架+配重</text>
+      <circle cx="200" cy="85" r="8" fill="#b45309"/>
+      <text x="188" y="130" font-size="12">铰接销</text>
+      <line x1="200" y1="85" x2="260" y2="85" stroke="#334155" stroke-width="4"/>
+      <circle cx="70" cy="160" r="18" fill="#64748b"/><circle cx="170" cy="160" r="18" fill="#64748b"/>
+      <circle cx="290" cy="160" r="18" fill="#64748b"/><circle cx="390" cy="160" r="18" fill="#e11d48"/>
+      <text x="360" y="200" font-size="12" fill="#b42318">内侧轮：法向力↓ 可能离地</text>
+      <path d="M520 80 l120 40 l-40 90 l-140 -20 z" fill="#fee2e2" stroke="#b91c1c"/>
+      <text x="540" y="140" font-size="12">质心向弯内横移</text>
+      <text x="540" y="158" font-size="12">轮距投影变窄</text>
+      <text x="520" y="230" font-size="13">侧向加速度 ay ≈ v²/R + 铰接角加速度耦合</text>
+      <text x="520" y="250" font-size="13">油缸力偶 + 四驱运动学封闭 → 顶轮</text>
+      <text x="520" y="270" font-size="13">摆动桥限位打死后变为整车侧倾</text>
+    </svg>
+    <figcaption>图 2　急转向抬轮是几何（质心横移、轮距投影变窄）+ 动力学（ay、角加速度）+ 液压驱动力偶 + 四驱封闭共同作用，不是单一“转向太快”。</figcaption>
+  </figure>
+  <h4>机理 1 — 铰接几何导致的准静态轮荷转移</h4>
+  <p>最大铰接时，前、后车架纵轴不再共线，整车质心相对轮胎支承多边形横向偏移；支承多边形由矩形变成近似三角形或窄四边形，倾翻线常变成“前内轮–后外轮”对角线。这与 ISO 14397-1 要求在最大铰接位计算倾翻载荷是同一几何事实。<a href="#r-iso14397">[S4]</a></p>
+  <h4>机理 2 — 急打方向的惯性与侧向加速度</h4>
+  <p>前车架绕铰接销的角加速度产生惯性力偶；车速升高后 ay = v²/R 叠加。Li 等指出滚翻发生与侧倾角速度超过与侧向加速度、坡度相关的临界值有关；平路急转是其四个典型失稳工况之一。<a href="#r-li2016">[L1]</a></p>
+  <h4>机理 3 — 转向油缸“顶起”车架</h4>
+  <p>双缸不同时受载：伸缸大腔推力与缩缸小腔拉力构成力偶。若铰点偏高、力臂差大、瞬时压力冲击大，力偶含有绕纵轴或斜轴的分量，可把内侧轮“撬”离地面。力臂差引起的压力波动会放大这一过程。<a href="#r-xu2019">[L5]</a><a href="#r-wang2022">[L3]</a></p>
+  <h4>机理 4 — 摆动桥两级侧倾</h4>
+  <p>未到限位时后桥绕摆动销运动，后车架可相对后轴侧倾，后轮往往仍接地而驾驶室已明显倾斜；限位打死后，后桥与后车架刚化，下一阶段就是整车抬轮翻车。<a href="#r-li2016">[L1]</a> 一吨级因轮距窄、质心相对高，从“一级”到“二级”的裕度比 5 t 级更小。</p>
+  <h4>机理 5 — 四驱运动学封闭（常见却易被忽略）</h4>
+  <p>铰接角增大时内外轮滚过半径不同。若差速锁死或静液压闭式系统等效同步、轮胎–地面附着又很高（客户常在水泥地验收），多余路程只能靠轮胎滑移或<strong>车轮离地卸载</strong>来释放。这就是“原地或低速急转向在水泥地上抬轮、在松土上不抬”的典型原因。</p>
+  <h4>机理 6 — 质心高度与工作装置姿态</h4>
+  <p>空载高举动臂：前部质量上移且前桥减载，最易抬前内轮。满载运输位置：质心前移，可能抬后内轮。客户若未规定载荷与动臂姿态，必须按最不利组合验收。</p>
+
+  <h3 id="s4-3">4.3 车辆结构设计上的考虑</h3>
+  <table>
+    <thead><tr><th>结构项</th><th>对不离地的作用</th><th>一吨级建议</th></tr></thead>
+    <tbody>
+      <tr><td>轮距 B</td><td>LTR 与轮距近似成反比；最有效的被动措施</td><td>在运输宽度法规允许下取宽；避免为外观收窄轮距</td></tr>
+      <tr><td>质心高度 h</td><td>侧倾力矩 m·ay·h；空载高举最危险</td><td>油箱、配重、电池下置；限制运输时动臂高度；高举时限速/限铰接角</td></tr>
+      <tr><td>轴距 L 与铰接销位置</td><td>销偏前/偏后改变前后桥荷与倾翻线</td><td>铰接销尽量靠近整车质心高度的垂直线，减小俯仰–侧倾耦合；按 14397 左右满铰接校核</td></tr>
+      <tr><td>最大铰接角</td><td>角越大，质心横移越大，转弯越灵活</td><td>用“作业所需最小半径”反推铰接角，不要盲目 45°；可机械限位 38°–40°</td></tr>
+      <tr><td>摆动桥摆角与限位</td><td>过小则未到轮胎适应路面就打限位；过大则一级侧倾过多、驾驶室晃</td><td>保留 ±8°–10°；限位加弹性缓冲，避免刚性打死后的冲击抬轮</td></tr>
+      <tr><td>铰接轴承高度</td><td>过高则油缸力的竖直分量与侧倾力臂增大</td><td>在通过性允许下降低铰接中心，接近轮心高度</td></tr>
+      <tr><td>油缸铰点三维坐标</td><td>力臂差、行程差、瞬时力偶方向</td><td>按文献做对称优化，使左右伸/缩力臂差最小化<a href="#r-zhou2018">[L2]</a></td></tr>
+      <tr><td>配重与桥荷分配</td><td>空载前桥过轻是抬前轮的主因</td><td>空载前桥荷建议不低于整车 40%–45%（需实车称重优化）</td></tr>
+      <tr><td>轮胎</td><td>宽基、合适气压增加印迹与垂向刚度匹配</td><td>验收气压写死；过气会明显变“跳”</td></tr>
+      <tr><td>车架扭转刚度</td><td>过柔则轮荷分配不确定；过刚则单轮过障冲击直接抬对角轮</td><td>与摆动桥分工：车架抗扭、后桥适应路面</td></tr>
+      <tr><td>差速/四驱</td><td>闭锁加剧运动学顶轮</td><td>水泥地急转向允许轮间差速；差速锁仅直线出土时使用，并在手册警示</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="s4-4">4.4 转向性能设计上的考虑</h3>
+  <table>
+    <thead><tr><th>转向系统项</th><th>考虑</th></tr></thead>
+    <tbody>
+      <tr><td>最大铰接角速度 ω</td><td>ω 过大直接增大前车架角加速度。用转向泵排量、转向器排量、缸径匹配出“作业可接受、稳定性不越线”的满舵时间（建议怠速 3 s 左右，额定转速不要显著快于 2 s，除非仿真证明 LTR 合格）</td></tr>
+      <tr><td>流量调制</td><td>方向盘转速–流量应连续可调（5010：不能调制则限速 10 km/h）。禁止开关阀全开打满舵</td></tr>
+      <tr><td>末端缓冲</td><td>机械限位前油缸缓冲套 + 液压缓冲阀，降低打极限时的压力峰和反向回弹（回弹会二次抬轮）<a href="#r-wang2022">[L3]</a></td></tr>
+      <tr><td>车速相关限角（强烈推荐）</td><td>低速允许满铰接；车速升高后减小最大铰接角或转向流量。这是同时满足“作业灵活”和“急转向不离地”的系统解。属安全功能，需按 ISO 13849/19014 评估</td></tr>
+      <tr><td>中位刚度</td><td>过软则蛇行；过硬则路面冲击传向车架。按 Lei 等：液压系统对稳定性影响显著<a href="#r-lei2021">[L4]</a></td></tr>
+      <tr><td>转向溢流压力</td><td>压力过高则油缸能“硬顶”车架抬轮。溢流设定应略高于最不利地面转向阻力，而不是越高越好</td></tr>
+      <tr><td>原地转向策略</td><td>静液压行走可在打方向时允许驱动系统微滑转或短暂卸载，避免四轮封闭</td></tr>
+      <tr><td>5010 与客户需求同时满足</td><td>降低转向速率有利于不离地，但不得导致 16 km/h 廊道跟不上（转向能力不足）。必须在“廊道跟踪”和“LTR”之间做多目标匹配</td></tr>
+    </tbody>
+  </table>
+
+  <h3 id="s4-5">4.5 建议的设计流程与验证试验</h3>
+  <ol>
+    <li><strong>参数冻结：</strong>整备质量、前后桥荷、质心三维、铰接角、轮距轴距、摆动角、缸径铰点、转向泵/转向器排量、轮胎型号气压。</li>
+    <li><strong>准静态校核：</strong>直线与左右满铰接、空载/额定载、动臂最低/运输/最高，计算各轮法向力，要求满铰接静态法向力仍 &gt;0 且有裕度（例如最小轮荷 ≥8%–10% 轴荷）。同时按 ISO 14397-1 出倾翻载荷。</li>
+    <li><strong>多体动力学：</strong>7DOF 或 ADAMS/RecurDyn 模型，复现 Li 等平路急转工况；输出四轮 Fz、LTR、侧倾角速度。<a href="#r-li2013">[L7]</a> 轮胎模型至少达到 Fiala 级。</li>
+    <li><strong>液压联合仿真：</strong>转向器–油缸–优先阀–缓冲阀，避免只做纯机械模型漏掉压力冲击。<a href="#r-wang2022">[L3]</a></li>
+    <li><strong>实车：</strong>
+      <ul>
+        <li>轮荷仪或应变式轴头测 Fz；</li>
+        <li>高速相机看胎侧是否透光离地；</li>
+        <li>铰接角、方向盘转速、A/B 口压力、IMU（ay、φ̇）；</li>
+        <li>水泥地与压实土各做一遍（水泥地更苛刻）；</li>
+        <li>差速锁开/闭对比。</li>
+      </ul>
+    </li>
+    <li><strong>与 ISO 5010 同车完成：</strong>直线保持、16 km/h 廊道、转向力、900 N 转向柱；若 Vmax≥20 km/h 加辅助转向全套。</li>
+    <li><strong>手册与培训：</strong>禁止举升高速急转向、禁止差速锁打方向、辅助转向能力限制。</li>
+  </ol>
+  <div class="ok">
+    <strong>判定建议：</strong>客户条款用“Fz,i(t) &gt; 0 对全部车轮”作为通过/失败；内部用 LTR≤0.8 作为设计门限。不要用 ROPS 试验代替本项——ROPS 是翻车后的乘员生存空间，不是防抬轮。
+  </div>
+</section>
+
+<section id="s5">
+  <h2>5. 一吨级铰接装载机转向设计检查清单</h2>
+  <table>
+    <thead><tr><th>#</th><th>检查项</th><th>判据</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>ISO 6014 最高车速</td><td>记录前进/倒车；≥20 km/h 则辅助转向强制</td></tr>
+      <tr><td>2</td><td>主转向型式</td><td>全液压铰接；无助力手力是否 ≥115 N</td></tr>
+      <tr><td>3</td><td>辅助转向硬件</td><td>蓄能器/应急泵、单向隔离、报警灯/蜂鸣器</td></tr>
+      <tr><td>4</td><td>优先阀与制动</td><td>转向优先工作装置；紧急制动优先转向（ISO 3450）</td></tr>
+      <tr><td>5</td><td>软管</td><td>ISO 18752；爆破 ≥4×工作压力；无擦磨扭转</td></tr>
+      <tr><td>6</td><td>中位特性</td><td>松开方向盘前进铰接角不增大</td></tr>
+      <tr><td>7</td><td>转向力</td><td>16±2 km/h 廊道 ≤115 N</td></tr>
+      <tr><td>8</td><td>左右对称</td><td>30° 内行程差 ≤25%；力争满舵时间差 ≤10%</td></tr>
+      <tr><td>9</td><td>转向柱</td><td>900 N×2；当扶手则 1000 N；试验后仍可转向</td></tr>
+      <tr><td>10</td><td>ISO 7457 半径</td><td>写入样本与试验报告</td></tr>
+      <tr><td>11</td><td>ISO 14397-1</td><td>直线+左右满铰接倾翻载荷；铲斗 k=0.50</td></tr>
+      <tr><td>12</td><td>急转向不离地</td><td>第 4.1 条工况矩阵全部 Fz&gt;0</td></tr>
+      <tr><td>13</td><td>缓冲</td><td>油缸端部缓冲 + 可选缓冲阀</td></tr>
+      <tr><td>14</td><td>摆动桥</td><td>摆角、弹性限位、与转向解耦</td></tr>
+      <tr><td>15</td><td>差速锁逻辑</td><td>转向时解锁或报警</td></tr>
+      <tr><td>16</td><td>手册</td><td>5010 第 10 章 + 不离地相关操作限制</td></tr>
+      <tr><td>17</td><td>功能安全（若电控限角/限速）</td><td>ISO 13849 / ISO 19014，5010 不覆盖</td></tr>
+      <tr><td>18</td><td>小型装载机进出互锁（若适用）</td><td>ISO 20474-3：离座时行走/举升/液压附件自动锁止或失效</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section id="refs">
+  <h2>参考文献、标准与链接</h2>
+  <h3>标准与官方目录</h3>
+  <ol class="refs">
+    <li id="r-iso">ISO 5010:2019 标准页（范围、委员会、2019-11、2025 确认）：<a href="https://www.iso.org/standard/68453.html">https://www.iso.org/standard/68453.html</a> ；西语目录摘要：<a href="https://www.iso.org/es/contents/data/standard/06/84/68453.html">https://www.iso.org/es/contents/data/standard/06/84/68453.html</a></li>
+    <li id="r-gbt">GB/T 14781-2023《土方机械 轮式机器 转向要求》（ISO 5010:2019, IDT），2023-09-07 实施：<a href="https://std.samr.gov.cn/gb/search/gbDetailed?id=053404E3EF5A8F91E06397BE0A0A9209">全国标准信息公共服务平台</a> ；<a href="https://www.ndls.org.cn/standard/detail/d97c870219dc5144b82402d889be11c8">国家标准馆条目</a></li>
+    <li id="r-iso2019pdf">ISO 5010:2019 公开预览样章（范围、术语、第4章至4.3/4.4、目录）：<a href="https://cdn.standards.iteh.ai/samples/68453/cfe5e4a2b9344e7fbc157fc8c3b9f6fc/ISO-5010-2019.pdf">iTeh sample PDF</a> ；目录页：<a href="https://standards.iteh.ai/catalog/standards/iso/e2874a51-6b5d-4f81-b6e9-f70ce30be368/iso-5010-2019">https://standards.iteh.ai/catalog/standards/iso/e2874a51-6b5d-4f81-b6e9-f70ce30be368/iso-5010-2019</a></li>
+    <li id="r-iso14397">ISO 14397-1:2007 装载机额定载重量与倾翻载荷：<a href="https://cdn.standards.iteh.ai/samples/39806/ffd34a2921c64d5691e47223c955c3eb/ISO-14397-1-2007.pdf">sample PDF</a> ；Amd.1:2019 稳定系数表：<a href="https://cdn.standards.iteh.ai/samples/74659/3d9010e9ad51494b8d3d1a5833356092/ISO-14397-1-2007-Amd-1-2019.pdf">Amd.1 sample</a></li>
+    <li id="r-en474">EN 474-1:2022 目录含 4.6 Steering system，并引用 EN ISO 5010:2019：<a href="https://cdn.standards.iteh.ai/samples/60057/8051e95c8c104ce2a14e4f3f4a4963ed/SIST-EN-474-1-2022.pdf">SIST sample PDF</a> ；<a href="https://standards.iteh.ai/catalog/standards/cen/84021cbc-6757-4970-856a-4ea8e5a34871/en-474-1-2022">EN 474-1:2022 目录</a></li>
+    <li id="r-iso20474">ISO 20474-3:2017 装载机安全（小型装载机定义、稳定性引用 14397）：<a href="https://www.iso.org/standard/60735.html">https://www.iso.org/standard/60735.html</a> ；<a href="https://cdn.standards.iteh.ai/samples/60735/31bdffd920c84e9486cb98a76861998b/ISO-20474-3-2017.pdf">sample PDF</a></li>
+    <li id="r-iteh2019">ISO 5010:2019 预览中的 900 N / 1000 N 转向柱试验与 4.2–4.3 条款：同 <a href="https://standards.iteh.ai/catalog/standards/iso/e2874a51-6b5d-4f81-b6e9-f70ce30be368/iso-5010-2019">iTeh catalog sample</a></li>
+    <li id="r-iso1992pdf">ISO 5010:1992 公开样章（115 N / 350 N、廊道、100 m×1.25 宽、16±2 / 8±2 km/h、900 N、图1/图2 尺寸）：<a href="https://cdn.standards.iteh.ai/samples/11027/695fbef8b37b40f4b5e15826b4d2c586/ISO-5010-1992.pdf">sample PDF</a></li>
+    <li id="r-iso2007pdf">ISO 5010:2007 公开样章（&gt;20 km/h 范围、全动力转向 115 N 注、液压 4 倍爆破、无调制则 ≤10 km/h）：<a href="https://cdn.standards.iteh.ai/samples/45105/c9cdbee3427f40b6a73e05bbae58d901/ISO-5010-2007.pdf">sample PDF</a></li>
+    <li id="r-iso1984">ISO 5010:1984 备选转向时间 4 s / 6 s：<a href="https://cdn.standards.iteh.ai/samples/11026/cf7f7774a11141f9b75556b656e4ff3f/ISO-5010-1984.pdf">sample PDF</a></li>
+    <li id="r-yanmar">小型铰接装载机转向角、摆动桥、双缸限位缓冲与 LS 优先的产品说明：<a href="https://www.tdxltd.co.nz/media/pdfs/52751.pdf">Yanmar V1-1A/V2-3B</a> ；<a href="https://melkerbaltik.eu/yanmarleaflets/V100_0122.pdf">Yanmar V100</a> ；<a href="https://yanmarce.com/wp-content/uploads/2021/12/V12-Spec-Sheet-US-10042021.pdf">V12 spec</a></li>
+    <li>挪威标准目录对 ISO 5010:2019 摘要：<a href="https://online.standard.no/en/iso-5010-2019">https://online.standard.no/en/iso-5010-2019</a></li>
+  </ol>
+  <h3>研究文献</h3>
+  <ol class="refs" start="13">
+    <li id="r-li2016">X. Li, Y. Wu, W. Zhou, Z. Yao. Study on Roll Instability Mechanism and Stability Index of Articulated Steering Vehicles. <em>Mathematical Problems in Engineering</em>, 2016. <a href="https://doi.org/10.1155/2016/7816503">https://doi.org/10.1155/2016/7816503</a> ；Wiley 页：<a href="https://onlinelibrary.wiley.com/doi/10.1155/2016/7816503">https://onlinelibrary.wiley.com/doi/10.1155/2016/7816503</a></li>
+    <li id="r-zhou2018">C. Zhou, X. Liu, F. Xu. Design Optimization of Steering Mechanisms for Articulated Off-Road Vehicles Based on Genetic Algorithms. <em>Algorithms</em>, 2018, 11(2), 22. <a href="https://www.mdpi.com/1999-4893/11/2/22">https://www.mdpi.com/1999-4893/11/2/22</a> ；<a href="https://doi.org/10.3390/a11020022">https://doi.org/10.3390/a11020022</a></li>
+    <li id="r-wang2022">T. Wang, Y. Wang, L. Zhu, et al. Research on Steering Vibration Analysis of Wheel Loader and Cushion Valve Design. <em>Energies</em>, 2022, 15(3), 805. <a href="https://www.mdpi.com/1996-1073/15/3/805">https://www.mdpi.com/1996-1073/15/3/805</a> ；<a href="https://doi.org/10.3390/en15030805">https://doi.org/10.3390/en15030805</a></li>
+    <li id="r-lei2021">T. Lei, J. Wang, Z. Yao. Modelling and Stability Analysis of Articulated Vehicles. <em>Applied Sciences</em>, 2021, 11(8), 3663. <a href="https://www.mdpi.com/2076-3417/11/8/3663">https://www.mdpi.com/2076-3417/11/8/3663</a> ；<a href="https://doi.org/10.3390/app11083663">https://doi.org/10.3390/app11083663</a></li>
+    <li id="r-xu2019">F. Xu, X. Liu, W. Chen, C. Zhou, B. Cao. Depth Optimization Analysis of Articulated Steering Hinge Position Based on Genetic Algorithm. <em>Algorithms</em>, 2019, 12(3), 55. <a href="https://www.mdpi.com/1999-4893/12/3/55">https://www.mdpi.com/1999-4893/12/3/55</a> ；<a href="https://doi.org/10.3390/a12030055">https://doi.org/10.3390/a12030055</a></li>
+    <li id="r-inacomm">铰接工程机械转向油缸铰点与转向力/压力优化（会议论文 PDF）：<a href="https://inacomm2013.ammindia.org/Papers/058-inacomm2013_submission_19.pdf">https://inacomm2013.ammindia.org/Papers/058-inacomm2013_submission_19.pdf</a></li>
+    <li id="r-li2013">X. Li, G. Wang, Z. Yao, J. Qu. Dynamic model and validation of an articulated steering wheel loader on slopes and over obstacles. <em>Vehicle System Dynamics</em>, 2013, 51(9), 1305–1323. <a href="https://doi.org/10.1080/00423114.2013.800893">https://doi.org/10.1080/00423114.2013.800893</a></li>
+    <li>X. Li, G. Wang, Z. Yao, Y. Yang. Research on lateral stability and rollover mechanism of articulated wheel loader. <em>Mathematical and Computer Modelling of Dynamical Systems</em>, 2014, 20(3), 248–263. <a href="https://doi.org/10.1080/13873954.2013.825871">https://doi.org/10.1080/13873954.2013.825871</a></li>
+    <li>Z. Yao, G. Wang, X. Li, et al. Dynamic simulation for the rollover stability performances of articulated vehicles. <em>Proc. IMechE Part D</em>, 2014, 228(7), 771–783. 作者页列出：<a href="http://mae.jlu.edu.cn/en/info/1134/1315.htm">http://mae.jlu.edu.cn/en/info/1134/1315.htm</a></li>
+    <li>A. Pazooki, S. Rakheja, D. Cao. A three-dimensional model of an articulated frame-steer vehicle for coupled ride and handling dynamic analyses. <em>Int. J. Vehicle Performance</em>, 2014. <a href="https://doi.org/10.1504/IJVP.2014.069107">https://doi.org/10.1504/IJVP.2014.069107</a></li>
+    <li>N. L. Azad, A. Khajepour, J. McPhee. Robust state feedback stabilization of articulated steer vehicles. <em>Vehicle System Dynamics</em>, 2007, 45(3), 249–275. <a href="https://doi.org/10.1080/00423110600907469">https://doi.org/10.1080/00423110600907469</a></li>
+  </ol>
+</section>
+
+<footer>
+  <p>本文档供一吨级铰接式轮式装载机转向系统方案、计算、试验大纲与客户需求转化使用。符合性声明须依据正式购买的 ISO 5010:2019 或 GB/T 14781-2023 原文及本机实测数据。</p>
+</footer>
+</main>
+</div>
+</body>
+</html>
