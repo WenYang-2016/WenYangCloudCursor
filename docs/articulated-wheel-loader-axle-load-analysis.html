@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>铰接式轮式装载机前后桥荷 1:1 与转向过程均匀桥荷的技术分析</title>
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)']],
+        displayMath: [['\\[', '\\]']],
+        processEscapes: true
+      },
+      options: { skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  <style>
+    :root {
+      --ink: #1c1917;
+      --muted: #57534e;
+      --line: #d6d3d1;
+      --paper: #faf7f2;
+      --card: #ffffff;
+      --accent: #9a3412;
+      --accent-soft: #fff7ed;
+      --table-head: #1f2937;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: "Source Han Serif SC", "Noto Serif SC", "Songti SC", "SimSun", Georgia, serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.75;
+      font-size: 17px;
+    }
+    .wrap {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 48px 28px 96px;
+    }
+    header.hero {
+      border-bottom: 3px solid var(--ink);
+      padding-bottom: 28px;
+      margin-bottom: 36px;
+    }
+    .kicker {
+      letter-spacing: 0.18em;
+      font-size: 12px;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+      margin: 0 0 12px;
+    }
+    h1 {
+      font-size: 32px;
+      line-height: 1.35;
+      margin: 0 0 16px;
+      font-weight: 700;
+    }
+    .sub {
+      color: var(--muted);
+      margin: 0;
+      font-size: 15.5px;
+    }
+    nav.toc {
+      background: var(--card);
+      border: 1px solid var(--line);
+      padding: 22px 26px;
+      margin: 0 0 40px;
+    }
+    nav.toc h2 {
+      font-size: 16px;
+      margin: 0 0 10px;
+      font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif;
+    }
+    nav.toc ol { margin: 0; padding-left: 22px; }
+    nav.toc li { margin: 4px 0; }
+    nav.toc a { color: var(--ink); text-decoration: none; border-bottom: 1px dotted var(--line); }
+    nav.toc a:hover { color: var(--accent); border-bottom-color: var(--accent); }
+    h2 {
+      font-size: 24px;
+      margin: 48px 0 16px;
+      padding-top: 8px;
+      border-top: 1px solid var(--line);
+    }
+    h3 { font-size: 19px; margin: 28px 0 10px; }
+    h4 { font-size: 16.5px; margin: 22px 0 8px; }
+    p { margin: 0 0 14px; }
+    strong { font-weight: 700; }
+    a { color: #9a3412; }
+    .lead {
+      font-size: 18.5px;
+      background: var(--accent-soft);
+      border-left: 4px solid var(--accent);
+      padding: 14px 18px;
+      margin: 0 0 22px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14.5px;
+      margin: 8px 0 22px;
+      background: var(--card);
+      font-family: "Source Han Sans SC", "Noto Sans SC", "PingFang SC", sans-serif;
+    }
+    th, td {
+      border: 1px solid var(--line);
+      padding: 8px 10px;
+      vertical-align: top;
+      text-align: left;
+    }
+    th {
+      background: var(--table-head);
+      color: #fff;
+      font-weight: 600;
+    }
+    tbody tr:nth-child(even) { background: #f5f5f4; }
+    .eq-note {
+      color: var(--muted);
+      font-size: 14px;
+      margin-top: -8px;
+    }
+    ul, ol { margin: 0 0 16px; padding-left: 24px; }
+    li { margin: 4px 0; }
+    .src {
+      font-size: 14.5px;
+      font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif;
+    }
+    .src li { margin: 6px 0; word-break: break-all; }
+    footer {
+      margin-top: 56px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13.5px;
+      font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif;
+    }
+    .tag {
+      display: inline-block;
+      font-family: "Source Han Sans SC", "Noto Sans SC", sans-serif;
+      font-size: 12px;
+      border: 1px solid var(--ink);
+      padding: 1px 8px;
+      margin-right: 6px;
+      letter-spacing: 0.04em;
+    }
+    @media print {
+      body { background: #fff; font-size: 12pt; }
+      .wrap { padding: 0; max-width: none; }
+      nav.toc { break-after: page; }
+      a { color: inherit; text-decoration: none; }
+      h2 { break-after: avoid; }
+    }
+    @media (max-width: 640px) {
+      .wrap { padding: 28px 16px 64px; }
+      h1 { font-size: 24px; }
+      table { font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="hero">
+      <p class="kicker">Technical Note · Construction Machinery Chassis</p>
+      <h1>铰接式轮式装载机前后桥荷 1:1 与转向过程均匀桥荷的技术分析</h1>
+      <p class="sub">
+        <span class="tag">铰接转向</span>
+        <span class="tag">4×4</span>
+        <span class="tag">摆动后桥</span>
+        本文把“空满载桥荷应以 1:1 为中心”和“转向过程中均匀桥荷的意义”写成一份可独立阅读的技术说明，供总体布置、配重和稳定性校核使用。
+      </p>
+    </header>
+
+    <nav class="toc" aria-label="目录">
+      <h2>目录</h2>
+      <ol>
+        <li><a href="#p1">上篇：为什么认为前后桥荷 1:1 比较好</a>
+          <ol>
+            <li><a href="#p1-1">先把“1:1”说清楚</a></li>
+            <li><a href="#p1-2">静力学：载荷在前轴之外，空载必须后重</a></li>
+            <li><a href="#p1-3">四驱附着利用</a></li>
+            <li><a href="#p1-4">铲掘：后桥不能在插入时被卸空</a></li>
+            <li><a href="#p1-5">铰接转向与稳定三角形</a></li>
+            <li><a href="#p1-6">制动与坡道</a></li>
+            <li><a href="#p1-7">总体布置上怎样“做出”1:1 中心</a></li>
+            <li><a href="#p1-8">什么时候不要追求 1:1</a></li>
+            <li><a href="#p1-9">上篇结论</a></li>
+          </ol>
+        </li>
+        <li><a href="#p2">下篇：转向过程中均匀桥荷有什么意义</a>
+          <ol>
+            <li><a href="#p2-1">支承从矩形变成三角形</a></li>
+            <li><a href="#p2-2">摆动桥把侧翻分成两级</a></li>
+            <li><a href="#p2-3">横摆：前、后桥一对侧向力</a></li>
+            <li><a href="#p2-4">V 型循环：边驱边转</a></li>
+            <li><a href="#p2-5">运动学不协调与循环功率</a></li>
+            <li><a href="#p2-6">转向油缸与回正力矩</a></li>
+            <li><a href="#p2-7">转向阶段对照</a></li>
+            <li><a href="#p2-8">和下篇的衔接</a></li>
+          </ol>
+        </li>
+        <li><a href="#refs">参考文献与资料</a></li>
+      </ol>
+    </nav>
+
+    <article>
+      <h2 id="p1">上篇：为什么认为前后桥荷 1:1 比较好</h2>
+      <p class="lead">
+        “前后桥荷 1:1 较好”是对的，但对象不是空载静止停在地磅上的那一瞬间，而是四轮驱动、铰接转向、载荷在前轴之前的整机，在空载行驶与满载作业之间把附着重量用满、又别把后桥卸空。更准确的工程表述是：空载大约前 40% / 后 60%，额定载荷运输位大约前 60% / 后 40%，两种常用工况关于 1:1 对称；平均值接近 1:1，而不是空、满载都钉死在 50/50。
+      </p>
+
+      <h3 id="p1-1">1. 先把“1:1”说清楚</h3>
+      <p>铰接式轮式装载机有三个和公路车完全不同的约束：</p>
+      <ol>
+        <li>
+          <strong>额定载荷在前轴之前</strong>，不在轴距以内。载荷一进斗，质心前移，前桥增载、后桥减载。KTH 对轮式装载机的总结是：满载时前桥荷可到空载前桥的约 3～4 倍，后桥荷可降到空载后桥的约 2/3。
+        </li>
+        <li>
+          <strong>几乎都是 4×4，且多数没有轴间差速器</strong>（分动箱刚性把前后桥连在一起；前桥常用限滑/锁止，后桥常开式）。牵引、循环功率、轮胎滑转都由两桥法向力共同决定。
+        </li>
+        <li>
+          <strong>后桥是摆动桥</strong>。整机侧倾支承实际是三角形：两前轮接地点 + 后桥摆动铰。后桥垂向反力一旦接近 0，三角形退化成两点，纵向、侧向稳定性一起垮。
+        </li>
+      </ol>
+      <p>所以行业里说的 1:1，通常是下面三句话叠在一起，不能拆开用：</p>
+      <table>
+        <thead>
+          <tr>
+            <th>说法</th>
+            <th>真正含义</th>
+            <th>若理解成“空载就 50/50”会怎样</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>四驱车桥荷 1:1 附着利用最高</td>
+            <td>对<strong>开式轴间差速</strong>严格成立；对刚性 4×4 则是减小循环功率、均衡摩擦圆</td>
+            <td>空载 50/50 时，满载后桥过轻，倾翻裕度和后桥驱动力不够</td>
+          </tr>
+          <tr>
+            <td>空满载对 1:1 对称</td>
+            <td>空载约 4:6、满载约 6:4</td>
+            <td>这才是装载机总体布置的常用目标</td>
+          </tr>
+          <tr>
+            <td>前后轮胎/桥规格尽量一致</td>
+            <td>时间平均负荷接近，备件和磨损才对称</td>
+            <td>峰值仍在满载前桥，前桥结构往往仍更强</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        实测也符合“空载略后重、不要极端”。JCB 416B 空斗前/后桥约 4261 / 5184 kg，约 <strong>45:55</strong>。公开资料也把空斗 40/60 当作典型目标。井下 LHD 的设计研究则明确希望 <strong>空斗 40/60、满斗 60/40</strong>；而现场常见的 20/80 与 80/20 被认为过偏。国内经验区间也接近：空载后桥更大；满载前桥大约 60%～65%。
+      </p>
+
+      <h3 id="p1-2">2. 静力学：载荷在前轴之外，空载必须后重</h3>
+      <p>
+        取轴距 \(L\)，空载重力 \(G\)，空载质心到前轴水平距 \(a\)，额定物料重力 \(Q\)，物料质心在前轴之前水平距 \(e\)。
+      </p>
+      <p>空载：</p>
+      \[
+        Z_{r0}=\frac{Ga}{L},\qquad Z_{f0}=G-Z_{r0}
+      \]
+      <p>满载（斗在运输位，忽略铰接角）：</p>
+      \[
+        Z_r=\frac{Ga-Qe}{L},\qquad Z_f=G+Q-Z_r
+      \]
+      <p>后桥离地（纵向倾翻临界）时 \(Z_r=0\)：</p>
+      \[
+        Q_{\mathrm{tip}}=\frac{Ga}{e}
+      \]
+      <p>
+        ISO 14397-1 / SAE J818 把轮胎式装载机的额定作业载荷取为 <strong>全转向静态倾翻载荷的约 50%</strong>，本质就是给后桥留垂向反力，并覆盖铰接、轮胎变形、坡道和动载。Volvo L120H 量级：整机约 20 t，直线倾翻约 15.6 t，全转向倾翻约 13.3 t，额定作业载荷远小于倾翻值。
+      </p>
+      <p>配重和发动机后置，就是在把 \(a\) 做大：空载后桥多扛一些，换来满载时后桥还不至于被卸空。</p>
+      <p>
+        用一台 20 t 级、轴距 3.3 m、物料质心在前轴前 1.4 m、额定物料 6 t 的数字，把三种空载方案比一遍：
+      </p>
+      <table>
+        <thead>
+          <tr>
+            <th>空载前:后</th>
+            <th>空载质心 \(a\)</th>
+            <th>满载前:后</th>
+            <th>直线理论倾翻载荷（相对）</th>
+            <th>评价</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>50:50</td>
+            <td>1.65 m</td>
+            <td>约 71:29</td>
+            <td>基准</td>
+            <td>空载“好看”，满载后桥过轻</td>
+          </tr>
+          <tr>
+            <td><strong>40:60</strong></td>
+            <td><strong>1.98 m</strong></td>
+            <td><strong>约 64:36</strong></td>
+            <td><strong>+20%</strong></td>
+            <td><strong>空满载跨在 1:1 两侧</strong></td>
+          </tr>
+          <tr>
+            <td>30:70</td>
+            <td>2.31 m</td>
+            <td>约 56:44</td>
+            <td>+40%</td>
+            <td>倾翻更好，但空载前桥过轻、后胎过载</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        这就是“1:1 较好”的定量来源：<strong>不是某一瞬间 50/50，而是空、满两个高频工况的算术中心在 1:1 附近。</strong> 空载再往 50/50 靠，满载后桥会掉到约 30% 以下，转向、制动、爬坡、铲掘都会先丢后轮。满载前桥 60%～65%、后桥 35%～40%，和现场经验一致。
+      </p>
+
+      <h3 id="p1-3">3. 为什么四驱会把 1:1 推到最优：附着利用</h3>
+      <h4>3.1 有轴间差速（开式）</h4>
+      <p>最大驱动力被轻载桥限制：</p>
+      \[
+        F_{\phi}=2\varphi\min(Z_f,Z_r)
+      \]
+      <p>附着重量利用率</p>
+      \[
+        \eta=\frac{2\min(Z_f,Z_r)}{Z_f+Z_r}\le 1
+      \]
+      <p>
+        等号当且仅当 \(Z_f=Z_r\)。空载 40:60 时 \(\eta=0.80\)，两成附着重量浪费；20:80 时 \(\eta=0.40\)。这是教科书里“四驱桥荷 1:1”最硬的一条。
+      </p>
+
+      <h4>3.2 无轴间差速（装载机主流：刚性 4×4）</h4>
+      <p>理想、同 \(\varphi\)、无运动学不协调时：</p>
+      \[
+        F_{\phi}=\varphi(Z_f+Z_r)=\varphi G
+      \]
+      <p>看起来和分配无关。实际仍偏 1:1，原因有三条。</p>
+      <p>
+        <strong>轮胎摩擦椭圆。</strong> 单胎能提供的纵、侧向力满足 \(F_x^2+F_y^2\le(\mu Z)^2\)。铲掘、铰接转向、坡道经常是纵滑 + 侧偏同时发生。法向力差一倍，轻载桥先饱和、先滑；刚性连接下重载桥也跟着被拖进滑转或循环功率。
+      </p>
+      <p>
+        <strong>运动学不协调 → 循环功率。</strong> 两桥角速度被传动系锁死，但：法向力不同导致轮胎径向变形不同、滚动半径不同；铰接后内外轮、前后桥轨迹弧长不同；左右开式差速与前桥锁止的组合使滑转分配更不对称。轻载桥更容易纯滑，重载桥则可能被反拖，出现寄生功率（循环功率）。桥荷越接近，滚动半径差越小，寄生功率越低。
+      </p>
+      <p>
+        <strong>空满载要共用同一套轮胎。</strong> 现代机型前后轮尺寸相同，就是为了互换和均匀磨损；早期铰接装载机还用过前轮更大的拖拉机遗迹，后来被等尺寸车轮取代。时间平均桥荷靠近 1:1，四条胎才可能接近等寿命。峰值仍在满载前桥，所以前桥壳体、半轴、轮边往往仍按更恶劣工况设计；Volvo 早期 L120 前后桥型号就不相同（前 AH60、后 AH53）。
+      </p>
+
+      <h3 id="p1-4">4. 铲掘：后桥不能在插入时被卸空</h3>
+      <p>
+        插入阻力主要由行走牵引力提供。斗刃水平力 \(F_c\) 对质心取矩，等效把重量从后桥转到前桥：
+      </p>
+      \[
+        \Delta Z \approx \frac{F_c\cdot h_{\mathrm{blade}}}{L}
+      \]
+      <p>于是插入过程中：</p>
+      \[
+        Z_r^{\mathrm{dig}}=Z_r-\Delta Z,\qquad F_{\phi}\approx\varphi(Z_f^{\mathrm{dig}}+Z_r^{\mathrm{dig}})
+      \]
+      <p>
+        若空载已经偏前，插入时后轮先翘（现场说的“后轮悬起”），牵引力从四轮变成两轮，插入力立刻掉下来，前轮也跟着打滑。国内对动态桥荷的研究把“单独铲掘 / 配合铲掘 / 转斗 / 直接提臂”都和桥荷迁移绑在一起，插入过猛导致前轮悬起是明确工况。
+      </p>
+      <p>因此空载后重（约 4:6）有双重作用：</p>
+      <ul>
+        <li>静态：抬高 \(Q_{\mathrm{tip}}\)；</li>
+        <li>动态：给插入过程预留后桥荷，尽量保持四轮都在附着极限以内。</li>
+      </ul>
+      <p>满载运输位再回到约 6:4，后桥仍有约 35%～40% 的法向力，转向、制动、下坡才不至于变成两轮车。</p>
+
+      <h3 id="p1-5">5. 铰接转向：稳定三角形比轴荷百分比更严</h3>
+      <p>铰接 ±35°～±42° 时发生三件事：</p>
+      <ol>
+        <li><strong>支承由矩形变成三角形</strong>（后桥摆动铰是一个点）。稳定性看的是整机质心是否落在“两前轮 + 后摆动铰”之内，不是看左右后轮是否平均。</li>
+        <li><strong>后车体质心横向外移</strong>，靠近倾翻棱。这是全转向倾翻载荷低于直线 10%～20% 的几何原因。</li>
+        <li><strong>有效轴距缩短</strong>，纵向力臂变小，同样物料下后桥更易减载。</li>
+      </ol>
+      <p>
+        后桥荷太小：满载举升 + 全转向时质心贴着倾翻棱，单侧后轮甚至可能出现负反力（计算上“拉脱”）。后桥荷太大：空载高速直线时，铰接转向的“蛇行”（snaking）阻尼变差，转向液压刚度和阻尼要跟着加。
+      </p>
+      <p>
+        1:1 附近的含义是：空载后桥足够压住摆动桥、提供直线稳定性；满载后桥仍留在三角形内部，而不是把质心推到前轴上。配重的作用也在这里：物料前移时把重量从后轮转到前轮，配重保证后轮还有足够法向力做牵引、转向和制动。
+      </p>
+
+      <h3 id="p1-6">6. 制动与坡道：动载让“略后重的空载”更必要</h3>
+      <p>制动减速度 \(a\)、质心高 \(h\)：</p>
+      \[
+        Z_{f,\mathrm{dyn}}=Z_f+\frac{h}{L}ma,\qquad Z_{r,\mathrm{dyn}}=Z_r-\frac{h}{L}ma
+      \]
+      <p>
+        满载、动臂高举时 \(h\) 大、静态 \(Z_r\) 已经小，紧急制动可以把后桥卸到开式后差速几乎没有制动力的程度。动态桥荷研究专门把“最大卸载高度行驶制动”列为危险工位。
+      </p>
+      <p>
+        上坡同理：重量后移，空载前桥若只有 30%，爬坡时前轮更轻，刚性 4×4 下前轮易滑、后轮易过载。空载 40% 前桥是给坡道和制动留的下限，不是随便选的整数。
+      </p>
+
+      <h3 id="p1-7">7. 总体布置上怎样“做出”1:1 中心</h3>
+      <p>实现手段按效果排序：</p>
+      <ol>
+        <li><strong>发动机、变速箱、冷却、配重放后车体</strong>（装载机从后置拖拉机演化而来，就是这条）。</li>
+        <li><strong>铰接点前后距离 \(l_f,l_r\)</strong>：前车体短、后车体略长，有利于空载质心靠后，同时全转向时后质心外移不过分。</li>
+        <li><strong>配重质量与力臂</strong>：用最小配重满足全转向倾翻、插入后轮不翘、后胎空载不超载。配重不是越大越好——多出来的是死重，油耗、轮胎、循环时间全涨。</li>
+        <li><strong>斗、连杆、配重的成套标定</strong>：换加长臂、大斗、属具后必须重算 \(e\) 和 \(Q\)，否则满载会从 6:4 滑到 8:2。</li>
+        <li><strong>电驱/独立驱动</strong>可以按瞬时桥荷分配转矩，从控制上弥补偏离 1:1 的损失，但不能替代倾翻所需的后桥法向力。</li>
+      </ol>
+      <p>
+        设计校核至少覆盖这些工位：空载运输、额定载荷运输位、最大卸载高度、直线/全转向倾翻、插入料堆、转斗、上坡起步、高举紧急制动、铰接在横坡上。桥荷传感器超限时限制举升/前倾，已经是量产保护逻辑。
+      </p>
+
+      <h3 id="p1-8">8. 什么时候不要追求 1:1</h3>
+      <ul>
+        <li><strong>空载就做成 50/50</strong>：满载后桥过轻，额定载荷和插入能力一起掉。</li>
+        <li><strong>空载 20/80、满载 80/20</strong>：倾翻数字可以很好看，但空载后胎过载、满载前胎过载、四驱附着利用差，LHD 文献把这组比例当作应避免的现场常见值。</li>
+        <li><strong>石方、矿用、高举重载为主</strong>：应略偏后重（空载可到 35:65），用配重换倾翻裕度。</li>
+        <li><strong>以高速转场、松散物料为主</strong>：可略靠近空载 45:55，减轻后胎和蛇行。</li>
+        <li><strong>独立电驱、轴间可控转矩</strong>：牵引最优不再等于桥荷 1:1，但<strong>后桥剩余法向力仍由倾翻几何决定</strong>，配重不能省。</li>
+      </ul>
+
+      <h3 id="p1-9">9. 上篇结论（可直接当设计原则用）</h3>
+      <ol>
+        <li><strong>1:1 是四驱附着利用和轮胎寿命的最优中心，不是空载目标值。</strong></li>
+        <li><strong>装载机正确的 1:1 是空满载对称：空载约 40:60，额定载荷运输位约 60:40。</strong> 这样插入时后轮不先翘，满载全转向后桥不先零，时间平均负荷接近 1:1。</li>
+        <li><strong>后桥法向力是安全底线。</strong> 摆动桥使整机侧倾支承为三角形；\(Z_r\to 0\) 不是“还能用前桥开”，而是稳定域消失。ISO 把额定载荷取为全转向倾翻的约一半，就是在保这条底线。</li>
+        <li><strong>刚性 4×4 并不能让桥荷分配变得无关。</strong> 摩擦椭圆、滚动半径差、铰接轨迹差会制造循环功率和先滑的那一根桥。</li>
+        <li><strong>配重、后置动力、轴距和铰接点位置是同一件事的三个旋钮</strong>：把空载质心放到前轴后约 \(0.58L\sim 0.62L\)，满载质心回到轴距中点附近。</li>
+      </ol>
+      <p>
+        若要落到某一具体机型（例如 5 t / 6 t 额定、某轴距、某斗型），可以用上面的 \(Z_r=(Ga-Qe)/L\) 把空载、运输位、最大卸载高度、全转向四张桥荷表算出来，再按“最小后桥荷 ≥ 额定载荷时整机重量的约 25%～30%（运输位）”做硬约束——这比口头上的 1:1 更可执行。
+      </p>
+
+      <h2 id="p2">下篇：转向过程中均匀桥荷有什么意义</h2>
+      <p class="lead">
+        转向时“均匀桥荷”的意义，核心不是地磅上前后各 50%，而是：铰接以后，前、后桥都能拿出足够且匹配的侧向力，同时整机质心仍落在稳定三角形里面。桥荷一边过轻，转向会先丢掉那一根桥的侧偏能力，接着才是倾翻、打滑或蛇行。
+      </p>
+      <p>
+        铰接装载机转向和阿克曼转向车不是一回事：车轮不转，是前后车体绕立铰转动；后桥还是摆动桥。所以均匀桥荷在转向里同时管三件事——<strong>侧偏力配对、侧倾支承、四轮不脱地</strong>。
+      </p>
+
+      <h3 id="p2-1">1. 转向一开始，支承就从矩形变成三角形</h3>
+      <p>
+        直线时四个接地点是矩形。一铰接，后桥绕纵向销摆动，<strong>车体的侧倾支承只剩三点：两前轮 + 后桥摆动铰</strong>。
+      </p>
+      <p>铰接角 \(\gamma\) 时后车体质心横向外移：</p>
+      \[
+        y_r \approx l_r\sin\gamma
+      \]
+      <p>有效轴距缩短：</p>
+      \[
+        L_{\parallel} \approx l_f + l_r\cos\gamma
+      \]
+      <p>
+        质心一旦越出“前外轮—摆动铰”这条棱，就开始绕这条棱倾翻。Volvo L120H 这类机型，全转向静态倾翻载荷大约比直线低 15%（15 640 kg → 13 330 kg），几何原因就是这条棱变近了。
+      </p>
+      <p><strong>均匀桥荷在这里的意义：</strong></p>
+      <ul>
+        <li>前桥太重、后桥太轻：质心贴着前轴，稳定三角形又扁又短，全转向时后铰上的法向力接近 0，三角形退化成两点。</li>
+        <li>后桥太重、前桥太轻：\(y_r\) 这一项被放大，后车体把质心推向外侧倾翻棱。</li>
+        <li>前后接近：质心更靠近三角形形心，同样 \(\gamma\) 下到边界的裕度最大。</li>
+      </ul>
+      <p>这就是低速原地铰接、满载举升转向时，1:1 附近比极端 8:2 / 2:8 安全的原因。</p>
+
+      <h3 id="p2-2">2. 摆动桥把侧翻分成两级，后桥荷决定第二级来得有多快</h3>
+      <p>吉林大学对铰接转向车的划分是：</p>
+      <ul>
+        <li><strong>一级失稳</strong>：摆动桥未到限位。后车体绕摆动销相对后桥侧倾，后轮仍接地，但驾驶室已经在“晃”。</li>
+        <li><strong>二级失稳</strong>：碰到摆动限位，后桥与后车体锁成一体，再侧倾就是整机绕倾翻棱翻出去。</li>
+      </ul>
+      <p>
+        转向时的离心力 \(m a_y\) 要由轮胎垂向力的左右差来平衡。前桥是刚接的，左右可以转移；后桥在限位前会自己摆平，<strong>左右后轮荷趋于均匀，滚转力矩被送到摆动铰上</strong>。摆动桥的本意正是让四轮接地、把重量摊开。
+      </p>
+      <p>因此转向中真正先被“压垮”的是前桥的左右差：</p>
+      \[
+        \mathrm{LTR}=\frac{Z_{\mathrm{out}}-Z_{\mathrm{in}}}{Z_{\mathrm{out}}+Z_{\mathrm{in}}}\to 1
+      \]
+      <p class="eq-note">LTR → 1 表示内侧轮离地。</p>
+      <p>桥荷均匀时：</p>
+      <ul>
+        <li>前桥有足够 \(Z_f\) 提供滚转刚度（装载机几乎全部侧倾刚度都在前桥）；</li>
+        <li>后桥有足够 \(Z_r\) 压住摆动铰，限位碰撞晚发生、发生时也不至于单铰“被拔起”。</li>
+      </ul>
+      <p>
+        前桥过重：同样 \(a_y\) 下前内侧轮先抬。后桥过重：一级侧倾角更大，限位更早碰上，然后整机绕前外轮—后铰翻。转向角速度、坡度会把这两级叠在一起。
+      </p>
+
+      <h3 id="p2-3">3. 横摆：转向靠的是前、后桥一对侧向力，不是方向盘力矩</h3>
+      <p>
+        铰接油缸只负责把 \(\gamma\) 扳到目标值。车体要绕瞬时转动中心走圆，必须由轮胎侧偏力提供向心力，并绕立铰配平横摆力矩。线性侧偏：
+      </p>
+      \[
+        F_{y,i}\approx C_{\alpha i}\,\alpha_i,\qquad C_{\alpha i}\propto Z_i
+      \]
+      <p>饱和后受摩擦圆限制：</p>
+      \[
+        F_{xi}^2+F_{yi}^2\le (\mu Z_i)^2
+      \]
+      <p>绕立铰的力矩平衡（稳态转弯、略去回正力矩）大致是：</p>
+      \[
+        F_{y,f}\,l_f \;\sim\; F_{y,r}\,l_r
+      \]
+      <p>再加上整体向心力 \(F_{y,f}+F_{y,r}\approx m v^2/\rho\)。</p>
+      <p>
+        <strong>均匀桥荷的意义是让两桥的侧偏刚度和摩擦圆容量同一量级。</strong> 铰接车的方向稳定性，文献里就强调前、后桥侧向合力的相互作用。
+      </p>
+      <p>一边过轻时会出现两种典型失稳，对应两种作业状态：</p>
+      <table>
+        <thead>
+          <tr>
+            <th>桥荷偏向</th>
+            <th>转向时先饱和的桥</th>
+            <th>现象</th>
+            <th>典型工况</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>满载前重</td>
+            <td>后桥 \(F_y\) 不够</td>
+            <td>后车体甩出 / 折腰（jackknife 类）</td>
+            <td>重载、铰接点靠前的铰接车满载转弯</td>
+          </tr>
+          <tr>
+            <td>空载后重</td>
+            <td>前桥 \(F_y\) 不够</td>
+            <td>蛇行（snaking，约 1 Hz 前后车体对摇）</td>
+            <td>高速转场、后质心靠后</td>
+          </tr>
+        </tbody>
+      </table>
+      <p>
+        铰接转向车在高速直线受扰时，这两种模态都存在：折腰是前段绕后段收拢，蛇行是两段相对振荡。后车体质心相对后轴的位置会改变以哪一种为主；差速锁止往往能减轻蛇行。
+      </p>
+      <p>
+        所以转向过程里追求前后桥荷接近，本质是：<strong>不要让一根桥先把摩擦圆用完，另一根桥还在线性区——否则立铰两边的侧向力配不平，液压转向刚度和轮胎阻尼都救不过来。</strong>
+      </p>
+      <p>
+        铰接车方向稳定性本来就比轮转向车低，原因包括质心高、轮胎软、作业循环中载荷和桥荷变化大、转向液压有柔性。桥荷再严重不均，等于把“载荷变化大”这一条推到极限。
+      </p>
+
+      <h3 id="p2-4">4. V 型循环里转向几乎总是“边驱边转”，均匀桥荷等于两桥都留得下侧向力</h3>
+      <p>
+        装载机转向很少是空转方向。短循环是：插入 → 退出 → 铰接 40° 对准车斗 → 再铰接回来。此时前桥还在出驱动力 \(F_x\)，轮胎能分给转向的侧向力只剩
+      </p>
+      \[
+        F_{y,\max}=\sqrt{(\mu Z)^2-F_x^2}
+      \]
+      <p>
+        若满载后桥只有总重的 25%～30%，后轮 \(Z\) 小，\(F_x\) 再占一点，\(F_y\) 立刻见底：后轮侧滑，铰接角还在往前加，整机绕前轴“扫尾”。若空载前桥过轻，退出料堆后高速小转时前轮推头，实际转弯半径比几何半径大，对准料斗变慢。
+      </p>
+      <p>
+        均匀桥荷让两桥的 \(\mu Z\) 接近，驱动力和侧向力可以同时存在，这才是“转向中 1:1 有意义”最贴近作业的一条。国内动态桥荷研究把转向单独列为一章，就是因为铰接会改各轮垂向力，从而改可用制动力和附着力。
+      </p>
+
+      <h3 id="p2-5">5. 铰接运动学不协调：桥荷不均会放大循环功率和内侧打滑</h3>
+      <p>刚性 4×4、无轴间差速时，前后桥角速度被锁在一起。铰接后：</p>
+      <ul>
+        <li>前、后桥走的圆弧半径不同；</li>
+        <li>同桥内、外轮弧长差更大；</li>
+        <li>法向力不同 → 轮胎压缩不同 → 滚动半径不同。</li>
+      </ul>
+      <p>
+        轻载桥更容易纯滑，重载桥被反拖，转向过程中的循环功率比直线更严重。后桥开式差速时，内侧后轮一减载就先转起来，整桥驱动力塌掉，转向所需的后桥侧向力也一起没了。前后桥荷接近，四轮法向力更均匀，差速器更不容易把全部滑转丢给那只已经变轻的内侧轮。
+      </p>
+      <p>摆动桥在不平地面上把重量重新摊到四轮，本意也是这个；转向加横坡时，若某一桥本来就过轻，摆动也摊不出法向力来。</p>
+
+      <h3 id="p2-6">6. 转向油缸：阻力来自轮胎回正，回正又正比于桥荷</h3>
+      <p>轮胎回正力矩大约 \(M_z \propto Z\cdot t_p\cdot \alpha\)。铰接油缸要克服的，主要是四条胎的侧偏刚度和回正，而不是轮转向的主销摩擦。</p>
+      <ul>
+        <li>一桥过重：那一桥轮胎“咬住地面”，油缸压力高、转向发沉，限位冲击大。</li>
+        <li>一桥过轻：那一桥提供不了阻尼性的侧向力，液压泄漏或油缸柔性会把蛇行模态养起来——转向系统等效阻尼正是铰接车高速稳定性的关键。</li>
+      </ul>
+      <p>均匀桥荷让转向阻力在前后车体之间分担，油缸力更可预期，也避免“前桥钉在地上、后车体被油缸甩出去”或反过来。</p>
+
+      <h3 id="p2-7">7. 把转向过程收成一张表</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>转向阶段</th>
+            <th>均匀前后桥荷在做什么</th>
+            <th>不均时先坏什么</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>原地 / 低速铰接</td>
+            <td>质心留在稳定三角形形心附近</td>
+            <td>后桥过轻：后铰卸空；后桥过重：质心贴外棱</td>
+          </tr>
+          <tr>
+            <td>带载对准车斗</td>
+            <td>后轮仍有 \(F_y\) 和剩余 \(Z_r\)</td>
+            <td>后轮侧滑、扫尾、全转向倾翻裕度见底</td>
+          </tr>
+          <tr>
+            <td>空载退料、转场</td>
+            <td>前轮有足够侧偏刚度</td>
+            <td>推头、蛇行、高速直线受扰发散</td>
+          </tr>
+          <tr>
+            <td>边走边转（有 \(F_x\)）</td>
+            <td>两桥摩擦圆都留得下侧向分量</td>
+            <td>轻载桥先滑，差速把滑转集中到内侧轮</td>
+          </tr>
+          <tr>
+            <td>横坡 + 铰接</td>
+            <td>摆动铰上仍有压力，一级侧倾不那么快顶死</td>
+            <td>前内侧轮先抬，或限位后整机侧翻</td>
+          </tr>
+          <tr>
+            <td>油缸动态</td>
+            <td>回正力矩前后分担，转向阻尼够</td>
+            <td>转向发沉或发飘，液压柔性激发振荡</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3 id="p2-8">8. 两篇分析如何衔接</h3>
+      <p>直线行驶时说 1:1，图的是附着利用和轮胎寿命。<strong>转向时说均匀桥荷，图的是侧向力配对 + 稳定三角形。</strong></p>
+      <p>
+        因此装载机仍不宜空载就做成 50/50：满载一铰接，后桥会再掉一截，转向最需要后轮侧向力的时候，后轮法向力却最小。空载约 4:6、满载运输位约 6:4，就是为了让<strong>两种都会转向的工况</strong>，桥荷都还离 1:1 不远——空载转场前桥不至于没有侧偏刚度，满载对准车斗后桥不至于没有侧向力和倾翻裕度。
+      </p>
+      <p>
+        若只看转向这一条，比“百分比”更可执行的校核是：全转向、额定载荷、动臂工作高度上，<strong>后桥剩余垂向力仍能提供 \(F_{y,r}\approx m_r v^2/\rho\) 量级的侧向力，且稳定三角形内的稳态余量角不为负</strong>。
+      </p>
+
+      <h2 id="refs">参考文献与资料</h2>
+      <ol class="src">
+        <li>Rehnberg, A. <a href="https://www.diva-portal.org/smash/get/diva2:13374/fulltext01">Vehicle dynamic analysis of wheel loaders with suspended axles</a>. KTH, 2008.</li>
+        <li><a href="https://www.drivingtests.co.nz/resources/why-do-wheel-loaders-need-counterweights/">Why do wheel loaders need counterweights?</a></li>
+        <li>Bołoz, Ł., Kozłowski, A., Horak, W. <a href="https://doi.org/10.2478/mspe-2022-0048">Assessment of the Stability of Bev Lhd Loader</a>. <em>Management Systems in Production Engineering</em>, 2022.</li>
+        <li><a href="https://d3is8fue1tbsks.cloudfront.net/PDF/JCB/JCB%20416B.pdf">JCB 416B specifications</a>.</li>
+        <li>Volvo CE. <a href="https://www.volvoce.com/-/media/aprimo/pdf/large-wheel-loaders/l120h/product-guide-l120h-stv-en-21-20062970-d.pdf?v=Jeh7Pw">L120H Product Guide</a>.</li>
+        <li>Volvo CE. <a href="https://www.volvoce.com/global/en/products-and-services/past-products/wheel-loaders/volvo-bm-l-series/l120/">Volvo BM / Michigan L120</a>.</li>
+        <li><a href="https://www.d1cm.com/ask/29581.html">临工 L968F 装载机轴荷分布计算</a>. 第一工程机械网.</li>
+        <li><a href="http://www.51papers.com/lw/69/28/wz1151128.htm">轮式装载机动态桥荷研究</a>（硕士学位论文目录与章节）. </li>
+        <li>Andreev, A. F., et al. <a href="https://www.sciencedirect.com/science/article/abs/pii/S0022489813000049">Fusion of driving and braking tire operational modes and analysis of traction dynamics and energy efficiency of a 4×4 loader</a>.</li>
+        <li><a href="https://www.xjishu.com/zhuanli/29/CN105172617.html">前后桥独立驱动装载机结构及转矩动态分配方法</a>. CN105172617.</li>
+        <li><a href="https://www.xjishu.com/zhuanli/12/202511579172.html">一种保护工作连杆系统的控制方法、液压系统及装载机</a>.</li>
+        <li><a href="https://www.extrica.com/article/18277">Research on dynamic behaviors of wheel loaders with different layout of hydropneumatic suspension</a>. Extrica.</li>
+        <li>Li, X., et al. <a href="https://doi.org/10.1155/2016/8041816">Control Methods for Roll Instability of Articulated Steering Vehicles</a>. <em>Mathematical Problems in Engineering</em>, 2016.</li>
+        <li><a href="https://doi.org/10.1155/2016/7816503">Study on Roll Instability Mechanism and Stability Index of Articulated Steering Vehicles</a>. 2016.</li>
+        <li>Azad, N. L. <a href="https://uwaterloo.ca/mechatronic-vehicle-systems-lab/sites/default/files/uploads/files/n_azad_t.pdf">Dynamic Modelling and Stability Controller Development for Articulated Steer Vehicles</a>. University of Waterloo.</li>
+        <li>He, Y., et al. <a href="https://doi.org/10.1504/ijhvs.2005.005668">Dynamic modelling and stability analysis of articulated frame steer vehicles</a>. <em>IJHVS</em>, 2005.</li>
+        <li><a href="https://www.inderscience.com/info/inarticle.php?artid=60063">Kineto-dynamic directional response analysis of an articulated frame steer vehicle</a>. <em>IJVD</em>, 2014.</li>
+        <li><a href="https://www.conequip.com/wp/conequip-101-learning/oscillating-axle-explained">Oscillating Axles Explained</a>. Conequip.</li>
+        <li><a href="http://www.51papers.com/lw/70/2/wz1942413.htm">铰接转向工程车辆侧倾稳定性研究</a>（博士学位论文目录）.</li>
+        <li><a href="https://www.ppdoc.com/degree/c6cb7dfb144f96d9cee903d336d1c903.html">铰接轮式装载机侧向失稳机理及预测指标研究</a>.</li>
+      </ol>
+    </article>
+
+    <footer>
+      本文为铰接式轮式装载机桥荷与转向稳定性技术说明，公式渲染依赖 MathJax（需联网）。可用浏览器“打印 → 另存为 PDF”导出。
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>铰接式轮式装载机转向稳定性文献综述与进一步技术分析</title>
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['\\(', '\\)']], displayMath: [['\\[', '\\]']] }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+  <style>
+    :root { --ink:#1c1917; --muted:#57534e; --line:#d6d3d1; --paper:#faf7f2; --card:#fff; --accent:#9a3412; --soft:#fff7ed; }
+    body { margin:0; font-family:"Source Han Serif SC","Noto Serif SC","Songti SC",Georgia,serif; color:var(--ink); background:var(--paper); line-height:1.75; font-size:17px; }
+    .wrap { max-width:920px; margin:0 auto; padding:48px 28px 96px; }
+    h1 { font-size:30px; line-height:1.35; margin:0 0 16px; }
+    h2 { font-size:22px; margin:40px 0 14px; padding-top:8px; border-top:1px solid var(--line); }
+    h3 { font-size:18px; margin:26px 0 10px; }
+    .kicker { letter-spacing:.16em; font-size:12px; color:var(--accent); font-family:"Source Han Sans SC","Noto Sans SC",sans-serif; }
+    .lead { background:var(--soft); border-left:4px solid var(--accent); padding:14px 18px; margin:0 0 22px; }
+    table { width:100%; border-collapse:collapse; font-size:14.5px; margin:8px 0 22px; font-family:"Source Han Sans SC","Noto Sans SC",sans-serif; background:var(--card); }
+    th,td { border:1px solid var(--line); padding:8px 10px; vertical-align:top; text-align:left; }
+    th { background:#1f2937; color:#fff; }
+    tbody tr:nth-child(even) { background:#f5f5f4; }
+    a { color:#9a3412; }
+    .src { font-size:14px; font-family:"Source Han Sans SC","Noto Sans SC",sans-serif; }
+    footer { margin-top:48px; color:var(--muted); font-size:13.5px; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <p class="kicker">LITERATURE REVIEW · STEERING STABILITY</p>
+  <h1>铰接式轮式装载机转向稳定性：文献综述与进一步技术分析</h1>
+  <p class="lead">转向过程里的“均匀桥荷”，在文献里对应三条彼此独立、又必须同时满足的稳定边界：准静态倾翻棱（稳定三角形 / ISO 14397）、动态侧倾（LTR 与摆动桥两级失稳）、横摆方向稳定性（蛇行 / 折腰）。桥荷设计是在这三条边界之间做折中，而不是单纯追求地磅上的 50/50。</p>
+
+  <h2>1. 文献图谱：转向稳定性实际被拆成三类问题</h2>
+  <table>
+    <thead><tr><th>问题</th><th>典型工况</th><th>核心指标</th><th>代表文献</th></tr></thead>
+    <tbody>
+      <tr><td>准静态倾翻</td><td>低速全转向、举升卸载、斜坡原地铰接</td><td>倾翻棱、后桥荷 \(G_H\)、临界坡角</td><td>ISO 14397-1；Bołoz 2022；Sierzputowski &amp; Dudziński 2020</td></tr>
+      <tr><td>动态侧倾</td><td>带速转弯、转弯越障、横坡转向</td><td>LTR、侧向加速度、侧倾角速度</td><td>Li et al. 2016；Yao et al. 2014；16-DOF 动态侧倾 2020</td></tr>
+      <tr><td>横摆失稳</td><td>高速直线受扰、转场、液压刚度不足</td><td>特征值实部、蛇行频率约 1 Hz、临界车速</td><td>Horton &amp; Crolla 1986；He et al. 2005；Azad 2006；Gao et al. 2021</td></tr>
+    </tbody>
+  </table>
+  <p>铰接转向车和轮转向车不同：车轮不转，前后车体绕立铰相对横摆；后桥通常是摆动桥。Li 等明确指出，转向时质心横向外移，稳定性下降，而现有公路车 LTR 算法又依赖悬架，装载机没有悬架，必须单独建模。</p>
+
+  <h2>2. 准静态：ISO 把“全转向后桥荷”写成额定载荷公式</h2>
+  <p>ISO 14397-1 规定：铰接式装载机必须在直线和左右最大铰接位置评定；倾翻极限是离倾翻棱最远的车轮离地。试验时摆动桥不得锁死，全转向以对侧一轮离地为准。</p>
+  <p>计算额定作业载荷时，先测空斗、全铰接下的后桥荷 \(G_H\)，再按有效轴距的余弦缩短项折算：</p>
+  \[
+    N = k\cdot m_{\mathrm{tip}} = k\cdot G_H\frac{L_3-L_5+L_5\cos A_1}{n}
+  \]
+  <p>轮胎式装载机 \(k=0.50\)。公式的物理含义是：全转向后，后桥到倾翻棱的力臂变成 \(L_3-L_5+L_5\cos A_1\)，后桥荷才是抵抗倾翻的稳定力矩。空载后桥过轻，额定载荷直接被削掉；这是“转向过程必须保留后桥荷”的标准依据，不是经验口号。</p>
+  <p>Bołoz 等对井下 LHD（铰接可达 42°）给出几何图像：稳定域是两前轮中心与后摆动铰构成的三角形；铰接时后铰横向平移，合成质心同时移向倾翻棱。他们建议空斗 40/60、满斗 60/40，并指出现场常见的 20/80 与 80/20 过偏。</p>
+  <p>Sierzputowski 与 Dudziński 指出，ISO 14397 与简单静态稳定因子（轮距/质心高）都忽略了摆动/悬架布置；他们用准静态 I 型（一轮法向力为零）和 II 型（两轮为零）临界坡角评价。试验表明，后车体上倾斜 25° 的摆动轴线，相对水平摆动轴，I 型指标约提高 8.5%。Volvo、Mecalac 中小吨位机已采用十多度倾斜摆动轴，目的就是转向和斜坡时把轮荷摊得更匀。</p>
+
+  <h2>3. 动态侧倾：铰接角越大，允许车速越低</h2>
+  <p>吉林大学 Li、王继新等建立 7 自由度非线性模型（前车体、后车体、摆动后桥），并用缩比样机验证。水平路面转弯、LTR 到 1 的临界组合为：</p>
+  <table>
+    <thead><tr><th>铰接角</th><th>临界车速（约）</th><th>伴随状态</th></tr></thead>
+    <tbody>
+      <tr><td>20°</td><td>&gt; 8 m/s（约 29 km/h）</td><td rowspan="3">侧向加速度约 5 m/s²；侧倾角速度约 0.6 rad/s；横摆角速度 0.6–0.8 rad/s</td></tr>
+      <tr><td>25°</td><td>&gt; 7 m/s（约 25 km/h）</td></tr>
+      <tr><td>30°</td><td>约 6.5 m/s（约 23 km/h）</td></tr>
+    </tbody>
+  </table>
+  <p>他们建议：平路转弯用侧向加速度作指标（约 5 m/s²）；直行越障用侧倾角速度（约 3 rad/s）。坡度越大，临界侧倾角速度越小，近似指数关系。这意味着 V 循环里“满载、大铰接、对准车斗”的组合，比直线行驶更先碰到侧倾边界。</p>
+  <p>Yao 等（2014）用 4 自由度倾翻模型加缩比试验，按不同车速和转弯半径给出 LTR、侧向加速度和侧倾角。后续 16 自由度非线性模型进一步表明：车速、质心高度、横坡都会显著降低侧倾稳定性，其中车速和横坡的影响大于质心高度；横坡转向时 LTR 曲线随时间波动，坡角越大波动越强。</p>
+  <p>摆动桥把侧翻分成两级：限位前绕摆动销（一级），顶死后整机绕倾翻棱（二级）。Li 等的主动控制对比显示：主动制动有利于转弯侧倾；主动转向可改善转弯和越障；调节摆动桥（在后车体与后桥间施加控制力矩）能缩短失稳时间。这从反面说明：后桥法向力是摆动铰能“压住”一级侧倾的前提，后桥过轻时调节摆动桥也没有力可调。</p>
+
+  <h2>4. 横摆：蛇行与折腰由质心相对桥的位置决定</h2>
+  <p>Horton 与 Crolla（1986）用特征值方法把铰接车高速横向失稳分成：折腰（发散，前段绕后段收拢）、蛇行（约 1 Hz 对摇）、以及类似过多转向的慢发散。立铰等效扭转刚度过低时，过多转向会演变成折腰；液压泄漏对过多转向模态有害，对蛇行反而有利。</p>
+  <p>Azad（Waterloo，2006）的结论是：最危险工况往往是高速直线受扰，而不是大转角作业；差速锁止可减轻蛇行；后挂接地载荷在较好路面上反而可能失稳。被动办法（加大铰接摩擦、油缸内泄漏）有副作用，因而提出主动转向和转矩矢量。</p>
+  <p>Gao 等（2021）把非线性整车与液压转向联立后发现：</p>
+  <ul>
+    <li>质心位置和液压刚度的影响大于多数其他参数；</li>
+    <li>前、后质心靠近立铰，摆角收敛更快；质心超出各自车轴后，稳定性显著变差；</li>
+    <li>前车载荷系数从 20% 增到 100% 时，摆角幅值下降、振荡频率降低——前桥增载有利于抑制蛇行；</li>
+    <li>车速升高则摆角收敛变慢。</li>
+  </ul>
+  <p>Concordia 对带悬架铰接装载机的综述引用：脉冲转向力矩下，约 12.6 km/h 以上可出现蛇行，且强烈依赖后车体惯量和质心；<strong>重载后车体的满载运输态最容易蛇行</strong>。这与“空载后重利于倾翻、但空载/后偏心过大不利于高速直线”完全一致。</p>
+  <p>液压油含气、软管、泄漏会把转向等效刚度打下来。Crolla 指出夹气和软管是铰接车扭转刚度低的主因。刚度不够时，即使桥荷合理，轮胎侧向力也配不平立铰两边的横摆力矩。</p>
+
+  <h2>5. 把三条边界叠到桥荷上：为什么仍是 4:6 / 6:4</h2>
+  <p>转向过程可以按时间拆成四段，每段被不同文献管住：</p>
+  <table>
+    <thead><tr><th>阶段</th><th>桥荷若前重</th><th>桥荷若后重</th><th>均匀（空 4:6→满 6:4）</th></tr></thead>
+    <tbody>
+      <tr><td>原地 / 低速大铰接（ISO / 三角形）</td><td>\(G_H\) 小，全转向倾翻载荷按余弦项再降</td><td>后质心外移大，贴外棱</td><td>质心靠近三角形形心，\(G_H\) 仍够</td></tr>
+      <tr><td>带速转弯（LTR）</td><td>前内侧轮先抬，LTR→1</td><td>一级侧倾角大，更早顶限位</td><td>前桥有滚转刚度，后铰有压力</td></tr>
+      <tr><td>V 循环边驱边转（摩擦圆）</td><td>后轮 \(F_y\) 见底，扫尾</td><td>前轮推头，实际半径变大</td><td>两桥都留得下 \(F_y\)</td></tr>
+      <tr><td>高速转场（蛇行特征值）</td><td>前重抑制蛇行（Gao 载荷系数）</td><td>后车体惯量大，临界车速下降</td><td>空载略后重但不把质心甩到后轴之后</td></tr>
+    </tbody>
+  </table>
+  <p>因此文献并不支持“转向时前后桥荷必须精确 1:1”，而是支持：</p>
+  <ol>
+    <li><strong>全转向时后桥荷 \(G_H\) 是额定能力的直接输入</strong>（ISO）。</li>
+    <li><strong>动态转弯时两桥法向力都要能支撑摩擦圆</strong>（Li 的 LTR=1 就是有一轮 \(Z=0\)）。</li>
+    <li><strong>前、后质心都应落在各自轴距内侧、并尽量靠近立铰</strong>（Gao）；这与空载质心约在 \(0.58L\sim0.62L\)（略后重）相容，但排除把配重做到后轴之后很远。</li>
+    <li><strong>满载前桥增载会抑制蛇行，但会削弱全转向三角形</strong>；所以满载停在约 6:4，而不是 8:2。</li>
+  </ol>
+
+  <h2>6. 可执行的校核（把文献指标落到设计）</h2>
+  <ol>
+    <li>ISO 14397：直线 + 左右最大铰接，摆动桥不锁；记录 \(G_H\) 与一轮离地时的倾翻载荷；ROC 取全转向倾翻的 50% 与液压举升能力的较小值。</li>
+    <li>准静态三角形：最大铰接、额定载荷、工作高度、纵坡与横坡组合下，合成质心力线仍在“两前轮+后铰”内，且后铰剩余法向力不为零（Bołoz 经验：单轮质量力 &gt; 约 1000 kg 量级才敢说水平巷道稳定，需按机型缩放）。</li>
+    <li>平路转弯：设计车速下估计 \(a_y=v^2/\rho(\gamma)\)，与 Li 的 5 m/s² 量级比较；铰接角每加大一档，允许车速应下降。</li>
+    <li>蛇行：对空载运输态做立铰脉冲扰动的特征值或时域仿真；后质心不要落到后轴之后；转向液压刚度（含气、软管）按最高转场车速校核。</li>
+    <li>结构：若侧倾裕度不够，优先加轮距、降低质心、缩短 \(l_r\sin\gamma\) 外移，其次才加配重；倾斜摆动轴可换约数个百分点的准静态侧倾指标，但会把不平地面运动耦合进转向角。</li>
+  </ol>
+
+  <h2>7. 简短结论</h2>
+  <p>转向稳定性文献把问题分成倾翻棱、LTR/两级侧倾、蛇行/折腰。均匀桥荷的意义是让这三条边界同时有余量：ISO 要后桥荷，LTR 要任何一轮都不先零，蛇行要后车体质心不要太靠后、前桥又不能没有侧偏刚度。空载约 40:60、满载运输位约 60:40，仍然是目前文献与标准能共同支撑的布置中心。</p>
+
+  <h2>参考文献</h2>
+  <ol class="src">
+    <li>ISO 14397-1:2007. Earth-moving machinery — Loaders and backhoe loaders — Part 1.</li>
+    <li>Li, X., et al. Study on Roll Instability Mechanism and Stability Index of Articulated Steering Vehicles. 2016. https://doi.org/10.1155/2016/7816503</li>
+    <li>Li, X., et al. Control Methods for Roll Instability of Articulated Steering Vehicles. 2016. https://doi.org/10.1155/2016/8041816</li>
+    <li>Yao, Z., et al. Dynamic simulation for the rollover stability performances of articulated vehicles. 2014. https://doi.org/10.1177/0954407013501486</li>
+    <li>Research on roll stability of articulated engineering vehicles based on dynamic lateral transfer load. 2020. https://doi.org/10.1177/0954407020909242</li>
+    <li>Bołoz, Ł., et al. Assessment of the Stability of Bev Lhd Loader. 2022. https://doi.org/10.2478/mspe-2022-0048</li>
+    <li>Sierzputowski, G., Dudziński, P. A mathematical model for determining and improving rollover stability… 2020. https://doi.org/10.1007/s43452-020-00054-w</li>
+    <li>Horton, D.N.L., Crolla, D.A. Theoretical Analysis of the Steering Behaviour of Articulated Frame Steer Vehicles. VSD, 1986.</li>
+    <li>He, Y., et al. Dynamic modelling and stability analysis of articulated frame steer vehicles. IJHVS, 2005. https://doi.org/10.1504/ijhvs.2005.005668</li>
+    <li>Azad, N.L. Dynamic Modelling and Stability Controller Development for Articulated Steer Vehicles. PhD, Waterloo, 2006.</li>
+    <li>Gao, Y., et al. Modelling and Stability Analysis of Articulated Vehicles. Applied Sciences, 2021. https://doi.org/10.3390/app11083663</li>
+    <li>Pazooki / Concordia. Ride and directional dynamic analysis of articulated frame steer vehicles.</li>
+    <li>CMEIG Advisory Notice: Rated Loads for Wheel Loaders. 2018.</li>
+  </ol>
+  <footer>本文为转向稳定性文献综述。公式渲染需联网加载 MathJax。</footer>
+</div>
+</body>
+</html>
